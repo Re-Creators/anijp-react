@@ -9,6 +9,7 @@ module.exports = {
         "primary-400": "#1F3459",
         secondary: "#2C62BF",
         active: "#537EC9",
+        "link-active": "#0099FF",
       },
       width: {
         "slide-item": "34rem",
