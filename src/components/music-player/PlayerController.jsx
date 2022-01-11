@@ -32,17 +32,29 @@ const songs = [
 ];
 
 function PlayerController() {
+  console.log("PlayerController render...");
   const audioRef = useRef();
-  const progressRef = useRef();
   const readyToPlay = useRef(false);
   const trackIndex = useRef(0);
+
+  const [timeProgress, setTimeProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [progressMoving, setProgressMoving] = useState(false);
+
+  let percent = isNaN(timeProgress / duration)
+    ? 0
+    : (timeProgress / duration) * 100;
 
   const dispatch = useDispatch();
   const isPlaying = useSelector(selectIsPlaying);
   const activeSong = useSelector(selectActiveSong);
 
-  const [duration, setDuration] = useState(0);
-  const [timeProgress, setTimeProgress] = useState(0);
+  const onChangeTime = (time) => {
+    if (audioRef.current) {
+      setProgressMoving(false);
+      audioRef.current.currentTime = time;
+    }
+  };
 
   const changeSongHandler = (value) => {
     trackIndex.current = trackIndex.current + value;
@@ -68,6 +80,17 @@ function PlayerController() {
     dispatch(setIsPlaying(!isPlaying));
   };
 
+  const onUpdateTime = (e) => {
+    if (!progressMoving) {
+      setTimeProgress(e.target.currentTime);
+    }
+  };
+
+  const onProgressMove = (time) => {
+    setProgressMoving(true);
+    setTimeProgress(time);
+  };
+
   useEffect(() => {
     if (activeSong && readyToPlay.current) {
       dispatch(setIsPlaying(true));
@@ -81,7 +104,6 @@ function PlayerController() {
   useEffect(() => {
     if (isPlaying) {
       audioRef.current.play();
-      setDuration(audioRef.current.duration);
     } else {
       audioRef.current.pause();
     }
@@ -119,11 +141,12 @@ function PlayerController() {
           <span className="text-xs select-none">
             {getDurationString(timeProgress)}
           </span>
-          <div className="relative bg-primary-300 w-4/5 h-1 mx-3 cursor-pointer group">
-            <div className="absolute h-full left-0 bg-secondary w-1/2">
-              <span className="hidden absolute top-1/2 transform -translate-y-1/2 right-0 h-3 w-3 rounded-full bg-secondary group-hover:block"></span>
-            </div>
-          </div>
+          <ProggressBar
+            percent={percent}
+            onChangeTime={onChangeTime}
+            duration={duration}
+            onProgressMove={onProgressMove}
+          />
           <span className="text-xs select-none">
             {getDurationString(duration)}
           </span>
@@ -138,7 +161,11 @@ function PlayerController() {
               fontSize={24}
             />
           </button>
-          <ProggressBar />
+          <div className="relative bg-primary-300 w-20 h-1 mx-3 mb-1 cursor-pointer group">
+            <div className="absolute h-full w-1/2 left-0 bg-secondary">
+              <span className="hidden absolute top-1/2 transform -translate-y-1/2 right-0 h-2 w-2 rounded-full bg-secondary group-hover:block"></span>
+            </div>
+          </div>
         </div>
         <button className="ml-3">
           <MdList
@@ -150,9 +177,8 @@ function PlayerController() {
       <audio
         ref={audioRef}
         src={activeSong}
-        onTimeUpdate={(e) => {
-          setTimeProgress(e.target.currentTime);
-        }}
+        onTimeUpdate={onUpdateTime}
+        onLoadedMetadata={(e) => setDuration(e.target.duration)}
       ></audio>
     </>
   );
