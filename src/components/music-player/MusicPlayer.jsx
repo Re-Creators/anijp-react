@@ -1,9 +1,6 @@
-import { useState } from "react";
 import PlayerController from "./PlayerController";
 
 function MusicPlayer() {
-  console.log("render from MusicPlayer");
-
   return (
     <div className="fixed z-50 w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl">
       <div className="md:w-1/4 lg:w-1/5 flex flex-row items-center relative">

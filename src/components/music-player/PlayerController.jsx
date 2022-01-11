@@ -91,15 +91,24 @@ function PlayerController() {
     setTimeProgress(time);
   };
 
+  const songEndHanlder = () => {
+    if (trackIndex.current === songs.length - 1) {
+      dispatch(setIsPlaying(false));
+      return;
+    }
+
+    changeSongHandler(1);
+  };
+
   useEffect(() => {
     if (activeSong && readyToPlay.current) {
       dispatch(setIsPlaying(true));
     }
-  }, [activeSong]);
+  }, [activeSong, dispatch]);
 
   useEffect(() => {
     dispatch(changeActiveSong(songs[0]));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -179,6 +188,7 @@ function PlayerController() {
         src={activeSong}
         onTimeUpdate={onUpdateTime}
         onLoadedMetadata={(e) => setDuration(e.target.duration)}
+        onEnded={songEndHanlder}
       ></audio>
     </>
   );

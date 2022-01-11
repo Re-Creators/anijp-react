@@ -21,7 +21,6 @@ function ProggressBar({ percent, onChangeTime, onProgressMove, duration }) {
   };
 
   useEffect(() => {
-    console.log("render event");
     const onMove = (e) => {
       if (startMove.current) {
         const rect = progressBar.current.getBoundingClientRect();
@@ -58,6 +57,8 @@ function ProggressBar({ percent, onChangeTime, onProgressMove, duration }) {
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseup", onEndMove);
     };
+
+    // eslint-disable-next-line
   }, [duration]);
 
   return (
