@@ -5,6 +5,8 @@ import {
   MdSkipPrevious,
   MdSkipNext,
   MdVolumeDownAlt,
+  MdOutlineRepeatOne,
+  MdOutlineRepeat,
   MdList,
 } from "react-icons/md";
 import { ImLoop } from "react-icons/im";
@@ -25,6 +27,12 @@ const SONG = {
   prev: -1,
 };
 
+const REPEAT = {
+  off: "OFF",
+  once: "ONCE",
+  list: "LIST",
+};
+
 const songs = [
   "/sample/musics/music1.mp3",
   "/sample/musics/music2.mp3",
@@ -32,7 +40,6 @@ const songs = [
 ];
 
 function PlayerController() {
-  console.log("PlayerController render...");
   const audioRef = useRef();
   const readyToPlay = useRef(false);
   const trackIndex = useRef(0);
@@ -40,6 +47,7 @@ function PlayerController() {
   const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [progressMoving, setProgressMoving] = useState(false);
+  const [repeatMode, setRepeatMode] = useState(REPEAT.off);
 
   let percent = isNaN(timeProgress / duration)
     ? 0
@@ -58,6 +66,7 @@ function PlayerController() {
 
   const changeSongHandler = (value) => {
     trackIndex.current = trackIndex.current + value;
+
     if (trackIndex.current < 0) {
       trackIndex.current = songs.length - 1;
     } else if (trackIndex.current >= songs.length) {
@@ -92,12 +101,30 @@ function PlayerController() {
   };
 
   const songEndHanlder = () => {
-    if (trackIndex.current === songs.length - 1) {
+    if (repeatMode === REPEAT.once) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    } else if (
+      trackIndex.current === songs.length - 1 &&
+      repeatMode === REPEAT.list
+    ) {
+      changeSongHandler(1);
+    } else if (trackIndex.current === songs.length - 1) {
       dispatch(setIsPlaying(false));
       return;
+    } else {
+      changeSongHandler(1);
     }
+  };
 
-    changeSongHandler(1);
+  const repeatHandler = () => {
+    if (repeatMode === REPEAT.off) {
+      setRepeatMode(REPEAT.once);
+    } else if (repeatMode === REPEAT.once) {
+      setRepeatMode(REPEAT.list);
+    } else {
+      setRepeatMode(REPEAT.off);
+    }
   };
 
   useEffect(() => {
@@ -122,11 +149,14 @@ function PlayerController() {
     <>
       <div className="w-2/5 flex flex-col items-center">
         <div className="select-none text-white flex flex-row items-center gap-3">
-          <button>
+          <button className="text-gray-400 hover:text-white">
             <MdShuffle fontSize={24} />
           </button>
 
-          <button onClick={() => changeSongHandler(SONG.prev)}>
+          <button
+            onClick={() => changeSongHandler(SONG.prev)}
+            className="text-gray-400 hover:text-white"
+          >
             <MdSkipPrevious fontSize={32} />
           </button>
 
@@ -138,12 +168,24 @@ function PlayerController() {
             )}
           </button>
 
-          <button onClick={() => changeSongHandler(SONG.next)}>
+          <button
+            onClick={() => changeSongHandler(SONG.next)}
+            className="text-gray-400 hover:text-white"
+          >
             <MdSkipNext fontSize={32} />
           </button>
 
-          <button>
-            <ImLoop fontSize={18} />
+          <button
+            className={`text-gray-400 hover:text-white ${
+              repeatMode !== REPEAT.off ? "text-link-active scale-125" : ""
+            }`}
+            onClick={repeatHandler}
+          >
+            {repeatMode === REPEAT.once ? (
+              <MdOutlineRepeatOne fontSize={23} />
+            ) : (
+              <MdOutlineRepeat fontSize={23} />
+            )}
           </button>
         </div>
         <div className="w-4/5 flex flex-row text-white items-center mt-3">
