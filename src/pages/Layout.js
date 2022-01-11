@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import MusicPlayer from "../components/MusicPlayer";
+import MusicPlayer from "../components/music-player/MusicPlayer";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 
