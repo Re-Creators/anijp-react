@@ -46,6 +46,7 @@ function PlayerController() {
 
   const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isShuffle, setIsShuffle] = useState(false);
   const [progressMoving, setProgressMoving] = useState(false);
   const [repeatMode, setRepeatMode] = useState(REPEAT.off);
 
@@ -104,6 +105,10 @@ function PlayerController() {
     if (repeatMode === REPEAT.once) {
       audioRef.current.currentTime = 0;
       audioRef.current.play();
+    } else if (isShuffle) {
+      trackIndex.current = Math.floor(Math.random() * songs.length);
+      dispatch(changeActiveSong(songs[trackIndex.current]));
+      audioRef.current.autoplay = true;
     } else if (
       trackIndex.current === songs.length - 1 &&
       repeatMode === REPEAT.list
@@ -149,7 +154,12 @@ function PlayerController() {
     <>
       <div className="w-2/5 flex flex-col items-center">
         <div className="select-none text-white flex flex-row items-center gap-3">
-          <button className="text-gray-400 hover:text-white">
+          <button
+            className={`text-gray-400 hover:text-white ${
+              isShuffle ? "text-link-active scale-125" : ""
+            }`}
+            onClick={() => setIsShuffle(!isShuffle)}
+          >
             <MdShuffle fontSize={24} />
           </button>
 
