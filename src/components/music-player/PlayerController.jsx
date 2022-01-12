@@ -9,23 +9,8 @@ import {
   MdOutlineRepeat,
   MdList,
 } from "react-icons/md";
-import { ImLoop } from "react-icons/im";
-import { useRef, useEffect, useState } from "react";
 import { getDurationString } from "../../utils";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import {
-  setIsPlaying,
-  selectIsPlaying,
-  changeActiveSong,
-  selectActiveSong,
-} from "../../features/music-player/musicPlayerSlice";
 import ProggressBar from "./ProggressBar";
-
-const SONG = {
-  next: 1,
-  prev: -1,
-};
 
 const REPEAT = {
   off: "OFF",
@@ -33,122 +18,23 @@ const REPEAT = {
   list: "LIST",
 };
 
-const songs = [
-  "/sample/musics/music1.mp3",
-  "/sample/musics/music2.mp3",
-  "/sample/musics/music3.mp3",
-];
+const SONG = {
+  next: 1,
+  prev: -1,
+};
 
-function PlayerController() {
-  const audioRef = useRef();
-  const readyToPlay = useRef(false);
-  const trackIndex = useRef(0);
+function PlayerController(props) {
+  const { isShuffle, isPlaying, repeatMode, timeProgress, percent, duration } =
+    props;
 
-  const [timeProgress, setTimeProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isShuffle, setIsShuffle] = useState(false);
-  const [progressMoving, setProgressMoving] = useState(false);
-  const [repeatMode, setRepeatMode] = useState(REPEAT.off);
-
-  let percent = isNaN(timeProgress / duration)
-    ? 0
-    : (timeProgress / duration) * 100;
-
-  const dispatch = useDispatch();
-  const isPlaying = useSelector(selectIsPlaying);
-  const activeSong = useSelector(selectActiveSong);
-
-  const onChangeTime = (time) => {
-    if (audioRef.current) {
-      setProgressMoving(false);
-      audioRef.current.currentTime = time;
-    }
-  };
-
-  const changeSongHandler = (value) => {
-    trackIndex.current = trackIndex.current + value;
-
-    if (trackIndex.current < 0) {
-      trackIndex.current = songs.length - 1;
-    } else if (trackIndex.current >= songs.length) {
-      trackIndex.current = 0;
-    }
-
-    if (!isPlaying) {
-      dispatch(setIsPlaying(true));
-    }
-    dispatch(changeActiveSong(songs[trackIndex.current]));
-
-    audioRef.current.autoplay = true;
-  };
-
-  const playHandler = () => {
-    if (!readyToPlay.current) {
-      readyToPlay.current = true;
-    }
-
-    dispatch(setIsPlaying(!isPlaying));
-  };
-
-  const onUpdateTime = (e) => {
-    if (!progressMoving) {
-      setTimeProgress(e.target.currentTime);
-    }
-  };
-
-  const onProgressMove = (time) => {
-    setProgressMoving(true);
-    setTimeProgress(time);
-  };
-
-  const songEndHanlder = () => {
-    if (repeatMode === REPEAT.once) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-    } else if (isShuffle) {
-      trackIndex.current = Math.floor(Math.random() * songs.length);
-      dispatch(changeActiveSong(songs[trackIndex.current]));
-      audioRef.current.autoplay = true;
-    } else if (
-      trackIndex.current === songs.length - 1 &&
-      repeatMode === REPEAT.list
-    ) {
-      changeSongHandler(1);
-    } else if (trackIndex.current === songs.length - 1) {
-      dispatch(setIsPlaying(false));
-      return;
-    } else {
-      changeSongHandler(1);
-    }
-  };
-
-  const repeatHandler = () => {
-    if (repeatMode === REPEAT.off) {
-      setRepeatMode(REPEAT.once);
-    } else if (repeatMode === REPEAT.once) {
-      setRepeatMode(REPEAT.list);
-    } else {
-      setRepeatMode(REPEAT.off);
-    }
-  };
-
-  useEffect(() => {
-    if (activeSong && readyToPlay.current) {
-      dispatch(setIsPlaying(true));
-    }
-  }, [activeSong, dispatch]);
-
-  useEffect(() => {
-    dispatch(changeActiveSong(songs[0]));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isPlaying]);
+  const {
+    shuffleClickHandler,
+    changeSongHandler,
+    playHandler,
+    repeatHandler,
+    onChangeTime,
+    onProgressMove,
+  } = props;
 
   return (
     <>
@@ -158,7 +44,7 @@ function PlayerController() {
             className={`text-gray-400 hover:text-white ${
               isShuffle ? "text-link-active scale-125" : ""
             }`}
-            onClick={() => setIsShuffle(!isShuffle)}
+            onClick={shuffleClickHandler}
           >
             <MdShuffle fontSize={24} />
           </button>
@@ -235,13 +121,6 @@ function PlayerController() {
           />
         </button>
       </div>
-      <audio
-        ref={audioRef}
-        src={activeSong}
-        onTimeUpdate={onUpdateTime}
-        onLoadedMetadata={(e) => setDuration(e.target.duration)}
-        onEnded={songEndHanlder}
-      ></audio>
     </>
   );
 }

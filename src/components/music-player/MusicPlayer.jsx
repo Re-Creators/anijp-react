@@ -1,10 +1,149 @@
+import { useState, useEffect, useRef } from "react";
 import PlayerController from "./PlayerController";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import {
+  setIsPlaying,
+  selectIsPlaying,
+  changeActiveSong,
+  selectActiveSong,
+} from "../../features/music-player/musicPlayerSlice";
+
+const REPEAT = {
+  off: "OFF",
+  once: "ONCE",
+  list: "LIST",
+};
+
+const SONG = {
+  next: 1,
+  prev: -1,
+};
+
+const songs = [
+  "/sample/musics/music1.mp3",
+  "/sample/musics/music2.mp3",
+  "/sample/musics/music3.mp3",
+];
 
 function MusicPlayer() {
+  const audioRef = useRef();
+  const readyToPlay = useRef(false);
+  const trackIndex = useRef(0);
+
+  const [duration, setDuration] = useState(0);
+  const [timeProgress, setTimeProgress] = useState(0);
+
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [progressMoving, setProgressMoving] = useState(false);
+  const [repeatMode, setRepeatMode] = useState(REPEAT.off);
+
+  const dispatch = useDispatch();
+  const isPlaying = useSelector(selectIsPlaying);
+  const activeSong = useSelector(selectActiveSong);
+
+  let percent = isNaN(timeProgress / duration)
+    ? 0
+    : (timeProgress / duration) * 100;
+
+  const playHandler = () => {
+    if (!readyToPlay.current) {
+      readyToPlay.current = true;
+    }
+
+    dispatch(setIsPlaying(!isPlaying));
+  };
+
+  const onUpdateTime = (e) => {
+    if (!progressMoving) {
+      setTimeProgress(e.target.currentTime);
+    }
+  };
+
+  const onProgressMove = (time) => {
+    setProgressMoving(true);
+    setTimeProgress(time);
+  };
+
+  const repeatHandler = () => {
+    if (repeatMode === REPEAT.off) {
+      setRepeatMode(REPEAT.once);
+    } else if (repeatMode === REPEAT.once) {
+      setRepeatMode(REPEAT.list);
+    } else {
+      setRepeatMode(REPEAT.off);
+    }
+  };
+
+  useEffect(() => {
+    if (activeSong && readyToPlay.current) {
+      dispatch(setIsPlaying(true));
+    }
+  }, [activeSong, dispatch]);
+
+  const onChangeTime = (time) => {
+    if (audioRef.current) {
+      setProgressMoving(false);
+      audioRef.current.currentTime = time;
+    }
+  };
+
+  const changeSongHandler = (value) => {
+    trackIndex.current = trackIndex.current + value;
+
+    if (trackIndex.current < 0) {
+      trackIndex.current = songs.length - 1;
+    } else if (trackIndex.current >= songs.length) {
+      trackIndex.current = 0;
+    }
+
+    if (!isPlaying) {
+      dispatch(setIsPlaying(true));
+    }
+    dispatch(changeActiveSong(songs[trackIndex.current]));
+
+    audioRef.current.autoplay = true;
+  };
+
+  const songEndHanlder = () => {
+    if (repeatMode === REPEAT.once) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    } else if (isShuffle) {
+      trackIndex.current = Math.floor(Math.random() * songs.length);
+      dispatch(changeActiveSong(songs[trackIndex.current]));
+      audioRef.current.autoplay = true;
+    } else if (
+      trackIndex.current === songs.length - 1 &&
+      repeatMode === REPEAT.list
+    ) {
+      changeSongHandler(1);
+    } else if (trackIndex.current === songs.length - 1) {
+      dispatch(setIsPlaying(false));
+      return;
+    } else {
+      changeSongHandler(1);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(changeActiveSong(songs[0]));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isPlaying]);
+
   return (
-    <div className="fixed z-50 w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl">
+    <div className="fixed z-50 w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl select-none">
       <div className="md:w-1/4 lg:w-1/5 flex flex-row items-center relative">
-        <div className="w-20 h-20 p-3  bg-secondary rounded-full absolute">
+        <div
+          className={`w-20 h-20 p-3  bg-secondary rounded-full absolute animate-spin duration-75`}
+        >
           <img
             src="/sample/images/snk.jpg"
             alt=""
@@ -21,7 +160,28 @@ function MusicPlayer() {
         </div>
       </div>
 
-      <PlayerController />
+      <PlayerController
+        isShuffle={isShuffle}
+        isPlaying={isPlaying}
+        repeatMode={repeatMode}
+        timeProgress={timeProgress}
+        percent={percent}
+        duration={duration}
+        shuffleClickHandler={() => setIsShuffle(!isShuffle)}
+        changeSongHandler={changeSongHandler}
+        playHandler={playHandler}
+        repeatHandler={repeatHandler}
+        onChangeTime={onChangeTime}
+        onProgressMove={onProgressMove}
+      />
+
+      <audio
+        ref={audioRef}
+        src={activeSong}
+        onTimeUpdate={onUpdateTime}
+        onLoadedMetadata={(e) => setDuration(e.target.duration)}
+        onEnded={songEndHanlder}
+      ></audio>
     </div>
   );
 }
