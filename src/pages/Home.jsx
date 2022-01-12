@@ -5,7 +5,7 @@ import { MdPlayCircleFilled } from "react-icons/md";
 
 function Home() {
   return (
-    <div className="mt-12 px-10 pt-10 ">
+    <div className="mt-12 px-10 pt-10 pb-96">
       <HomeSlider />
       <div className="mt-10">
         <h1 className="text-white md:text-lg lg:text-xl font-semibold">

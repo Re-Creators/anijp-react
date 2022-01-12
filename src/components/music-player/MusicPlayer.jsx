@@ -7,6 +7,7 @@ import {
   selectIsPlaying,
   changeActiveSong,
   selectActiveSong,
+  selectSongs,
 } from "../../features/music-player/musicPlayerSlice";
 import ProgressRing from "./ProgressRing";
 
@@ -15,17 +16,6 @@ const REPEAT = {
   once: "ONCE",
   list: "LIST",
 };
-
-const SONG = {
-  next: 1,
-  prev: -1,
-};
-
-const songs = [
-  "/sample/musics/music1.mp3",
-  "/sample/musics/music2.mp3",
-  "/sample/musics/music3.mp3",
-];
 
 function MusicPlayer() {
   const audioRef = useRef();
@@ -42,12 +32,15 @@ function MusicPlayer() {
   const dispatch = useDispatch();
   const isPlaying = useSelector(selectIsPlaying);
   const activeSong = useSelector(selectActiveSong);
+  const songs = useSelector(selectSongs);
 
   let percent = isNaN(timeProgress / duration)
     ? 0
     : (timeProgress / duration) * 100;
 
   const playHandler = () => {
+    if (songs.length <= 0) return;
+
     if (!readyToPlay.current) {
       readyToPlay.current = true;
     }
@@ -126,10 +119,6 @@ function MusicPlayer() {
       changeSongHandler(1);
     }
   };
-
-  useEffect(() => {
-    dispatch(changeActiveSong(songs[0]));
-  }, [dispatch]);
 
   useEffect(() => {
     if (isPlaying) {
