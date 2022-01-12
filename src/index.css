@@ -29,3 +29,28 @@ body {
   -o-animation-play-state: paused;
   animation-play-state: paused;
 }
+
+/* Slick Custom */
+.home-slider .slick-slide > div {
+  margin: 0px 10px;
+}
+.home-slider .slick-list {
+  margin: 0px -10px !important;
+}
+
+/* Custom Arrow */
+.slick-prev:before,
+.slick-next:before {
+  display: none;
+}
+
+.home-slider .slick-prev {
+  left: -20px !important;
+  width: auto;
+  height: auto;
+  z-index: 1;
+}
+
+.home-slider .slick-next {
+  right: -5px !important;
+}

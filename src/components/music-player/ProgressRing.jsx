@@ -15,7 +15,7 @@ function ProgressRing({ radius, stroke, progress }) {
             strokeWidth={stroke}
             strokeDasharray={circumference + " " + circumference}
             style={{ strokeDashoffset }}
-            stroke-width={stroke}
+            strokeWidth={stroke}
             r={normalizedRadius}
             cx={radius}
             cy={radius}
