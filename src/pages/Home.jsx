@@ -5,7 +5,7 @@ import { MdPlayCircleFilled } from "react-icons/md";
 
 function Home() {
   return (
-    <div>
+    <div className="mt-12 px-10 pt-10 ">
       <HomeSlider />
       <div className="mt-10">
         <h1 className="text-white md:text-lg lg:text-xl font-semibold">
@@ -14,7 +14,7 @@ function Home() {
         <div className="text-white mt-5 flex flex-row flex-wrap">
           <div className="mr-10 mb-5">
             <Link
-              to="/"
+              to="/playlist/616923405d59e2434a15e231"
               className="relative block w-32 h-40 md:w-40 lg:w-48 md:h-52 lg:h-60 overflow-y-hidden mb-2 group"
             >
               <img

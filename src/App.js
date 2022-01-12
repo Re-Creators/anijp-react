@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
+import Playlist from "./pages/Playlist";
 function App() {
   return (
     <>
@@ -8,6 +9,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="playlist/:id" element={<Playlist />} />
           </Route>
         </Routes>
       </BrowserRouter>
