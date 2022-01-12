@@ -8,6 +8,7 @@ import {
   changeActiveSong,
   selectActiveSong,
 } from "../../features/music-player/musicPlayerSlice";
+import ProgressRing from "./ProgressRing";
 
 const REPEAT = {
   off: "OFF",
@@ -141,14 +142,17 @@ function MusicPlayer() {
   return (
     <div className="fixed z-50 w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl select-none">
       <div className="md:w-1/4 lg:w-1/5 flex flex-row items-center relative">
-        <div
-          className={`w-20 h-20 p-3  bg-secondary rounded-full absolute animate-spin duration-75`}
-        >
-          <img
-            src="/sample/images/snk.jpg"
-            alt=""
-            className="w-full h-full rounded-full border-2"
-          />
+        <div className="w-20 h-20 p-3  bg-secondary rounded-full absolute">
+          <ProgressRing stroke={4} radius={48} progress={percent} />
+          <div className="absolute w-full h-full top-0 left-0 scale-[.70]">
+            <img
+              src="/sample/images/snk.jpg"
+              alt=""
+              className={`w-full h-full object-cover rounded-full animate-spin-slow ${
+                isPlaying ? "" : "animation-pause"
+              }`}
+            />
+          </div>
         </div>
         <div className="text-white ml-24">
           <h1 className="md:text-sm lg:text-base md:w-28 lg:w-auto clamp-1">
