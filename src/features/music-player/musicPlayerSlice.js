@@ -16,13 +16,14 @@ const musicPlayerSlice = createSlice({
     changeActiveSong: (state, { payload }) => {
       state.activeSong = payload;
     },
-    setNewSongs: (state, { payload }) => {
-      state.songs = payload;
+    addNewSongs: (state, { payload }) => {
+      state.songs = payload.songs;
+      state.activeSong = payload.songs[payload.indexSong];
     },
   },
 });
 
-export const { setIsPlaying, changeActiveSong, setNewSongs } =
+export const { setIsPlaying, changeActiveSong, addNewSongs } =
   musicPlayerSlice.actions;
 
 export const selectIsPlaying = (state) => state.musicPlayer.isPlaying;

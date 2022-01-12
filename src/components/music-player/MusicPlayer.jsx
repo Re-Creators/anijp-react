@@ -70,8 +70,9 @@ function MusicPlayer() {
   };
 
   useEffect(() => {
-    if (activeSong && readyToPlay.current) {
+    if (activeSong) {
       dispatch(setIsPlaying(true));
+      audioRef.current.play();
     }
   }, [activeSong, dispatch]);
 
@@ -170,7 +171,7 @@ function MusicPlayer() {
 
       <audio
         ref={audioRef}
-        src={activeSong}
+        src={activeSong?.songUrl}
         onTimeUpdate={onUpdateTime}
         onLoadedMetadata={(e) => setDuration(e.target.duration)}
         onEnded={songEndHanlder}
