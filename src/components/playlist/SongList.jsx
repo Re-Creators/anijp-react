@@ -23,6 +23,8 @@ function SongList({ songs, onPlayAll, onSetPlaying }) {
       onPlayAll(index);
     }
   };
+
+  if (songs.length <= 0) return null;
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-playlist gap-8 text-gray-400 px-5 md:text-sm lg:text-base">
@@ -42,17 +44,13 @@ function SongList({ songs, onPlayAll, onSetPlaying }) {
             key={song._id}
           >
             <div className="flex w-10 ">
-              {(!activeSong === null ||
-                activeSong._id !== song._id ||
-                !isPlaying) && (
+              {(activeSong?._id !== song._id || !isPlaying) && (
                 <div className="block group-hover:hidden text-sm ml-3">
                   {index + 1}
                 </div>
               )}
 
-              {activeSong !== null &&
-                activeSong._id === song._id &&
-                isPlaying && <BarAnimation />}
+              {activeSong?._id === song._id && isPlaying && <BarAnimation />}
 
               <button
                 className="hidden group-hover:block"
