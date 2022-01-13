@@ -54,3 +54,34 @@ body {
 .home-slider .slick-next {
   right: -5px !important;
 }
+
+/* Transition Class */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: all 300ms ease-in-out 0s;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: all 300ms ease-in-out 0s;
+}
+
+.slideUp-enter {
+  transform: translateY(500px);
+}
+.slideUp-enter-active {
+  transform: translateY(0);
+  transition: all 400ms ease-in-out 0s;
+}
+.slideUp-exit {
+  transform: translateY(0);
+}
+.slideUp-exit-active {
+  transform: translateY(500px);
+  transition: all 400ms ease-in-out 0s;
+}

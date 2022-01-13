@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import MusicPlayer from "../components/music-player/MusicPlayer";
 import Sidebar from "../components/Sidebar";
@@ -15,6 +15,7 @@ function Layout() {
           <Outlet />
         </div>
       </div>
+
       <MusicPlayer />
     </div>
   );

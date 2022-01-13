@@ -1,7 +1,11 @@
+import { memo, useState } from "react";
 import { MdVolumeDownAlt, MdList } from "react-icons/md";
 import PlaylistQueue from "../PlaylistQueue";
+import PortalContainer from "../portal/PortalContainer";
 
 function PlayerExtraControl() {
+  const [showQueue, setShowQueue] = useState(false);
+
   return (
     <div className="flex flex-row items-center lg:mr-10 mt-5">
       <div className="flex flex-row items-center">
@@ -18,16 +22,23 @@ function PlayerExtraControl() {
         </div>
       </div>
       <div className="">
-        <button className="ml-3">
+        <button className="ml-3" onClick={() => setShowQueue(!showQueue)}>
           <MdList
             className="text-gray-300 transition duration-200 hover:text-white"
             fontSize={24}
           />
         </button>
-        <PlaylistQueue />
+        <PortalContainer
+          isShow={showQueue}
+          onCLose={() => setShowQueue(false)}
+          transitionName="slideUp"
+          timeout={400}
+        >
+          <PlaylistQueue onClose={() => setShowQueue(false)} />
+        </PortalContainer>
       </div>
     </div>
   );
 }
 
-export default PlayerExtraControl;
+export default memo(PlayerExtraControl);
