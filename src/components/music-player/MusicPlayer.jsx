@@ -10,6 +10,7 @@ import {
   selectSongs,
 } from "../../features/music-player/musicPlayerSlice";
 import ProgressRing from "./ProgressRing";
+import PlayerExtraControl from "./PlayerExtraControl";
 
 const REPEAT = {
   off: "OFF",
@@ -168,6 +169,8 @@ function MusicPlayer() {
         onChangeTime={onChangeTime}
         onProgressMove={onProgressMove}
       />
+
+      <PlayerExtraControl />
 
       <audio
         ref={audioRef}
