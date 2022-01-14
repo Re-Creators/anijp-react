@@ -4,6 +4,7 @@ const initialState = {
   isPlaying: false,
   songs: [],
   activeSong: null,
+  songIndex: 0,
 };
 
 const musicPlayerSlice = createSlice({

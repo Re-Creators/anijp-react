@@ -19,6 +19,11 @@ const REPEAT = {
 };
 
 function MusicPlayer() {
+  const dispatch = useDispatch();
+  const isPlaying = useSelector(selectIsPlaying);
+  const activeSong = useSelector(selectActiveSong);
+  const songs = useSelector(selectSongs);
+
   const audioRef = useRef();
   const readyToPlay = useRef(false);
   const trackIndex = useRef(0);
@@ -29,11 +34,6 @@ function MusicPlayer() {
   const [isShuffle, setIsShuffle] = useState(false);
   const [progressMoving, setProgressMoving] = useState(false);
   const [repeatMode, setRepeatMode] = useState(REPEAT.off);
-
-  const dispatch = useDispatch();
-  const isPlaying = useSelector(selectIsPlaying);
-  const activeSong = useSelector(selectActiveSong);
-  const songs = useSelector(selectSongs);
 
   let percent = isNaN(timeProgress / duration)
     ? 0
@@ -72,10 +72,14 @@ function MusicPlayer() {
 
   useEffect(() => {
     if (activeSong) {
+      trackIndex.current = songs.findIndex(
+        (song) => song._id === activeSong._id
+      );
+      console.log("Useeffce ActiveSongg");
       dispatch(setIsPlaying(true));
       audioRef.current.play();
     }
-  }, [activeSong, dispatch]);
+  }, [activeSong, dispatch, songs]);
 
   const onChangeTime = (time) => {
     if (audioRef.current) {
@@ -147,10 +151,10 @@ function MusicPlayer() {
         </div>
         <div className="text-white ml-24">
           <h1 className="md:text-sm lg:text-base md:w-28 lg:w-auto clamp-1">
-            Kataomoi
+            {activeSong?.title}
           </h1>
           <span className="md:text-xs lg:text-sm text-gray-300  md:w-28 lg:w-auto clamp-1">
-            Aimer
+            {activeSong?.artist}
           </span>
         </div>
       </div>

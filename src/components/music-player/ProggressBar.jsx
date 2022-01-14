@@ -42,7 +42,6 @@ function ProggressBar({ percent, onChangeTime, onProgressMove, duration }) {
 
         if (e.clientX > rect.left && e.clientX < rect.right) {
           const newTime = (mouseX / rect.width) * duration;
-          console.log(newTime);
           onChangeTime(newTime);
         }
 
