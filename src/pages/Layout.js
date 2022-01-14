@@ -9,7 +9,7 @@ function Layout() {
       <div className="w-full flex flex-col md:flex-row md:justify-end">
         {/* Sidebar */}
         <Sidebar />
-        <div className="w-full md:w-view-md lg:w-3/4 xl:w-[82%] h-screen overflow-y-auto hide-scrollbar">
+        <div className="w-full md:w-view-md lg:w-3/4 xl:w-[82%] ">
           <Topbar />
           <Outlet />
         </div>

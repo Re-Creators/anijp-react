@@ -11,6 +11,8 @@ import {
   selectIsPlaying,
 } from "../../features/music-player/musicPlayerSlice";
 import BarAnimation from "../UI/BarAnimation";
+import Tippy from "@tippyjs/react";
+import TippyMenu from "../tippy/TippyMenu";
 
 function SongList({ songs, onPlayAll, onSetPlaying }) {
   const activeSong = useSelector(selectActiveSong);
@@ -85,12 +87,14 @@ function SongList({ songs, onPlayAll, onSetPlaying }) {
                   title="Share"
                 />{" "}
               </button>
-              <button
-                className="hidden group-hover:block md:text-lg lg:text-xl"
-                title="More option"
-              >
-                <MdOutlineMoreHoriz className="text-gray-400" />
-              </button>
+              <TippyMenu>
+                <button
+                  className="hidden group-hover:block md:text-lg lg:text-xl"
+                  title="More option"
+                >
+                  <MdOutlineMoreHoriz className="text-gray-400" />
+                </button>
+              </TippyMenu>
             </div>
           </div>
         ))}

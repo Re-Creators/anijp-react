@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdOutlineFavoriteBorder, MdLibraryMusic } from "react-icons/md";
 import Detail from "../components/playlist/Detail";
 import SongList from "../components/playlist/SongList";
@@ -88,9 +88,9 @@ const songs = [
   },
 ];
 
-function Playlists() {
+function Playlist() {
+  console.log("render Playlist");
   const dispatch = useDispatch();
-  console.log("Playlist call");
 
   const onPlayAll = (indexSong) => {
     dispatch(addNewSongs({ songs, indexSong }));
@@ -102,7 +102,7 @@ function Playlists() {
   };
 
   return (
-    <div className="text-white">
+    <div className="text-white hide-scrollbar h-screen">
       {/* Playlist Details  */}
       <Detail />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
@@ -136,4 +136,4 @@ function Playlists() {
   );
 }
 
-export default Playlists;
+export default Playlist;
