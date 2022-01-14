@@ -35,7 +35,7 @@ function Sidebar() {
           </li>
           <li className="menu-item">
             <Link
-              to="/"
+              to="/collection"
               className="flex flex-row items-center transition duration-150 hover:text-link-active"
             >
               <MdLibraryMusic className="text-2xl" />
@@ -50,7 +50,7 @@ function Sidebar() {
           <div className="w-8 h-8 bg-red-500 flex justify-center items-center rounded-sm">
             <MdFavorite className="text-xl" />
           </div>
-          <span className="clamp-2 text-gray-300 text-sm hover:text-white w-32 absolute left-5">
+          <span className="line-clamp-2 text-gray-300 text-sm hover:text-white w-32 absolute left-5">
             Liked Songs
           </span>
         </button>

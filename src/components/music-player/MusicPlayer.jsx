@@ -150,10 +150,10 @@ function MusicPlayer() {
           </div>
         </div>
         <div className="text-white ml-24">
-          <h1 className="md:text-sm lg:text-base md:w-28 lg:w-auto clamp-1">
+          <h1 className="md:text-sm lg:text-base md:w-28 lg:w-auto line-clamp-1">
             {activeSong?.title}
           </h1>
-          <span className="md:text-xs lg:text-sm text-gray-300  md:w-28 lg:w-auto clamp-1">
+          <span className="md:text-xs lg:text-sm text-gray-300  md:w-28 lg:w-auto line-clamp-1">
             {activeSong?.artist}
           </span>
         </div>

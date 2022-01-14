@@ -26,7 +26,7 @@ function Home() {
                 <MdPlayCircleFilled className="material-icons text-4xl absolute right-3 bottom-3" />
               </div>
             </Link>
-            <span className="md:w-40 lg:w-48 clamp-2 overflow-x-hidden text-xs md:text-sm lg:text-base">
+            <span className="md:w-40 lg:w-48 line-clamp-2 overflow-x-hidden text-xs md:text-sm lg:text-base">
               Aimer Collection
             </span>
           </div>
