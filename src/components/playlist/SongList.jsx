@@ -5,7 +5,7 @@ import {
   MdShare,
   MdOutlineMoreHoriz,
 } from "react-icons/md";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   selectActiveSong,
   selectIsPlaying,
