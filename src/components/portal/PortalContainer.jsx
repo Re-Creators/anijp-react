@@ -13,21 +13,21 @@ function PortalContainer({
       <CSSTransition
         in={isShow}
         timeout={timeout}
-        classNames={transitionName}
-        unmountOnExit
-      >
-        {children}
-      </CSSTransition>
-      <CSSTransition
-        in={isShow}
-        timeout={timeout}
         classNames="fade"
         unmountOnExit
       >
         <div
-          className="fixed z-10 inset-0 bg-overlay-dark"
+          className="fixed z-30 inset-0 bg-overlay-dark"
           onClick={() => onCLose()}
         ></div>
+      </CSSTransition>
+      <CSSTransition
+        in={isShow}
+        timeout={timeout}
+        classNames={transitionName}
+        unmountOnExit
+      >
+        {children}
       </CSSTransition>
     </>,
     document.getElementById("portal")
