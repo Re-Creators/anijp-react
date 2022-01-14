@@ -7,6 +7,8 @@ function PortalContainer({
   onCLose,
   children,
   timeout,
+  zIndex = 30,
+  backgroundColor = "rgba(29, 29, 29, 0.65)",
 }) {
   return createPortal(
     <>
@@ -17,8 +19,9 @@ function PortalContainer({
         unmountOnExit
       >
         <div
-          className="fixed z-30 inset-0 bg-overlay-dark"
+          className={`fixed inset-0 bg-overlay-dark`}
           onClick={() => onCLose()}
+          style={{ zIndex: zIndex, backgroundColor: backgroundColor }}
         ></div>
       </CSSTransition>
       <CSSTransition
