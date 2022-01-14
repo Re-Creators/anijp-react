@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { MdOutlineFavoriteBorder, MdLibraryMusic } from "react-icons/md";
 import Detail from "../components/playlist/Detail";
 import SongList from "../components/playlist/SongList";
@@ -92,6 +92,8 @@ function Playlist() {
   console.log("render Playlist");
   const dispatch = useDispatch();
 
+  const [showMenu, setShowMenu] = useState(true);
+
   const onPlayAll = (indexSong) => {
     dispatch(addNewSongs({ songs, indexSong }));
     dispatch(setIsPlaying(true));
@@ -102,7 +104,11 @@ function Playlist() {
   };
 
   return (
-    <div className="text-white hide-scrollbar h-screen">
+    <div
+      className={`text-white ${
+        showMenu ? "hide-scrollbar" : "overflow-y-hidden"
+      }  h-screen`}
+    >
       {/* Playlist Details  */}
       <Detail />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
@@ -130,6 +136,7 @@ function Playlist() {
           songs={songs}
           onPlayAll={onPlayAll}
           onSetPlaying={onSetPlaying}
+          toggleMenu={() => setShowMenu(!showMenu)}
         />
       </div>
     </div>

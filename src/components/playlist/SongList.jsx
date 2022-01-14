@@ -11,10 +11,9 @@ import {
   selectIsPlaying,
 } from "../../features/music-player/musicPlayerSlice";
 import BarAnimation from "../UI/BarAnimation";
-import Tippy from "@tippyjs/react";
 import TippyMenu from "../tippy/TippyMenu";
 
-function SongList({ songs, onPlayAll, onSetPlaying }) {
+function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
 
@@ -74,7 +73,7 @@ function SongList({ songs, onPlayAll, onSetPlaying }) {
               <span className="ml-2 text-sm">{song.likes}</span>
             </div>
             <div className="text-sm">{song.duration}</div>
-            <div className="flex flex-row">
+            <div className="flex flex-row relative">
               <button>
                 <MdOutlineFavoriteBorder
                   className="mr-2 md:text-lg lg:text-xl"
@@ -87,7 +86,32 @@ function SongList({ songs, onPlayAll, onSetPlaying }) {
                   title="Share"
                 />{" "}
               </button>
-              <TippyMenu>
+              {/* <Tippy
+                render={(attrs) => (
+                  <div className="bg-secondary rounded-sm tooltip" {...attrs}>
+                    <ul className="text-white p-1 text-sm" tabIndex="-1">
+                      <li className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm">
+                        <button>Add to queue</button>
+                      </li>
+                      <li className="px-3 py-2  pr-10 hover:bg-primary-300 rounded-sm">
+                        <button>Add to Playlist</button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+                trigger="click"
+                placement="top-start"
+                onShow={toggleMenu}
+                onHide={toggleMenu}
+              >
+                <button
+                  className="hidden group-hover:block md:text-lg lg:text-xl"
+                  title="More option"
+                >
+                  <MdOutlineMoreHoriz className="text-gray-400" />
+                </button>
+              </Tippy> */}
+              <TippyMenu toggleMenu={toggleMenu}>
                 <button
                   className="hidden group-hover:block md:text-lg lg:text-xl"
                   title="More option"

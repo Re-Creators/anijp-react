@@ -1,11 +1,11 @@
 import Tippy from "@tippyjs/react/headless";
 
-function TippyMenu({ children }) {
+function TippyMenu({ toggleMenu, children }) {
   return (
     <Tippy
       render={(attrs) => (
         <div className="bg-secondary rounded-sm" {...attrs}>
-          <ul className="text-white p-1 text-sm" tabIndex="0">
+          <ul className="text-white p-1 text-sm">
             <li className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm">
               <button>Add to queue</button>
             </li>
@@ -17,6 +17,9 @@ function TippyMenu({ children }) {
       )}
       trigger="click"
       interactive={true}
+      onShow={toggleMenu}
+      onHide={toggleMenu}
+      appendTo="parent"
     >
       {children}
     </Tippy>

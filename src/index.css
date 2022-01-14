@@ -85,3 +85,7 @@ body {
   transform: translateY(500px);
   transition: all 400ms ease-in-out 0s;
 }
+
+.tooltip[data-out-of-boundaries] {
+  opacity: 0;
+}
