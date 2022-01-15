@@ -25,7 +25,7 @@ function Home() {
           {playlistData.map((playlist) => (
             <div className="mr-10 mb-5" key={playlist._id}>
               <Link
-                to="/playlist/616923405d59e2434a15e231"
+                to={`/playlist/${playlist._id}`}
                 className="relative block w-32 h-40 md:w-40 lg:w-48 md:h-52 lg:h-60 overflow-y-hidden mb-2 group"
               >
                 <img

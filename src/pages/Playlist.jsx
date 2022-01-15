@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineFavoriteBorder, MdLibraryMusic } from "react-icons/md";
 import Detail from "../components/playlist/Detail";
 import SongList from "../components/playlist/SongList";
@@ -8,100 +8,32 @@ import {
   setIsPlaying,
 } from "..//features/music-player/musicPlayerSlice";
 
-const songs = [
-  {
-    _id: "61896718503d7c91254256a3",
-    title: "Kizuna",
-    artist: "Aimer",
-    likes: 1,
-    songUrl:
-      "https://res.cloudinary.com/re-creators79/video/upload/v1636394774/anijp/musics/bfi3qdf3mc1en4guoazj.mp4",
-    duration: "04:56",
-    playlist: "6187aad7d8cc536bef8f847a",
-    __v: 0,
-  },
-  {
-    _id: "6189673a503d7c91254256a9",
-    title: "Akane Sasu",
-    artist: "Aimer",
-    likes: 0,
-    songUrl:
-      "https://res.cloudinary.com/re-creators79/video/upload/v1636394808/anijp/musics/pwyshjw5laji3mlthbpp.mp4",
-    duration: "05:40",
-    playlist: "6187aad7d8cc536bef8f847a",
-    __v: 0,
-  },
-  {
-    _id: "61896759503d7c91254256af",
-    title: "Kataomoi",
-    artist: "Aimer",
-    likes: 0,
-    songUrl:
-      "https://res.cloudinary.com/re-creators79/video/upload/v1636394840/anijp/musics/crqjizqex45bhvgtaupq.mp4",
-    duration: "03:42",
-    playlist: "6187aad7d8cc536bef8f847a",
-    __v: 0,
-  },
-  {
-    _id: "61896777503d7c91254256b5",
-    title: "Ito",
-    artist: "Aimer",
-    likes: 0,
-    songUrl:
-      "https://res.cloudinary.com/re-creators79/video/upload/v1636394870/anijp/musics/beiyu3rvigbzeyuvuvqm.mp4",
-    duration: "03:43",
-    playlist: "6187aad7d8cc536bef8f847a",
-    __v: 0,
-  },
-  {
-    _id: "618967a0503d7c91254256bb",
-    title: "Choucho Musubi",
-    artist: "Aimer",
-    likes: 0,
-    songUrl:
-      "https://res.cloudinary.com/re-creators79/video/upload/v1636394910/anijp/musics/e6bqw3ifjnsjl6mu9juy.mp4",
-    duration: "06:05",
-    playlist: "6187aad7d8cc536bef8f847a",
-    __v: 0,
-  },
-  {
-    _id: "618967c2503d7c91254256c1",
-    title: "Daisy",
-    artist: "Aimer",
-    likes: 0,
-    songUrl:
-      "https://res.cloudinary.com/re-creators79/video/upload/v1636394944/anijp/musics/t9sh8y2utgmmd6hxameg.mp4",
-    duration: "04:22",
-    playlist: "6187aad7d8cc536bef8f847a",
-    __v: 0,
-  },
-  {
-    _id: "61896a4d503d7c91254256e5",
-    title: "March of Time",
-    artist: "Aimer",
-    likes: 0,
-    songUrl:
-      "https://res.cloudinary.com/re-creators79/video/upload/v1636395595/anijp/musics/jsov9kfiwtaeiczppldi.mp4",
-    duration: "04:56",
-    playlist: "6187aad7d8cc536bef8f847a",
-    __v: 0,
-  },
-];
+import { getOnePlaylist } from "../query/playlistQuery";
+import { client } from "../sanityClient";
+import { useParams } from "react-router-dom";
 
 function Playlist() {
   console.log("render Playlist");
   const dispatch = useDispatch();
-
+  const { id } = useParams();
+  const [playlistDetail, setPlayListDetail] = useState(null);
   const [showMenu, setShowMenu] = useState(true);
 
   const onPlayAll = (indexSong) => {
-    dispatch(addNewSongs({ songs, indexSong }));
+    dispatch(addNewSongs({ songs: playlistDetail.songs, indexSong }));
     dispatch(setIsPlaying(true));
   };
 
   const onSetPlaying = (value) => {
     dispatch(setIsPlaying(value));
   };
+
+  useEffect(() => {
+    const query = getOnePlaylist(id);
+    client.fetch(query).then((data) => {
+      setPlayListDetail(data[0]);
+    });
+  }, []);
 
   return (
     <div
@@ -110,7 +42,7 @@ function Playlist() {
       }  h-screen`}
     >
       {/* Playlist Details  */}
-      <Detail />
+      <Detail playlistDetail={playlistDetail} />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
         <div className="flex flex-row items-center mb-10">
           <button onClick={() => onPlayAll(0)}>
@@ -133,7 +65,7 @@ function Playlist() {
         </div>
 
         <SongList
-          songs={songs}
+          songs={playlistDetail?.songs}
           onPlayAll={onPlayAll}
           onSetPlaying={onSetPlaying}
           toggleMenu={() => setShowMenu(!showMenu)}
