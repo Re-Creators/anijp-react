@@ -18,7 +18,7 @@ function Detail() {
           </div>
           <div className="md:ml-5 lg:ml-8 flex flex-col justify-between">
             <div>
-              <span className="text-xs">PLAYLIST</span>
+              <span className="text-xs">MY PLAYLIST</span>
               <h1 className="title md:text-4xl lg:text-4xl xl:text-6xl mt-3">
                 Aimer Collection
               </h1>
