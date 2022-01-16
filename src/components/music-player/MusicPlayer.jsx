@@ -141,7 +141,7 @@ function MusicPlayer() {
           <ProgressRing stroke={4} radius={48} progress={percent} />
           <div className="absolute w-full h-full top-0 left-0 scale-[.70]">
             <img
-              src={activeSong?.image}
+              src={activeSong ? activeSong.image : "/images/new-playlist.png"}
               alt=""
               className={`w-full h-full object-cover rounded-full animate-spin-slow ${
                 isPlaying ? "" : "animation-pause"

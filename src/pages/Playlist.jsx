@@ -35,6 +35,7 @@ function Playlist() {
     });
   }, []);
 
+  if (!playlistDetail) return <p>Loading..</p>;
   return (
     <div
       className={`text-white ${
