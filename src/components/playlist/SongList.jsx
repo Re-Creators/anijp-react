@@ -20,6 +20,14 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
   const [showModal, setShowModal] = useState(false);
+  const [showTippy, setShowTippy] = useState(true);
+
+  const onHideTippy = () => setShowTippy(false);
+  const onShowTippy = () => setShowTippy(true);
+
+  const onShowModal = () => {
+    setShowModal(true);
+  };
 
   const playSong = (index, songId) => {
     if (activeSong !== null && songId === activeSong._id) {
@@ -98,12 +106,15 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
                 />{" "}
               </button>
               <TippyMenu
+                showTippy={showTippy}
+                hide={onHideTippy}
                 toggleMenu={toggleMenu}
-                onShowModal={() => setShowModal(true)}
+                onShowModal={onShowModal}
               >
                 <button
                   className="hidden group-hover:block md:text-lg lg:text-xl"
                   title="More option"
+                  onClick={showTippy ? onHideTippy : onShowTippy}
                 >
                   <MdOutlineMoreHoriz className="text-gray-400" />
                 </button>
