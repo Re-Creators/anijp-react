@@ -28,12 +28,16 @@ function Playlist() {
     dispatch(setIsPlaying(value));
   };
 
+  const like = () => {
+    client.patch(id).inc({ likes: 1 }).commit();
+  };
+
   useEffect(() => {
     const query = getOnePlaylist(id);
     client.fetch(query).then((data) => {
       setPlayListDetail(data[0]);
     });
-  }, []);
+  }, [id]);
 
   if (!playlistDetail) return <p>Loading..</p>;
   return (
@@ -60,7 +64,7 @@ function Playlist() {
               />
             </svg>
           </button>
-          <button className="ml-3 mt-2">
+          <button className="ml-3 mt-2" onClick={() => like()}>
             <MdOutlineFavoriteBorder className="text-4xl" />
           </button>
         </div>

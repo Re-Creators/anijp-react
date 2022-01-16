@@ -10,7 +10,7 @@ function NewPlaylistModal() {
   };
 
   return (
-    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-4/5 md:w-2/3 lg:w-1/2 xl:w-2/5 bg-primary p-5 md:p-8 rounded-lg">
+    <div className="modal w-4/5 md:w-2/3 lg:w-1/2 xl:w-2/5 bg-primary p-5 md:p-8 rounded-lg">
       <h1 className="text-white text-xl mb-3">New Playlist</h1>
       <div className="flex flex-col md:flex-row w-full">
         <div className="w-full h-40 md:w-1/2 mx-auto mb-3  md:mb-0 md:h-52 md:border-0 relative cursor-pointer group ">

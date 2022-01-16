@@ -1,6 +1,6 @@
 import Tippy from "@tippyjs/react/headless";
 
-function TippyMenu({ toggleMenu, children }) {
+function TippyMenu({ toggleMenu, children, onShowModal }) {
   return (
     <Tippy
       render={(attrs) => (
@@ -9,7 +9,10 @@ function TippyMenu({ toggleMenu, children }) {
             <li className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm">
               <button>Add to queue</button>
             </li>
-            <li className="px-3 py-2  pr-10 hover:bg-primary-300 rounded-sm">
+            <li
+              className="px-3 py-2  pr-10 hover:bg-primary-300 rounded-sm"
+              onClick={onShowModal}
+            >
               <button>Add to Playlist</button>
             </li>
           </ul>

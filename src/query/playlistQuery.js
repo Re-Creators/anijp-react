@@ -20,6 +20,7 @@ export const getOnePlaylist = (id) => `*[_type == 'playlist' && _id == '${id}']
   _id,
  name,
   description,
+  likes,
  "cover" : image.asset->url,
  songs[]->{
    _id,

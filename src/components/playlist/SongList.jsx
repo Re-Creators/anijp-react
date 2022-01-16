@@ -12,10 +12,14 @@ import {
 } from "../../features/music-player/musicPlayerSlice";
 import BarAnimation from "../UI/BarAnimation";
 import TippyMenu from "../tippy/TippyMenu";
+import PortalContainer from "../portal/PortalContainer";
+import { useState } from "react";
+import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 
 function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
+  const [showModal, setShowModal] = useState(false);
 
   const playSong = (index, songId) => {
     if (activeSong !== null && songId === activeSong._id) {
@@ -28,6 +32,13 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   if (songs.length <= 0) return null;
   return (
     <div className="flex flex-col">
+      <PortalContainer
+        isShow={showModal}
+        onCLose={() => setShowModal(false)}
+        zIndex={50}
+      >
+        <AddToPlaylistModal />
+      </PortalContainer>
       <div className="grid grid-cols-playlist gap-8 text-gray-400 px-5 md:text-sm lg:text-base">
         <div className="place-self-center">
           <span>#</span>
@@ -86,32 +97,10 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
                   title="Share"
                 />{" "}
               </button>
-              {/* <Tippy
-                render={(attrs) => (
-                  <div className="bg-secondary rounded-sm tooltip" {...attrs}>
-                    <ul className="text-white p-1 text-sm" tabIndex="-1">
-                      <li className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm">
-                        <button>Add to queue</button>
-                      </li>
-                      <li className="px-3 py-2  pr-10 hover:bg-primary-300 rounded-sm">
-                        <button>Add to Playlist</button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-                trigger="click"
-                placement="top-start"
-                onShow={toggleMenu}
-                onHide={toggleMenu}
+              <TippyMenu
+                toggleMenu={toggleMenu}
+                onShowModal={() => setShowModal(true)}
               >
-                <button
-                  className="hidden group-hover:block md:text-lg lg:text-xl"
-                  title="More option"
-                >
-                  <MdOutlineMoreHoriz className="text-gray-400" />
-                </button>
-              </Tippy> */}
-              <TippyMenu toggleMenu={toggleMenu}>
                 <button
                   className="hidden group-hover:block md:text-lg lg:text-xl"
                   title="More option"

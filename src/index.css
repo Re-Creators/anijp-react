@@ -11,6 +11,12 @@ body {
   background-repeat: no-repeat;
 }
 
+@layer components {
+  .modal {
+    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50;
+  }
+}
+
 /* hide scrollbar but allow scrolling */
 .hide-scrollbar {
   -ms-overflow-style: none; /* for Internet Explorer, Edge */

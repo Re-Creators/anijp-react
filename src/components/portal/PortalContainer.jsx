@@ -3,12 +3,12 @@ import { createPortal } from "react-dom";
 
 function PortalContainer({
   isShow,
-  transitionName,
+  transitionName = "fade",
   onCLose,
   children,
-  timeout,
+  timeout = 300,
   zIndex = 30,
-  backgroundColor = "rgba(29, 29, 29, 0.65)",
+  backgroundColor = "rgba(47, 69, 108, 0.83)",
 }) {
   return createPortal(
     <>
