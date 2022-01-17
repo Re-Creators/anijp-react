@@ -20,6 +20,7 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
   const [showModal, setShowModal] = useState(false);
+  const [showChildModal, setShowChildModal] = useState(false);
   const [showTippy, setShowTippy] = useState(true);
 
   const onHideTippy = () => setShowTippy(false);
@@ -27,6 +28,15 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
 
   const onShowModal = () => {
     setShowModal(true);
+  };
+
+  const onCloseModal = () => {
+    if (showChildModal) {
+      setShowChildModal(false);
+      return;
+    }
+
+    setShowModal(false);
   };
 
   const playSong = (index, songId) => {
@@ -40,13 +50,14 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   if (songs.length <= 0) return null;
   return (
     <div className="flex flex-col">
-      <PortalContainer
-        isShow={showModal}
-        onCLose={() => setShowModal(false)}
-        zIndex={50}
-      >
-        <AddToPlaylistModal />
+      <PortalContainer isShow={showModal} onCLose={onCloseModal} zIndex={50}>
+        <AddToPlaylistModal
+          showChildModal={showChildModal}
+          toggleChildModal={() => setShowChildModal(!showChildModal)}
+          closeModal={onCloseModal}
+        />
       </PortalContainer>
+
       <div className="grid grid-cols-playlist gap-8 text-gray-400 px-5 md:text-sm lg:text-base">
         <div className="place-self-center">
           <span>#</span>
