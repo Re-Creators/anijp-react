@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Collection from "./pages/Collection";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
+import Login from "./pages/Login";
 import MyPlaylist from "./pages/MyPlaylist";
 import Playlist from "./pages/Playlist";
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="myplaylist/:id" element={<MyPlaylist />} />
             <Route path="collection" element={<Collection />} />
           </Route>
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </>

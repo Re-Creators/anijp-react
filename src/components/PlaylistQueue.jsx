@@ -46,7 +46,7 @@ function PlaylistQueue({ onClose }) {
       <div className="w-4/5 mx-auto mt-14 h-full ">
         <div className="text-white flex flex-row justify-between">
           <h1 className="text-xl font-semibold">
-            Playlist (5 - Song & Albums)
+            Playlist ({songs.length} - Song & Albums)
           </h1>
           <button className="flex item-center bg-secondary px-3 py-2 rounded-md">
             <MdDelete className="mr-2 text-xl" />
