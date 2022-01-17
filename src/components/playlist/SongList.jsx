@@ -17,6 +17,7 @@ import { useState } from "react";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 import { useDispatch } from "react-redux";
 import { addOneSong } from "../../features/music-player/musicPlayerSlice";
+import "react-toastify/dist/ReactToastify.css";
 
 function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   const dispatch = useDispatch();

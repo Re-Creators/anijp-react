@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const initialState = {
   isPlaying: false,
@@ -27,8 +28,12 @@ const musicPlayerSlice = createSlice({
       );
 
       if (songNotExist || state.songs.length === 0) {
+        toast.success("Song added!");
         state.songs.push(payload);
+        return;
       }
+
+      toast.error("Song already added");
     },
   },
 });
