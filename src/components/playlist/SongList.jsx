@@ -15,16 +15,21 @@ import TippyMenu from "../tippy/TippyMenu";
 import PortalContainer from "../portal/PortalContainer";
 import { useState } from "react";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
+import { useDispatch } from "react-redux";
+import { addOneSong } from "../../features/music-player/musicPlayerSlice";
 
 function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
+  const dispatch = useDispatch();
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
+
+  const [selectedSong, setSelectedSong] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showChildModal, setShowChildModal] = useState(false);
-  const [showTippy, setShowTippy] = useState(true);
 
-  const onHideTippy = () => setShowTippy(false);
-  const onShowTippy = () => setShowTippy(true);
+  const onAddToQueue = () => {
+    dispatch(addOneSong(selectedSong));
+  };
 
   const onShowModal = () => {
     setShowModal(true);
@@ -114,18 +119,17 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
                 <MdShare
                   className=" mr-2 md:text-lg lg:text-xl"
                   title="Share"
-                />{" "}
+                />
               </button>
               <TippyMenu
-                showTippy={showTippy}
-                hide={onHideTippy}
                 toggleMenu={toggleMenu}
                 onShowModal={onShowModal}
+                onAddToQueue={onAddToQueue}
               >
                 <button
                   className="hidden group-hover:block md:text-lg lg:text-xl"
                   title="More option"
-                  onClick={showTippy ? onHideTippy : onShowTippy}
+                  onClick={() => setSelectedSong(song)}
                 >
                   <MdOutlineMoreHoriz className="text-gray-400" />
                 </button>

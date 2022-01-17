@@ -40,7 +40,7 @@ function MusicPlayer() {
     : (timeProgress / duration) * 100;
 
   const playHandler = () => {
-    if (songs.length <= 0) return;
+    if (songs.length <= 0 || !activeSong) return;
 
     if (!readyToPlay.current) {
       readyToPlay.current = true;
@@ -75,7 +75,6 @@ function MusicPlayer() {
       trackIndex.current = songs.findIndex(
         (song) => song._id === activeSong._id
       );
-      console.log("Useeffce ActiveSongg");
       dispatch(setIsPlaying(true));
       audioRef.current.play();
     }

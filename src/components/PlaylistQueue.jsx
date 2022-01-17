@@ -22,7 +22,7 @@ function PlaylistQueue({ onClose }) {
   const isPlaying = useSelector(selectIsPlaying);
 
   const activeBackground = (songId) =>
-    songId === activeSong._id ? "bg-list-hover" : "";
+    songId === activeSong?._id ? "bg-list-hover" : "";
 
   const onPlay = (song) => {
     if (activeSong?._id === song._id) {
@@ -74,7 +74,7 @@ function PlaylistQueue({ onClose }) {
                   className="hidden group-hover:block"
                   onClick={() => onPlay(song)}
                 >
-                  {isPlaying && activeSong._id === song._id ? (
+                  {isPlaying && activeSong?._id === song._id ? (
                     <MdPauseCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
                   ) : (
                     <MdPlayCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
@@ -82,7 +82,7 @@ function PlaylistQueue({ onClose }) {
                 </button>
               </div>
               <div className="ml-10">
-                <h1>{song.title}</h1>
+                <h1>{song?.title}</h1>
                 <span className="text-sm text-gray-400">{song.artist}</span>
               </div>
               <button className="ml-auto">

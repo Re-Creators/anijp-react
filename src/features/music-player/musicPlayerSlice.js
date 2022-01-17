@@ -21,10 +21,19 @@ const musicPlayerSlice = createSlice({
       state.songs = payload.songs;
       state.activeSong = payload.songs[payload.indexSong];
     },
+    addOneSong: (state, { payload }) => {
+      const songNotExist = state.songs.every(
+        (oldSong) => oldSong._id !== payload._id
+      );
+
+      if (songNotExist || state.songs.length === 0) {
+        state.songs.push(payload);
+      }
+    },
   },
 });
 
-export const { setIsPlaying, changeActiveSong, addNewSongs } =
+export const { setIsPlaying, changeActiveSong, addNewSongs, addOneSong } =
   musicPlayerSlice.actions;
 
 export const selectIsPlaying = (state) => state.musicPlayer.isPlaying;

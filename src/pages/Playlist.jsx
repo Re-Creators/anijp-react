@@ -28,6 +28,8 @@ function Playlist() {
     dispatch(setIsPlaying(value));
   };
 
+  const onAddToQueue = (song) => {};
+
   const like = () => {
     client.patch(id).inc({ likes: 1 }).commit();
   };
@@ -73,6 +75,7 @@ function Playlist() {
           songs={playlistDetail?.songs}
           onPlayAll={onPlayAll}
           onSetPlaying={onSetPlaying}
+          onAddToQueue={onAddToQueue}
           toggleMenu={() => setShowMenu(!showMenu)}
         />
       </div>

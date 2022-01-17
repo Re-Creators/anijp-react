@@ -1,7 +1,7 @@
 import Tippy from "@tippyjs/react/headless";
 import { useRef } from "react";
 
-function TippyMenu({ toggleMenu, showTippy, hide, children, onShowModal }) {
+function TippyMenu({ toggleMenu, children, onShowModal, onAddToQueue }) {
   const instanceRef = useRef();
 
   return (
@@ -12,6 +12,7 @@ function TippyMenu({ toggleMenu, showTippy, hide, children, onShowModal }) {
             <li
               className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm"
               onClick={() => {
+                onAddToQueue();
                 instanceRef.current.hide();
               }}
             >
