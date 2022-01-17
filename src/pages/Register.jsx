@@ -1,33 +1,30 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Login() {
+function Register() {
   return (
     <div className="w-full h-screen flex flex-row">
       <div className="w-full md:w-1/2 bg-white h-full relative flex items-center justify-center">
         <div className="p-10 w-full lg:w-2/3">
-          <h1 className="text-center mb-10 text-4xl">Sign In</h1>
-          <div className="w-full flex flex-row items-center mb-5 py-4 px-3 rounded-md border-2 cursor-pointer hover:bg-gray-200">
-            <img src="/icons/google.svg" alt="" className="h-5 mr-3" />
-            <span>Sign in with Google</span>
-          </div>
-          <div className="flex flex-row items-center mb-5">
-            <div className="border-t-2 flex-grow"></div>
-            <span className="mx-2 text-sm text-gray-400">
-              or Sign in with email
-            </span>
-            <div className="border-t-2 flex-grow"></div>
-          </div>
+          <h1 className="text-center mb-10 text-4xl">Sign Up</h1>
           <form className="flex flex-col ">
             <div className="flex flex-col">
+              <span>Username</span>
+              <input
+                type="text"
+                className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
+                placeholder="Enter your username"
+                v-model="username"
+              />
+            </div>
+            <div className="flex flex-col mt-5">
               <span>Email</span>
               <input
-                type="email"
+                type="text"
                 className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
                 placeholder="Enter your email"
-                required
+                v-model="email"
               />
-              {/* <span className="mt-3 text-xs text-red-500 italic" v-if="emailError">{{ errorMessage.email }}</span> */}
             </div>
             <div className="flex flex-col mt-5">
               <span>Password</span>
@@ -35,17 +32,16 @@ function Login() {
                 type="password"
                 className="w-full px-3 py-3 border-2 border-primary mt-1 text-sm"
                 placeholder="Enter your password"
-                required
+                v-model="password"
               />
-              {/* <span className="mt-3 text-xs text-red-500 italic" v-if="passwordError">{{ errorMessage.password }}</span> */}
             </div>
             <button className="w-full py-3 bg-secondary text-white mt-5 rounded-lg">
-              Sign In
+              Sign Up
             </button>
             <div className="mt-5 text-sm">
-              Not Registered yet ?{" "}
-              <Link to="/register" className="text-secondary">
-                Create an account
+              Already have an account ?{" "}
+              <Link to="/login" className="text-secondary">
+                Login
               </Link>
             </div>
           </form>
@@ -104,4 +100,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
