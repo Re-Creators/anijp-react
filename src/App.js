@@ -11,6 +11,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setLoggedIn } from "./features/user/userSlice";
 import { getUserData } from "./features/user/userSlice";
+import AuthLayout from "./pages/AuthLayout";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,8 +32,23 @@ function App() {
             <Route path="myplaylist/:id" element={<MyPlaylist />} />
             <Route path="collection" element={<Collection />} />
           </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/login"
+            element={
+              <AuthLayout>
+                {" "}
+                <Login />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <AuthLayout>
+                <Register />
+              </AuthLayout>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

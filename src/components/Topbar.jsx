@@ -41,10 +41,10 @@ function Topbar() {
         </div>
       ) : (
         <div className="flex flex-row text-white items-center">
-          <Link to="/" className="mr-5">
+          <Link to="/register" className="mr-5">
             REGISTER
           </Link>
-          <Link to="/" className="px-10 py-2 rounded-full bg-secondary">
+          <Link to="/login" className="px-10 py-2 rounded-full bg-secondary">
             LOGIN
           </Link>
         </div>
