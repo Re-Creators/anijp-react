@@ -3,11 +3,13 @@ import MusicPlayer from "../components/music-player/MusicPlayer";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { ToastContainer } from "react-toastify";
+import LoginModalContainer from "../components/modals/LoginModalContainer";
 
 function Layout() {
   return (
     <div>
       <ToastContainer autoClose={3000} theme="colored" position="top-right" />
+      <LoginModalContainer />
       <div className="w-full flex flex-col md:flex-row md:justify-end">
         {/* Sidebar */}
         <Sidebar />
