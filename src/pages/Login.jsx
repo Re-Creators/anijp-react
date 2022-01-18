@@ -1,13 +1,86 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { auth, db, authApp } from "../firebase-config";
+import { setDoc, doc } from "firebase/firestore";
+import { useState, useRef } from "react";
 
 function Login() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState({
+    email: null,
+    password: null,
+  });
+  const emailError = useRef(false);
+  const passwordError = useRef(false);
+
+  const loginWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const newUserRef = doc(db, "users", user.uid);
+
+        setDoc(newUserRef, {
+          username: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          likedPlaylist: [],
+          likedSong: [],
+        })
+          .then(() => {
+            navigate("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const loginHandler = (e) => {
+    if (email !== "" && password !== "") {
+      e.preventDefault();
+      emailError.current = false;
+      passwordError.current = false;
+
+      signInWithEmailAndPassword(authApp, email, password)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          if (err.code === "auth/invalid-email") {
+            emailError.current = true;
+            setErrorMsg({ password: null, email: "Enter a valid email" });
+          } else if (err.code === "auth/wrong-password") {
+            passwordError.current = true;
+            setErrorMsg({
+              email: null,
+              password: "Password doesn't match with our records",
+            });
+          } else if (err.code === "auth/user-not-found") {
+            emailError.current = true;
+            setErrorMsg({ password: null, email: "User not found" });
+          }
+        });
+    }
+  };
   return (
     <div className="w-full h-screen flex flex-row">
       <div className="w-full md:w-1/2 bg-white h-full relative flex items-center justify-center">
         <div className="p-10 w-full lg:w-2/3">
           <h1 className="text-center mb-10 text-4xl">Sign In</h1>
-          <div className="w-full flex flex-row items-center mb-5 py-4 px-3 rounded-md border-2 cursor-pointer hover:bg-gray-200">
+          <div
+            className="w-full flex flex-row items-center mb-5 py-4 px-3 rounded-md border-2 cursor-pointer hover:bg-gray-200"
+            onClick={loginWithGoogle}
+          >
             <img src="/icons/google.svg" alt="" className="h-5 mr-3" />
             <span>Sign in with Google</span>
           </div>
@@ -23,23 +96,40 @@ function Login() {
               <span>Email</span>
               <input
                 type="email"
+                value={email}
                 className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
                 placeholder="Enter your email"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              {/* <span className="mt-3 text-xs text-red-500 italic" v-if="emailError">{{ errorMessage.email }}</span> */}
+
+              {errorMsg.email && (
+                <span className="mt-3 text-xs text-red-500 italic">
+                  {errorMsg.email}
+                </span>
+              )}
             </div>
             <div className="flex flex-col mt-5">
               <span>Password</span>
               <input
                 type="password"
+                value={password}
                 className="w-full px-3 py-3 border-2 border-primary mt-1 text-sm"
                 placeholder="Enter your password"
                 required
+                onChange={(e) => setPassword(e.target.value)}
               />
-              {/* <span className="mt-3 text-xs text-red-500 italic" v-if="passwordError">{{ errorMessage.password }}</span> */}
+
+              {errorMsg.password && (
+                <span className="mt-3 text-xs text-red-500 italic">
+                  {errorMsg.password}
+                </span>
+              )}
             </div>
-            <button className="w-full py-3 bg-secondary text-white mt-5 rounded-lg">
+            <button
+              className="w-full py-3 bg-secondary text-white mt-5 rounded-lg"
+              onClick={loginHandler}
+            >
               Sign In
             </button>
             <div className="mt-5 text-sm">

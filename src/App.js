@@ -6,7 +6,15 @@ import Login from "./pages/Login";
 import MyPlaylist from "./pages/MyPlaylist";
 import Playlist from "./pages/Playlist";
 import Register from "./pages/Register";
+import { auth } from "./firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
+
 function App() {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(user);
+    }
+  });
   return (
     <>
       <BrowserRouter>
