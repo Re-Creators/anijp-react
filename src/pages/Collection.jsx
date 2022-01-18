@@ -1,15 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdAdd, MdPlayCircleFilled } from "react-icons/md";
 import { Link } from "react-router-dom";
 import NewPlaylistModal from "../components/modals/NewPlaylistModal";
 import PortalContainer from "../components/portal/PortalContainer";
+import { collection, getDocs, where, query } from "firebase/firestore";
+import { db } from "../firebase-config";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/user/userSlice";
 
 function Collection() {
   const [showModal, setShowModal] = useState(false);
+  const [userPlaylist, setUserPlaylist] = useState([]);
+  const user = useSelector(selectUser);
 
+  useEffect(() => {
+    if (user) {
+      const fetchData = async () => {
+        const playlistRef = collection(db, "user_playlists");
+        const q = query(playlistRef, where("user_id", "==", user.uid));
+
+        try {
+          const { docs } = await getDocs(q);
+          let playlist = [];
+
+          docs.forEach((doc) => {
+            const data = {
+              id: doc.id,
+              name: doc.data().name,
+              user_id: doc.data().user_id,
+              songs: doc.data().songs,
+              cover: doc.data().cover,
+              coverPathStorage: doc.data().coverPathStorage,
+            };
+            playlist.push(data);
+          });
+          setUserPlaylist(playlist);
+          return;
+        } catch (err) {
+          console.log("err");
+        }
+      };
+
+      fetchData();
+    }
+  }, [user]);
   return (
-    <div className="w-full md:w-view-md lg:w-view h-screen p-5 md:p-10 text-white md:mt-10 overflow-y-auto pb-48">
-      <h1 className="font-bold text-2xl md:text-4xl">My Playlist</h1>
+    <div className="pl-10 mt-20 text-white pb-96 h-screen hide-scrollbar">
+      <h1 className="font-bold text-2xl md:text-4xl">My Collection</h1>
       <div className="flex flex-row flex-wrap mt-8">
         {/* New Playlist */}
         <div className="mr-8 flex flex-col items-center cursor-pointer">
@@ -29,24 +66,29 @@ function Collection() {
           </div>
         </div>
         {/* Users Playlist  */}
-        <div className="mr-5 md:mr-8 flex flex-col items-center mb-5">
-          <Link
-            to="/"
-            className="relative block w-40 h-40 md:w-52 md:h-52  overflow-y-hidden mb-3 group"
+        {userPlaylist.map((playlist) => (
+          <div
+            className="mr-5 md:mr-8 flex flex-col items-center mb-5"
+            key={playlist.id}
           >
-            <img
-              src="/sample/images/snk.jpg"
-              alt=""
-              className="w-full h-full rounded-lg object-cover"
-            />
-            <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
-              <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+            <Link
+              to="/"
+              className="relative block w-40 h-40 md:w-52 md:h-52  overflow-y-hidden mb-3 group"
+            >
+              <img
+                src={playlist.cover}
+                alt=""
+                className="w-full h-full rounded-lg object-cover"
+              />
+              <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
+                <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+              </div>
+            </Link>
+            <div className="text-semibold w-full md:w-52">
+              <span className="line-clamp-2">{playlist.name}</span>
             </div>
-          </Link>
-          <div className="text-semibold w-full md:w-52">
-            <span className="line-clamp-2">Aimer Best Collection</span>
           </div>
-        </div>
+        ))}
       </div>
 
       {/* Modal */}

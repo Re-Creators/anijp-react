@@ -25,7 +25,7 @@ function NewPlaylistModal({ hideModal }) {
     e.preventDefault();
     hideModal();
 
-    const toastLoading = toast.loading("Creating new playlist..");
+    const toastLoading = toast.loading("Creating new playlist");
 
     let coverUrl = "";
     let coverPath = "";
@@ -55,7 +55,7 @@ function NewPlaylistModal({ hideModal }) {
           render: "Playlist created!",
           type: "success",
           isLoading: false,
-          autoClose: 3000,
+          autoClose: 4000,
         });
       })
       .catch((err) => {

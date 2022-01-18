@@ -17,6 +17,12 @@ body {
   }
 }
 
+/* Toastify */
+.Toastify__toast-theme--colored.Toastify__toast--default {
+  background: #2c62bf !important;
+  color: #fff !important;
+}
+
 /* hide scrollbar but allow scrolling */
 .hide-scrollbar {
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
