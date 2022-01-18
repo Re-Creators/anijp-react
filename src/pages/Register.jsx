@@ -1,30 +1,82 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase-config";
+import { doc, setDoc } from "firebase/firestore";
+import Spinner from "../components/UI/Spinner";
 
 function Register() {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const newUserRef = doc(db, "users", user.uid);
+
+        setDoc(newUserRef, {
+          username: username,
+          email: email,
+          photo:
+            "https://firebasestorage.googleapis.com/v0/b/ani-jp.appspot.com/o/userPhoto%2Fdefault-user-imge.jpeg?alt=media&token=b0623059-35ce-4efc-963d-8184d842f27d",
+          likedPlaylist: [],
+          likedSong: [],
+        })
+          .then(() => {
+            setLoading(false);
+            navigate("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.code === "auth/email-already-in-use") {
+          setErrorMsg("Email already used.");
+        }
+      });
+  };
+
   return (
     <div className="w-full h-screen flex flex-row">
       <div className="w-full md:w-1/2 bg-white h-full relative flex items-center justify-center">
         <div className="p-10 w-full lg:w-2/3">
           <h1 className="text-center mb-10 text-4xl">Sign Up</h1>
-          <form className="flex flex-col ">
+          <form className="flex flex-col " onSubmit={submitHandler}>
             <div className="flex flex-col">
               <span>Username</span>
               <input
                 type="text"
                 className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
                 placeholder="Enter your username"
-                v-model="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
               />
             </div>
             <div className="flex flex-col mt-5">
               <span>Email</span>
               <input
-                type="text"
+                type="email"
                 className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
                 placeholder="Enter your email"
-                v-model="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
+              {errorMsg && (
+                <span className="mt-3 text-xs text-red-500 italic">
+                  {errorMsg}
+                </span>
+              )}
             </div>
             <div className="flex flex-col mt-5">
               <span>Password</span>
@@ -32,11 +84,17 @@ function Register() {
                 type="password"
                 className="w-full px-3 py-3 border-2 border-primary mt-1 text-sm"
                 placeholder="Enter your password"
-                v-model="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
-            <button className="w-full py-3 bg-secondary text-white mt-5 rounded-lg">
-              Sign Up
+            <button
+              type="sumbit"
+              className="w-full py-3 bg-secondary text-white mt-5 rounded-lg"
+              disabled={loading}
+            >
+              {loading ? <Spinner /> : " Sign Up"}
             </button>
             <div className="mt-5 text-sm">
               Already have an account ?{" "}
