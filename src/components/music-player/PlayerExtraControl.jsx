@@ -30,7 +30,7 @@ function PlayerExtraControl() {
         </button>
         <PortalContainer
           isShow={showQueue}
-          onCLose={() => setShowQueue(false)}
+          onClose={() => setShowQueue(false)}
           transitionName="slideUp"
           timeout={400}
           backgroundColor="rgba(29, 29, 29, 0.65)"

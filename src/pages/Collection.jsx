@@ -7,11 +7,20 @@ import { collection, getDocs, where, query } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
+import { toggleModal } from "../features/modals/modalSlice";
 
 function Collection() {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [userPlaylist, setUserPlaylist] = useState([]);
   const user = useSelector(selectUser);
+
+  const newPlaylistHandler = () => {
+    if (!user) return dispatch(toggleModal());
+
+    setShowModal(true);
+  };
 
   useEffect(() => {
     if (user) {
@@ -52,7 +61,7 @@ function Collection() {
         <div className="mr-8 flex flex-col items-center cursor-pointer">
           <div
             className="w-40 h-40 md:w-52 md:h-52 p-5 border-dashed border-2 border-gray-400 mb-3"
-            onClick={() => setShowModal(true)}
+            onClick={newPlaylistHandler}
           >
             <img
               src="/images/new-playlist.png"
@@ -60,7 +69,7 @@ function Collection() {
               className="w-full h-full rounded-lg"
             />
           </div>
-          <div className="flex flex-row" onClick={() => setShowModal(true)}>
+          <div className="flex flex-row" onClick={newPlaylistHandler}>
             <MdAdd />
             <span className="ml-3">New Playlist</span>
           </div>
@@ -95,7 +104,7 @@ function Collection() {
       <PortalContainer
         isShow={showModal}
         timeout={300}
-        onCLose={() => setShowModal(false)}
+        onClose={() => setShowModal(false)}
         transitionName="fade"
         zIndex={50}
         backgroundColor="rgba(47, 69, 108, 0.83)"

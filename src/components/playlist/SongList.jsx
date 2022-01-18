@@ -56,7 +56,7 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   if (songs.length <= 0) return null;
   return (
     <div className="flex flex-col">
-      <PortalContainer isShow={showModal} onCLose={onCloseModal} zIndex={50}>
+      <PortalContainer isShow={showModal} onClose={onCloseModal} zIndex={50}>
         <AddToPlaylistModal
           showChildModal={showChildModal}
           toggleChildModal={() => setShowChildModal(!showChildModal)}

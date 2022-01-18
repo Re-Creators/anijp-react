@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 function PortalContainer({
   isShow,
   transitionName = "fade",
-  onCLose,
+  onClose,
   children,
   timeout = 300,
   zIndex = 30,
@@ -20,7 +20,7 @@ function PortalContainer({
       >
         <div
           className={`fixed inset-0 bg-overlay-dark`}
-          onClick={() => onCLose()}
+          onClick={() => onClose()}
           style={{ zIndex: zIndex, backgroundColor: backgroundColor }}
         ></div>
       </CSSTransition>
