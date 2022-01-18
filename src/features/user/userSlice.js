@@ -12,7 +12,7 @@ export const getUserData = createAsyncThunk("user/fetch", async (userId) => {
   try {
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
-    return userSnap.data();
+    return { ...userSnap.data(), uid: userId };
   } catch (err) {
     return err;
   }

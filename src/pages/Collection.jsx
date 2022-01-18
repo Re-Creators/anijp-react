@@ -58,7 +58,7 @@ function Collection() {
         zIndex={50}
         backgroundColor="rgba(47, 69, 108, 0.83)"
       >
-        <NewPlaylistModal />
+        <NewPlaylistModal hideModal={() => setShowModal(false)} />
       </PortalContainer>
     </div>
   );
