@@ -8,11 +8,17 @@ import Playlist from "./pages/Playlist";
 import Register from "./pages/Register";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { setLoggedIn } from "./features/user/userSlice";
+import { getUserData } from "./features/user/userSlice";
 
 function App() {
+  const dispatch = useDispatch();
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user);
+      dispatch(setLoggedIn(true));
+      dispatch(getUserData(user.uid));
     }
   });
   return (
