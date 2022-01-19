@@ -14,12 +14,12 @@ import {
 } from "../../features/music-player/musicPlayerSlice";
 import BarAnimation from "../UI/BarAnimation";
 
-function UserSongList({ songs, onPlayAll, onSetPlaying }) {
+function UserSongList({ songs, onPlayAll, onSetPlaying, onDeleteSong }) {
   const dispatch = useDispatch();
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
 
-  const playSong = (index, songId) => {
+  const playSong = (index, songId, onDeleteSong) => {
     if (activeSong !== null && songId === activeSong._id) {
       onSetPlaying(!isPlaying);
     } else {
@@ -81,7 +81,7 @@ function UserSongList({ songs, onPlayAll, onSetPlaying }) {
                 <button>
                   <MdPlaylistAdd className="text-2xl mr-3" />
                 </button>
-                <button>
+                <button onClick={() => onDeleteSong(index)}>
                   <MdDelete className="text-2xl mr-3" />
                 </button>
                 <button>

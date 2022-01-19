@@ -10,6 +10,7 @@ import {
 import { useParams } from "react-router-dom";
 import { db } from "../firebase-config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 function UserPlaylist() {
   const { id } = useParams();
@@ -27,6 +28,19 @@ function UserPlaylist() {
 
   const onSetPlaying = (value) => {
     dispatch(setIsPlaying(value));
+  };
+
+  const onDeleteSong = async (songIndex) => {
+    const newSongs = playlistDetail.songs.filter(
+      (el, index) => index !== songIndex
+    );
+    try {
+      await updateDoc(docRef.current, { songs: newSongs }, { merge: true });
+      setPlaylistDetail({ ...playlistDetail, songs: newSongs });
+      toast.success("Song successfully deleted");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -95,6 +109,7 @@ function UserPlaylist() {
           songs={playlistDetail.songs}
           onPlayAll={onPlayAll}
           onSetPlaying={onSetPlaying}
+          onDeleteSong={onDeleteSong}
         />
       </div>
     </div>
