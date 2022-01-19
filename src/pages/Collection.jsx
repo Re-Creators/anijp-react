@@ -6,7 +6,7 @@ import PortalContainer from "../components/portal/PortalContainer";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
-import { toggleModal } from "../features/modals/modalSlice";
+import { toggleLoginModal } from "../features/modals/modalSlice";
 import { useUserPlaylist } from "../hooks/useUserPlaylist";
 
 function Collection() {
@@ -16,7 +16,7 @@ function Collection() {
   const { userPlaylist, fetchData } = useUserPlaylist(user);
 
   const newPlaylistHandler = () => {
-    if (!user) return dispatch(toggleModal());
+    if (!user) return dispatch(toggleLoginModal());
 
     setShowModal(true);
   };

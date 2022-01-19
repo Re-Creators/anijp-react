@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import PortalContainer from "../portal/PortalContainer";
 import LoginModal from "./LoginModal";
-import { toggleModal } from "../../features/modals/modalSlice";
+import { toggleLoginModal } from "../../features/modals/modalSlice";
 
 function LoginModalContainer() {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ function LoginModalContainer() {
     <div>
       <PortalContainer
         isShow={showModal}
-        onClose={() => dispatch(toggleModal())}
+        onClose={() => dispatch(toggleLoginModal())}
         zIndex={50}
       >
         <LoginModal />

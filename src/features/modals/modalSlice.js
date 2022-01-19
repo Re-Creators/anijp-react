@@ -8,7 +8,7 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    toggleModal: (state) => {
+    toggleLoginModal: (state) => {
       state.showModal = !state.showModal;
     },
   },
@@ -16,4 +16,4 @@ const modalSlice = createSlice({
 
 export default modalSlice.reducer;
 
-export const { toggleModal } = modalSlice.actions;
+export const { toggleLoginModal } = modalSlice.actions;

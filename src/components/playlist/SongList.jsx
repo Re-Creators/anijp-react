@@ -18,11 +18,15 @@ import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 import { useDispatch } from "react-redux";
 import { addOneSong } from "../../features/music-player/musicPlayerSlice";
 import "react-toastify/dist/ReactToastify.css";
+import { selectUser } from "../../features/user/userSlice";
+import { toggleLoginModal } from "../../features/modals/modalSlice";
 
 function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
+  console.log("Song list render");
   const dispatch = useDispatch();
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
+  const user = useSelector(selectUser);
 
   const [selectedSong, setSelectedSong] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -33,6 +37,7 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   };
 
   const onShowModal = () => {
+    if (!user) return dispatch(toggleLoginModal());
     setShowModal(true);
   };
 
@@ -58,9 +63,11 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
     <div className="flex flex-col">
       <PortalContainer isShow={showModal} onClose={onCloseModal} zIndex={50}>
         <AddToPlaylistModal
+          user={user}
           showChildModal={showChildModal}
           toggleChildModal={() => setShowChildModal(!showChildModal)}
           closeModal={onCloseModal}
+          selectedSong={selectedSong}
         />
       </PortalContainer>
 
