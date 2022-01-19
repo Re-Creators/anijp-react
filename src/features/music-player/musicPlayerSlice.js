@@ -35,11 +35,25 @@ const musicPlayerSlice = createSlice({
 
       toast.error("Song already added");
     },
+    addPlaylistSong: (state, { payload }) => {
+      const songListId = new Set(state.songs.map((song) => song._id));
+      const mergedSongs = state.songs.concat(
+        payload.filter((song) => !songListId.has(song._id))
+      );
+
+      state.songs = mergedSongs;
+      toast.success("Playlist successfully added");
+    },
   },
 });
 
-export const { setIsPlaying, changeActiveSong, addNewSongs, addOneSong } =
-  musicPlayerSlice.actions;
+export const {
+  setIsPlaying,
+  changeActiveSong,
+  addNewSongs,
+  addOneSong,
+  addPlaylistSong,
+} = musicPlayerSlice.actions;
 
 export const selectIsPlaying = (state) => state.musicPlayer.isPlaying;
 export const selectActiveSong = (state) => state.musicPlayer.activeSong;

@@ -6,13 +6,13 @@ import { useDispatch } from "react-redux";
 import {
   addNewSongs,
   setIsPlaying,
+  addPlaylistSong,
 } from "..//features/music-player/musicPlayerSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { db, storage } from "../firebase-config";
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { ref, deleteObject } from "firebase/storage";
-
 function UserPlaylist() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -44,6 +44,10 @@ function UserPlaylist() {
     }
   };
 
+  const addToQueue = () => {
+    setShowOption(false);
+    addPlaylistSong(playlistDetail.songs);
+  };
   const deletePlaylist = async () => {
     setShowOption(false);
     try {
@@ -113,7 +117,10 @@ function UserPlaylist() {
           </button>
           {showOption && (
             <div className="absolute bg-secondary z-50 -top-20 left-28 rounded-lg flex flex-col p-2">
-              <div className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm flex flex-row items-center cursor-pointer">
+              <div
+                className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm flex flex-row items-center cursor-pointer"
+                onClick={addToQueue}
+              >
                 <MdPlaylistAdd className="mr-2 text-xl" />
                 <span>Add to queue</span>
               </div>
