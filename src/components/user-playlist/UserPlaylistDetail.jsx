@@ -11,7 +11,7 @@ function UserPlaylistDetail({ playlistDetail }) {
         <div className="absolute top-1/2 left-10 transform -translate-y-1/2 z-0 w-full flex flex-row">
           <div className="w-48 h-52">
             <img
-              src="/sample/images/sao.jpg"
+              src={playlistDetail.cover}
               alt=""
               className="w-full h-full object-cover object-center rounded-md shadow-md"
             />

@@ -17,7 +17,6 @@ import { useState } from "react";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 import { useDispatch } from "react-redux";
 import { addOneSong } from "../../features/music-player/musicPlayerSlice";
-import "react-toastify/dist/ReactToastify.css";
 import { selectUser } from "../../features/user/userSlice";
 import { toggleLoginModal } from "../../features/modals/modalSlice";
 
