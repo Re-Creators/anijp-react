@@ -7,13 +7,15 @@ import {
   addNewSongs,
   setIsPlaying,
 } from "..//features/music-player/musicPlayerSlice";
-import { useParams } from "react-router-dom";
-import { db } from "../firebase-config";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
+import { db, storage } from "../firebase-config";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { ref, deleteObject } from "firebase/storage";
 
 function UserPlaylist() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(true);
   const [showOption, setShowOption] = useState(false);
@@ -38,6 +40,29 @@ function UserPlaylist() {
       await updateDoc(docRef.current, { songs: newSongs }, { merge: true });
       setPlaylistDetail({ ...playlistDetail, songs: newSongs });
       toast.success("Song successfully deleted");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deletePlaylist = async () => {
+    setShowOption(false);
+    try {
+      const toastLoading = toast.loading("Deleting playlist");
+      await deleteDoc(doc(db, "user_playlists", id));
+      if (playlistDetail.coverPathStorage !== "") {
+        const docRef = ref(storage, playlistDetail.coverPathStorage);
+
+        await deleteObject(docRef);
+      }
+
+      navigate("/collection");
+      toast.update(toastLoading, {
+        render: "Playlist deleted!",
+        type: "success",
+        isLoading: false,
+        autoClose: 4000,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -97,7 +122,10 @@ function UserPlaylist() {
                 <MdPlaylistAdd className="mr-2 text-xl" />
                 <span>Add to queue</span>
               </div>
-              <div className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm flex flex-row items-center cursor-pointer">
+              <div
+                className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm flex flex-row items-center cursor-pointer"
+                onClick={deletePlaylist}
+              >
                 <MdDelete className="text-lg mr-2" />
                 <span>Delete playlist</span>
               </div>
