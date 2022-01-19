@@ -17,7 +17,6 @@ function UserPlaylist() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showMenu, setShowMenu] = useState(true);
   const [showOption, setShowOption] = useState(false);
   const [playlistDetail, setPlaylistDetail] = useState(null);
 
@@ -88,11 +87,7 @@ function UserPlaylist() {
 
   if (!playlistDetail) return <p>loading..</p>;
   return (
-    <div
-      className={`text-white ${
-        showMenu ? "hide-scrollbar" : "overflow-y-hidden"
-      }  h-screen`}
-    >
+    <div className="text-white hide-scrollbar h-screen">
       <UserPlaylistDetail playlistDetail={playlistDetail} />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
         <div className="flex flex-row items-center mb-10 relative">

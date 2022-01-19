@@ -3,12 +3,12 @@ import {
   MdPauseCircleFilled,
   MdPlaylistAdd,
   MdShare,
-  MdOutlineMoreHoriz,
   MdDelete,
 } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
+  addOneSong,
   selectActiveSong,
   selectIsPlaying,
 } from "../../features/music-player/musicPlayerSlice";
@@ -19,7 +19,7 @@ function UserSongList({ songs, onPlayAll, onSetPlaying, onDeleteSong }) {
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
 
-  const playSong = (index, songId, onDeleteSong) => {
+  const playSong = (index, songId) => {
     if (activeSong !== null && songId === activeSong._id) {
       onSetPlaying(!isPlaying);
     } else {
@@ -83,7 +83,7 @@ function UserSongList({ songs, onPlayAll, onSetPlaying, onDeleteSong }) {
                 </div>
                 <div className="ml-2">{song.duration}</div>
                 <div className="flex flex-row">
-                  <button>
+                  <button onClick={() => dispatch(addOneSong(song))}>
                     <MdPlaylistAdd className="text-2xl mr-3" />
                   </button>
                   <button onClick={() => onDeleteSong(index)}>
