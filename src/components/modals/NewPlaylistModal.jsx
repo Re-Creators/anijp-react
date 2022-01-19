@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../features/user/userSlice";
 import { toast } from "react-toastify";
 
-function NewPlaylistModal({ hideModal }) {
+function NewPlaylistModal({ hideModal, fetchData }) {
   const user = useSelector(selectUser);
 
   const prevImageRef = useRef();
@@ -51,11 +51,12 @@ function NewPlaylistModal({ hideModal }) {
       user_id: user.uid,
     })
       .then(() => {
+        fetchData();
         toast.update(toastLoading, {
           render: "Playlist created!",
           type: "success",
           isLoading: false,
-          autoClose: 4000,
+          autoClose: 3000,
         });
       })
       .catch((err) => {

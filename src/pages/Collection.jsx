@@ -3,56 +3,23 @@ import { MdAdd, MdPlayCircleFilled } from "react-icons/md";
 import { Link } from "react-router-dom";
 import NewPlaylistModal from "../components/modals/NewPlaylistModal";
 import PortalContainer from "../components/portal/PortalContainer";
-import { collection, getDocs, where, query } from "firebase/firestore";
-import { db } from "../firebase-config";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { toggleModal } from "../features/modals/modalSlice";
+import { useUserPlaylist } from "../hooks/useUserPlaylist";
 
 function Collection() {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-  const [userPlaylist, setUserPlaylist] = useState([]);
   const user = useSelector(selectUser);
+  const { userPlaylist, fetchData } = useUserPlaylist(user);
 
   const newPlaylistHandler = () => {
     if (!user) return dispatch(toggleModal());
 
     setShowModal(true);
   };
-
-  useEffect(() => {
-    if (user) {
-      const fetchData = async () => {
-        const playlistRef = collection(db, "user_playlists");
-        const q = query(playlistRef, where("user_id", "==", user.uid));
-
-        try {
-          const { docs } = await getDocs(q);
-          let playlist = [];
-
-          docs.forEach((doc) => {
-            const data = {
-              id: doc.id,
-              name: doc.data().name,
-              user_id: doc.data().user_id,
-              songs: doc.data().songs,
-              cover: doc.data().cover,
-              coverPathStorage: doc.data().coverPathStorage,
-            };
-            playlist.push(data);
-          });
-          setUserPlaylist(playlist);
-          return;
-        } catch (err) {
-          console.log("err");
-        }
-      };
-
-      fetchData();
-    }
-  }, [user]);
   return (
     <div className="pl-10 mt-20 text-white pb-96 h-screen hide-scrollbar">
       <h1 className="font-bold text-2xl md:text-4xl">My Collection</h1>
@@ -109,7 +76,10 @@ function Collection() {
         zIndex={50}
         backgroundColor="rgba(47, 69, 108, 0.83)"
       >
-        <NewPlaylistModal hideModal={() => setShowModal(false)} />
+        <NewPlaylistModal
+          hideModal={() => setShowModal(false)}
+          fetchData={fetchData}
+        />
       </PortalContainer>
     </div>
   );
