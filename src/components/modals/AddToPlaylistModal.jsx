@@ -46,7 +46,7 @@ function AddToPlaylistModal({
   return (
     <>
       {showChildModal ? (
-        <NewPlaylistModal />
+        <NewPlaylistModal hideModal={toggleChildModal} fetchData={fetchData} />
       ) : (
         <div className="modal w-full h-full md:h-auto md:w-1/2 lg:w-2/5 py-8 bg-primary md:rounded-lg">
           <div className="flex flex-row justify-between text-white px-8 mb-3">

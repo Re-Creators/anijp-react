@@ -1,23 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import Detail from "../components/my-playlist/Detail";
+import UserPlaylistDetail from "../components/user-playlist/UserPlaylistDetail";
 import { MdOutlineMoreHoriz, MdPlaylistAdd, MdDelete } from "react-icons/md";
-import MySongList from "../components/my-playlist/MySongList";
+import UserSongList from "../components/user-playlist/UserSongList";
+import { useParams } from "react-router-dom";
+import { db } from "../firebase-config";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-const songs = [];
-function MyPlaylist() {
+function UserPlaylist() {
+  const { id } = useParams();
   const [showMenu, setShowMenu] = useState(true);
   const [showOption, setShowOption] = useState(false);
+  const [playlistDetail, setPlaylistDetail] = useState(null);
 
-  useEffect(() => {}, []);
+  const docRef = useRef(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        docRef.current = doc(db, "user_playlists", id);
+        const docSnap = await getDoc(docRef.current);
+        if (docSnap.exists()) {
+          setPlaylistDetail(docSnap.data());
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+      return;
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (!playlistDetail) return <p>loading..</p>;
   return (
     <div
       className={`text-white ${
         showMenu ? "hide-scrollbar" : "overflow-y-hidden"
       }  h-screen`}
     >
-      <Detail />
+      <UserPlaylistDetail playlistDetail={playlistDetail} />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
         <div className="flex flex-row items-center mb-10 relative">
           <button>
@@ -54,10 +77,10 @@ function MyPlaylist() {
           )}
         </div>
 
-        <MySongList songs={songs} />
+        <UserSongList songs={playlistDetail.songs} />
       </div>
     </div>
   );
 }
 
-export default MyPlaylist;
+export default UserPlaylist;

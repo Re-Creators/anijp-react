@@ -48,7 +48,7 @@ function Collection() {
             key={playlist.id}
           >
             <Link
-              to="/"
+              to={`/myplaylist/${playlist.id}`}
               className="relative block w-40 h-40 md:w-52 md:h-52  overflow-y-hidden mb-3 group"
             >
               <img
