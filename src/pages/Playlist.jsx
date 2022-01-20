@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MdOutlineFavoriteBorder, MdLibraryMusic } from "react-icons/md";
+import { MdOutlineFavoriteBorder, MdFavorite } from "react-icons/md";
 import Detail from "../components/playlist/Detail";
 import SongList from "../components/playlist/SongList";
 import { useDispatch } from "react-redux";
@@ -7,17 +7,24 @@ import {
   addNewSongs,
   setIsPlaying,
 } from "..//features/music-player/musicPlayerSlice";
-
+import { db } from "../firebase-config";
+import { doc, updateDoc } from "firebase/firestore";
 import { getOnePlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getUserData, selectUser } from "../features/user/userSlice";
 
 function Playlist() {
   console.log("render Playlist");
   const dispatch = useDispatch();
   const { id } = useParams();
+
+  const user = useSelector(selectUser);
+  const [isLiked, setIsLiked] = useState(false);
   const [playlistDetail, setPlayListDetail] = useState(null);
   const [showMenu, setShowMenu] = useState(true);
+  const [likeCount, setLikeCount] = useState(0);
 
   const onPlayAll = (indexSong) => {
     dispatch(addNewSongs({ songs: playlistDetail.songs, indexSong }));
@@ -28,16 +35,44 @@ function Playlist() {
     dispatch(setIsPlaying(value));
   };
 
-  const like = () => {
-    client.patch(id).inc({ likes: 1 }).commit();
+  const like = async () => {
+    let likedPlaylist = [...user.likedPlaylist];
+
+    if (!isLiked) {
+      likedPlaylist.push(id);
+    } else {
+      const deletedIndex = likedPlaylist.indexOf(id);
+      likedPlaylist.splice(deletedIndex, 1);
+    }
+
+    try {
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, { likedPlaylist }, { merge: true });
+      let response = isLiked
+        ? await client.patch(id).dec({ likes: 1 }).commit()
+        : await client.patch(id).inc({ likes: 1 }).commit();
+      setLikeCount(response?.likes);
+      dispatch(getUserData(user.uid));
+      setIsLiked(!isLiked);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     const query = getOnePlaylist(id);
     client.fetch(query).then((data) => {
       setPlayListDetail(data[0]);
+      setLikeCount(data[0].likes);
     });
   }, [id]);
+
+  useEffect(() => {
+    if (user) {
+      const likedPlaylist = user.likedPlaylist;
+      setIsLiked(likedPlaylist.includes(id));
+    }
+  }, [user, id]);
 
   if (!playlistDetail) return <p>Loading..</p>;
   return (
@@ -47,7 +82,7 @@ function Playlist() {
       }  h-screen`}
     >
       {/* Playlist Details  */}
-      <Detail playlistDetail={playlistDetail} />
+      <Detail playlistDetail={playlistDetail} likeCount={likeCount} />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
         <div className="flex flex-row items-center mb-10">
           <button onClick={() => onPlayAll(0)}>
@@ -65,7 +100,11 @@ function Playlist() {
             </svg>
           </button>
           <button className="ml-3 mt-2" onClick={() => like()}>
-            <MdOutlineFavoriteBorder className="text-4xl" />
+            {isLiked ? (
+              <MdFavorite className="text-4xl" />
+            ) : (
+              <MdOutlineFavoriteBorder className="text-4xl" />
+            )}
           </button>
         </div>
 

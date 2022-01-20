@@ -1,6 +1,6 @@
-import { MdOutlineFavoriteBorder, MdLibraryMusic } from "react-icons/md";
+import { MdFavorite, MdLibraryMusic } from "react-icons/md";
 
-function Detail({ playlistDetail }) {
+function Detail({ playlistDetail, likeCount }) {
   return (
     <div className="w-full h-80 relative mt-10">
       <div
@@ -29,8 +29,8 @@ function Detail({ playlistDetail }) {
               </p>
               <div className="flex flex-row text-xs mt-3">
                 <div className="flex flex-row items-center mr-3">
-                  <MdOutlineFavoriteBorder className="text-lg mr-1" />
-                  <span> {playlistDetail?.likes} Likes</span>
+                  <MdFavorite className="text-lg mr-1" />
+                  <span> {likeCount} Likes</span>
                 </div>
                 <div className="flex flex-row items-center">
                   <MdLibraryMusic className="text-lg mr-1" />

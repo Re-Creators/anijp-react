@@ -2,6 +2,7 @@ import {
   MdPlayCircleFilled,
   MdPauseCircleFilled,
   MdOutlineFavoriteBorder,
+  MdFavorite,
   MdShare,
   MdOutlineMoreHoriz,
 } from "react-icons/md";
@@ -111,7 +112,7 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
               <span className="text-xs text-description">{song.artist}</span>
             </div>
             <div className="flex flex-row items-center">
-              <MdOutlineFavoriteBorder className="md:text-sm lg:text-xl" />
+              <MdFavorite className="md:text-sm lg:text-xl" />
               <span className="ml-2 text-sm">{song.likes}</span>
             </div>
             <div className="text-sm">{song.duration}</div>
