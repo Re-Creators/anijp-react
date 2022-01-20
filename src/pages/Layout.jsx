@@ -4,7 +4,6 @@ import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { ToastContainer } from "react-toastify";
 import LoginModalContainer from "../components/modals/LoginModalContainer";
-
 function Layout() {
   return (
     <div>

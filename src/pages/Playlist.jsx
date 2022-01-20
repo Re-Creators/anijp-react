@@ -14,6 +14,8 @@ import { client } from "../sanityClient";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserData, selectUser } from "../features/user/userSlice";
+import { toggleLoginModal } from "../features/modals/modalSlice";
+import { toast } from "react-toastify";
 
 function Playlist() {
   console.log("render Playlist");
@@ -36,6 +38,8 @@ function Playlist() {
   };
 
   const like = async () => {
+    if (!user) return dispatch(toggleLoginModal());
+
     let likedPlaylist = [...user.likedPlaylist];
 
     if (!isLiked) {
@@ -46,6 +50,9 @@ function Playlist() {
     }
 
     try {
+      const message = isLiked
+        ? "Removed from collection"
+        : "Added to collection";
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, { likedPlaylist }, { merge: true });
       let response = isLiked
@@ -54,6 +61,8 @@ function Playlist() {
       setLikeCount(response?.likes);
       dispatch(getUserData(user.uid));
       setIsLiked(!isLiked);
+
+      toast(message);
     } catch (err) {
       console.log(err);
     }

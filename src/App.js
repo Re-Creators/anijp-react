@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { setLoggedIn } from "./features/user/userSlice";
 import { getUserData } from "./features/user/userSlice";
 import AuthLayout from "./pages/AuthLayout";
-import { doc, onSnapshot } from "firebase/firestore";
 
 function App() {
   const dispatch = useDispatch();
