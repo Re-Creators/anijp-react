@@ -10,6 +10,10 @@ import { toggleLoginModal } from "../features/modals/modalSlice";
 import { useUserPlaylist } from "../hooks/useUserPlaylist";
 import { getLikedPlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
+import {
+  addNewSongs,
+  setIsPlaying,
+} from "../features/music-player/musicPlayerSlice";
 
 function Collection() {
   const dispatch = useDispatch();
@@ -24,6 +28,13 @@ function Collection() {
     if (!user) return dispatch(toggleLoginModal());
 
     setShowModal(true);
+  };
+
+  const playUserPlaylist = (playlist) => {
+    if (playlist.songs.length > 0) {
+      dispatch(addNewSongs({ songs: playlist.songs, indexSong: 0 }));
+      dispatch(setIsPlaying(true));
+    }
   };
 
   useEffect(() => {
@@ -72,7 +83,17 @@ function Collection() {
                 className="w-full h-full rounded-lg object-cover"
               />
               <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
-                <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(
+                      addNewSongs({ songs: playlist.songs, indexSong: 0 })
+                    );
+                    dispatch(setIsPlaying(true));
+                  }}
+                >
+                  <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+                </button>
               </div>
             </Link>
             <div className="text-semibold w-full md:w-52">
@@ -97,7 +118,14 @@ function Collection() {
                 className="w-full h-full rounded-lg object-cover"
               />
               <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
-                <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    playUserPlaylist(playlist);
+                  }}
+                >
+                  <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+                </button>
               </div>
             </Link>
             <div className="text-semibold w-full md:w-52">

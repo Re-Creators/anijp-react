@@ -4,9 +4,15 @@ import HomeSlider from "../components/home/HomeSlider";
 import { MdPlayCircleFilled } from "react-icons/md";
 import { client } from "../sanityClient";
 import { getAllPlaylist } from "../query/playlistQuery";
+import { useDispatch } from "react-redux";
+import {
+  addNewSongs,
+  setIsPlaying,
+} from "../features/music-player/musicPlayerSlice";
 
 function Home() {
   const [playlistData, setPlaylistData] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     client.fetch(getAllPlaylist).then((data) => {
@@ -34,7 +40,17 @@ function Home() {
                   className="w-full h-full rounded-lg object-cover"
                 />
                 <div className="transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
-                  <MdPlayCircleFilled className="material-icons text-4xl absolute right-3 bottom-3" />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(
+                        addNewSongs({ songs: playlist.songs, indexSong: 0 })
+                      );
+                      dispatch(setIsPlaying(true));
+                    }}
+                  >
+                    <MdPlayCircleFilled className="material-icons text-4xl absolute right-3 bottom-3" />
+                  </button>
                 </div>
               </Link>
               <span className="md:w-40 lg:w-48 line-clamp-2 overflow-x-hidden text-xs md:text-sm lg:text-base">
