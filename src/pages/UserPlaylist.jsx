@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import UserPlaylistDetail from "../components/user-playlist/UserPlaylistDetail";
 import { MdOutlineMoreHoriz, MdPlaylistAdd, MdDelete } from "react-icons/md";
 import UserSongList from "../components/user-playlist/UserSongList";
 import { useDispatch } from "react-redux";
@@ -13,6 +12,7 @@ import { db, storage } from "../firebase-config";
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { ref, deleteObject } from "firebase/storage";
+import Detail from "../components/playlist/Detail";
 function UserPlaylist() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -92,7 +92,13 @@ function UserPlaylist() {
   if (!playlistDetail) return <p>loading..</p>;
   return (
     <div className="text-white hide-scrollbar h-screen">
-      <UserPlaylistDetail playlistDetail={playlistDetail} />
+      <Detail
+        songCount={playlistDetail.songs.length}
+        playlistName={playlistDetail.name}
+        cover={playlistDetail.cover}
+        description={playlistDetail.description}
+        type="my playlist"
+      />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
         <div className="flex flex-row items-center mb-10 relative">
           <button onClick={() => onPlayAll(0)}>

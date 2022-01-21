@@ -95,7 +95,14 @@ function Playlist() {
       }  h-screen`}
     >
       {/* Playlist Details  */}
-      <Detail playlistDetail={playlistDetail} likeCount={likeCount} />
+      <Detail
+        songCount={playlistDetail.songs.length}
+        playlistName={playlistDetail.name}
+        cover={playlistDetail.cover}
+        description={playlistDetail.description}
+        likeCount={likeCount}
+        type="playlist"
+      />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
         <div className="flex flex-row items-center mb-10">
           <button onClick={() => onPlayAll(0)}>
