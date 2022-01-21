@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import {
+  addNewSongs,
   selectActiveSong,
   selectIsPlaying,
+  setIsPlaying,
 } from "../../features/music-player/musicPlayerSlice";
 import PortalContainer from "../portal/PortalContainer";
 import { useEffect, useRef, useState } from "react";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
-import { useDispatch } from "react-redux";
 import { addOneSong } from "../../features/music-player/musicPlayerSlice";
 import { selectUser } from "../../features/user/userSlice";
 import { toggleLoginModal } from "../../features/modals/modalSlice";
@@ -16,9 +17,8 @@ import { doc, updateDoc } from "firebase/firestore";
 import { client } from "../../sanityClient";
 import { toast } from "react-toastify";
 
-function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
+function SongList({ songs, toggleMenu, dispatch }) {
   console.log("Song list render");
-  const dispatch = useDispatch();
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
   const user = useSelector(selectUser);
@@ -47,11 +47,12 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
     setShowModal(false);
   };
 
-  const playSong = (index, songId) => {
+  const playSong = (indexSong, songId) => {
     if (activeSong !== null && songId === activeSong._id) {
-      onSetPlaying(!isPlaying);
+      dispatch(setIsPlaying(!isPlaying));
     } else {
-      onPlayAll(index);
+      dispatch(addNewSongs({ songs, indexSong }));
+      dispatch(setIsPlaying(true));
     }
   };
 

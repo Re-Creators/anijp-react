@@ -31,7 +31,7 @@ function Detail(props) {
                 {description}
               </p>
               <div className="flex flex-row text-xs mt-3">
-                {likeCount && (
+                {likeCount >= 0 && (
                   <div className="flex flex-row items-center mr-3">
                     <MdFavorite className="text-lg mr-1" />
                     <span> {likeCount} Likes</span>

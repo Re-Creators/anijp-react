@@ -13,7 +13,7 @@ import { getOnePlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getUserData, selectUser } from "../features/user/userSlice";
+import { selectUser } from "../features/user/userSlice";
 import { toggleLoginModal } from "../features/modals/modalSlice";
 import { toast } from "react-toastify";
 
@@ -29,15 +29,6 @@ function Playlist() {
   const [likeCount, setLikeCount] = useState(0);
 
   const isUpdateRef = useRef(false);
-
-  const onPlayAll = (indexSong) => {
-    dispatch(addNewSongs({ songs: playlistDetail.songs, indexSong }));
-    dispatch(setIsPlaying(true));
-  };
-
-  const onSetPlaying = (value) => {
-    dispatch(setIsPlaying(value));
-  };
 
   const like = async () => {
     if (!user) return dispatch(toggleLoginModal());
@@ -59,13 +50,15 @@ function Playlist() {
         : "Added to collection";
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, { likedPlaylist }, { merge: true });
+
+      setIsLiked(!isLiked);
+      toast(message);
+
       let response = isLiked
         ? await client.patch(id).dec({ likes: 1 }).commit()
         : await client.patch(id).inc({ likes: 1 }).commit();
       setLikeCount(response?.likes);
-      setIsLiked(!isLiked);
 
-      toast(message);
       isUpdateRef.current = false;
     } catch (err) {
       console.log(err);
@@ -105,7 +98,14 @@ function Playlist() {
       />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
         <div className="flex flex-row items-center mb-10">
-          <button onClick={() => onPlayAll(0)}>
+          <button
+            onClick={() => {
+              dispatch(
+                addNewSongs({ songs: playlistDetail.songs, indexSong: 0 })
+              );
+              dispatch(setIsPlaying(true));
+            }}
+          >
             <svg
               viewBox="0 0 80 80"
               fill="none"
@@ -131,7 +131,7 @@ function Playlist() {
         <SongList
           songs={playlistDetail?.songs}
           onPlayAll={onPlayAll}
-          onSetPlaying={onSetPlaying}
+          dispatch={dispatch}
           toggleMenu={() => setShowMenu(!showMenu)}
         />
       </div>
