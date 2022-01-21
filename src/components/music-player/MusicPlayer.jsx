@@ -40,7 +40,7 @@ function MusicPlayer() {
     : (timeProgress / duration) * 100;
 
   const playHandler = () => {
-    if (songs.length <= 0 || !activeSong) return;
+    if (songs.length <= 0 && !activeSong) return;
 
     if (!readyToPlay.current) {
       readyToPlay.current = true;
@@ -88,6 +88,7 @@ function MusicPlayer() {
   };
 
   const changeSongHandler = (value) => {
+    if (songs.length <= 0) return;
     trackIndex.current = trackIndex.current + value;
 
     if (trackIndex.current < 0) {

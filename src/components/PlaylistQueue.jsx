@@ -11,6 +11,9 @@ import {
   selectIsPlaying,
   setIsPlaying,
   changeActiveSong,
+  addNewSongs,
+  clearSongs,
+  removeOneSong,
 } from "../features/music-player/musicPlayerSlice";
 import BarAnimation from "./UI/BarAnimation";
 
@@ -48,7 +51,10 @@ function PlaylistQueue({ onClose }) {
           <h1 className="text-xl font-semibold">
             Playlist ({songs.length} - Song & Albums)
           </h1>
-          <button className="flex item-center bg-secondary px-3 py-2 rounded-md">
+          <button
+            className="flex item-center bg-secondary px-3 py-2 rounded-md"
+            onClick={() => dispatch(clearSongs())}
+          >
             <MdDelete className="mr-2 text-xl" />
             <span>Clear List</span>
           </button>
@@ -85,7 +91,10 @@ function PlaylistQueue({ onClose }) {
                 <h1>{song?.title}</h1>
                 <span className="text-sm text-gray-400">{song.artist}</span>
               </div>
-              <button className="ml-auto">
+              <button
+                className="ml-auto"
+                onClick={() => dispatch(removeOneSong({ songId: song._id }))}
+              >
                 <MdDelete className="text-gray-400 hover:text-white text-2xl" />
               </button>
             </div>
