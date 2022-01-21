@@ -46,14 +46,14 @@ function Sidebar() {
       </div>
       <div className="divider border-t border-primary-300 mt-10"></div>
       <div className="mt-5">
-        <button className="flex flex-row items-center relative">
+        <Link to="/favorite" className="flex flex-row items-center relative">
           <div className="w-8 h-8 bg-red-500 flex justify-center items-center rounded-sm">
             <MdFavorite className="text-xl" />
           </div>
           <span className="line-clamp-2 text-gray-300 text-sm hover:text-white w-32 absolute left-5">
             Liked Songs
           </span>
-        </button>
+        </Link>
         <ul className="mt-5">
           <li>
             {/* <Link to="/" className="flex flex-row items-center">

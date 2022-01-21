@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setLoggedIn } from "./features/user/userSlice";
 import { getUserData } from "./features/user/userSlice";
 import AuthLayout from "./pages/AuthLayout";
+import FavoriteSong from "./pages/FavoriteSongs";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function App() {
             <Route path="playlist/:id" element={<Playlist />} />
             <Route path="myplaylist/:id" element={<UserPlaylist />} />
             <Route path="collection" element={<Collection />} />
+            <Route path="favorite" element={<FavoriteSong />} />
           </Route>
           <Route
             path="/login"

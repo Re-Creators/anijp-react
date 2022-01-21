@@ -6,10 +6,13 @@ function Detail(props) {
 
   return (
     <div className="w-full h-80 relative mt-10">
-      <div
-        className="absolute  w-full h-full bg-no-repeat bg-cover bg-center  z-0"
-        style={{ backgroundImage: `url("${cover}")` }}
-      ></div>
+      {type !== "favorite" && (
+        <div
+          className="absolute  w-full h-full bg-no-repeat bg-cover bg-center  z-0"
+          style={{ backgroundImage: `url("${cover}")` }}
+        ></div>
+      )}
+
       <div className="relative w-full h-full backdrop-filter backdrop-blur-3xl bg-overlay-playlist-dark">
         <div className="absolute top-1/2 left-10 transform -translate-y-1/2 z-0 w-full flex flex-row">
           <div className="w-48 h-52">
