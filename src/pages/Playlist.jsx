@@ -13,7 +13,11 @@ import { getOnePlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUser } from "../features/user/userSlice";
+import {
+  selectLikedPlaylist,
+  selectUser,
+  updateLikedPlaylist,
+} from "../features/user/userSlice";
 import { toggleLoginModal } from "../features/modals/modalSlice";
 import { toast } from "react-toastify";
 
@@ -23,6 +27,7 @@ function Playlist() {
   const { id } = useParams();
 
   const user = useSelector(selectUser);
+  const likedPlaylist = useSelector(selectLikedPlaylist);
   const [isLiked, setIsLiked] = useState(false);
   const [playlistDetail, setPlayListDetail] = useState(null);
   const [showMenu, setShowMenu] = useState(true);
@@ -35,13 +40,13 @@ function Playlist() {
     if (isUpdateRef.current) return;
 
     isUpdateRef.current = true;
-    let likedPlaylist = [...user.likedPlaylist];
+    let likedPlaylistTmp = [...likedPlaylist];
 
     if (!isLiked) {
-      likedPlaylist.push(id);
+      likedPlaylistTmp.push(id);
     } else {
-      const deletedIndex = likedPlaylist.indexOf(id);
-      likedPlaylist.splice(deletedIndex, 1);
+      const deletedIndex = likedPlaylistTmp.indexOf(id);
+      likedPlaylistTmp.splice(deletedIndex, 1);
     }
 
     try {
@@ -49,8 +54,13 @@ function Playlist() {
         ? "Removed from collection"
         : "Added to collection";
       const userRef = doc(db, "users", user.uid);
-      await updateDoc(userRef, { likedPlaylist }, { merge: true });
+      await updateDoc(
+        userRef,
+        { likedPlaylist: likedPlaylistTmp },
+        { merge: true }
+      );
 
+      dispatch(updateLikedPlaylist(likedPlaylistTmp));
       setIsLiked(!isLiked);
       toast(message);
 
@@ -130,7 +140,6 @@ function Playlist() {
 
         <SongList
           songs={playlistDetail?.songs}
-          onPlayAll={onPlayAll}
           dispatch={dispatch}
           toggleMenu={() => setShowMenu(!showMenu)}
         />

@@ -9,7 +9,11 @@ import PortalContainer from "../portal/PortalContainer";
 import { useEffect, useRef, useState } from "react";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 import { addOneSong } from "../../features/music-player/musicPlayerSlice";
-import { selectUser } from "../../features/user/userSlice";
+import {
+  selectLikedSongs,
+  selectUser,
+  updateLikedSongs,
+} from "../../features/user/userSlice";
 import { toggleLoginModal } from "../../features/modals/modalSlice";
 import Song from "../listitems/Song";
 import { db } from "../../firebase-config";
@@ -19,14 +23,15 @@ import { toast } from "react-toastify";
 
 function SongList({ songs, toggleMenu, dispatch }) {
   console.log("Song list render");
+
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
   const user = useSelector(selectUser);
+  const likedSongs = useSelector(selectLikedSongs);
 
   const [selectedSong, setSelectedSong] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showChildModal, setShowChildModal] = useState(false);
-  const [likedSong, setLikedSong] = useState([]);
   const isUpdateRef = useRef(false);
 
   const onAddToQueue = () => {
@@ -57,8 +62,8 @@ function SongList({ songs, toggleMenu, dispatch }) {
   };
 
   const isSongLiked = (songId) => {
-    if (likedSong) {
-      return likedSong.includes(songId);
+    if (likedSongs) {
+      return likedSongs.includes(songId);
     }
     return false;
   };
@@ -69,36 +74,30 @@ function SongList({ songs, toggleMenu, dispatch }) {
 
     isUpdateRef.current = true;
 
-    const likedSongTmp = [...likedSong];
+    const likedSongsTmp = [...likedSongs];
     const isLiked = isSongLiked(songId);
 
     if (!isLiked) {
-      likedSongTmp.push(songId);
+      likedSongsTmp.push(songId);
     } else {
-      const deletedIndex = likedSongTmp.indexOf(songId);
-      likedSongTmp.splice(deletedIndex, 1);
+      const deletedIndex = likedSongsTmp.indexOf(songId);
+      likedSongsTmp.splice(deletedIndex, 1);
     }
     try {
       const message = isLiked ? "Removed from favorite" : "Added to favorite";
       const userRef = doc(db, "users", user.uid);
-      await updateDoc(userRef, { likedSong: likedSongTmp }, { merge: true });
+      await updateDoc(userRef, { likedSong: likedSongsTmp }, { merge: true });
       isLiked
         ? await client.patch(songId).dec({ likes: 1 }).commit()
         : await client.patch(songId).inc({ likes: 1 }).commit();
 
-      setLikedSong(likedSongTmp);
+      dispatch(updateLikedSongs(likedSongsTmp));
       toast(message);
       isUpdateRef.current = false;
     } catch (err) {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    if (user) {
-      setLikedSong(user.likedSong);
-    }
-  }, [user]);
 
   if (songs.length <= 0) return null;
   return (

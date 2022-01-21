@@ -5,6 +5,8 @@ import { db } from "../../firebase-config";
 const initialState = {
   loggedIn: false,
   user: null,
+  likedPlaylist: [],
+  likedSongs: [],
   isFetching: false,
 };
 
@@ -25,6 +27,12 @@ const userSlice = createSlice({
     setLoggedIn: (state, { payload }) => {
       state.loggedIn = payload;
     },
+    updateLikedSongs: (state, { payload }) => {
+      state.likedSongs = payload;
+    },
+    updateLikedPlaylist: (state, { payload }) => {
+      state.likedPlaylist = payload;
+    },
   },
   extraReducers: {
     [getUserData.pending]: (state) => {
@@ -32,6 +40,8 @@ const userSlice = createSlice({
     },
     [getUserData.fulfilled]: (state, { payload }) => {
       state.user = payload;
+      state.likedSongs = payload.likedSong;
+      state.likedPlaylist = payload.likedPlaylist;
       state.isFetching = false;
     },
     [getUserData.rejected]: (state) => {
@@ -40,7 +50,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { setLoggedIn } = userSlice.actions;
+export const { setLoggedIn, updateLikedSongs, updateLikedPlaylist } =
+  userSlice.actions;
+
 export const selectUser = (state) => state.user.user;
 export const selectIsFetching = (state) => state.user.isFetching;
+export const selectLikedSongs = (state) => state.user.likedSongs;
+export const selectLikedPlaylist = (state) => state.user.likedPlaylist;
+
 export default userSlice.reducer;
