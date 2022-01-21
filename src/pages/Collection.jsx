@@ -4,22 +4,37 @@ import { Link } from "react-router-dom";
 import NewPlaylistModal from "../components/modals/NewPlaylistModal";
 import PortalContainer from "../components/portal/PortalContainer";
 import { useSelector } from "react-redux";
-import { selectUser } from "../features/user/userSlice";
+import { selectLikedPlaylist, selectUser } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { toggleLoginModal } from "../features/modals/modalSlice";
 import { useUserPlaylist } from "../hooks/useUserPlaylist";
+import { getLikedPlaylist } from "../query/playlistQuery";
+import { client } from "../sanityClient";
 
 function Collection() {
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
   const user = useSelector(selectUser);
+  const likedPlaylist = useSelector(selectLikedPlaylist);
   const { userPlaylist, fetchData } = useUserPlaylist(user);
+
+  const [showModal, setShowModal] = useState(false);
+  const [likedPlaylistData, setLikedPlaylistData] = useState([]);
 
   const newPlaylistHandler = () => {
     if (!user) return dispatch(toggleLoginModal());
 
     setShowModal(true);
   };
+
+  useEffect(() => {
+    if (likedPlaylist && likedPlaylist.length > 0) {
+      const query = getLikedPlaylist;
+      client.fetch(query, { listId: likedPlaylist }).then((data) => {
+        setLikedPlaylistData(data);
+      });
+    }
+  }, [likedPlaylist]);
+
   return (
     <div className="pl-10 mt-20 text-white pb-96 h-screen hide-scrollbar">
       <h1 className="font-bold text-2xl md:text-4xl">My Collection</h1>
@@ -41,6 +56,31 @@ function Collection() {
             <span className="ml-3">New Playlist</span>
           </div>
         </div>
+        {/* Liked Playlist */}
+        {likedPlaylistData.map((playlist) => (
+          <div
+            className="mr-5 md:mr-8 flex flex-col items-center mb-5"
+            key={playlist._id}
+          >
+            <Link
+              to={`/playlist/${playlist._id}`}
+              className="relative block w-40 h-40 md:w-52 md:h-52  overflow-y-hidden mb-3 group"
+            >
+              <img
+                src={playlist.cover}
+                alt=""
+                className="w-full h-full rounded-lg object-cover"
+              />
+              <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
+                <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+              </div>
+            </Link>
+            <div className="text-semibold w-full md:w-52">
+              <span className="line-clamp-2">{playlist.name}</span>
+            </div>
+          </div>
+        ))}
+
         {/* Users Playlist  */}
         {userPlaylist.map((playlist) => (
           <div
