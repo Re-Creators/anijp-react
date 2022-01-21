@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdOutlineFavoriteBorder, MdFavorite } from "react-icons/md";
 import Detail from "../components/playlist/Detail";
 import SongList from "../components/playlist/SongList";
@@ -28,6 +28,8 @@ function Playlist() {
   const [showMenu, setShowMenu] = useState(true);
   const [likeCount, setLikeCount] = useState(0);
 
+  const isUpdateRef = useRef(false);
+
   const onPlayAll = (indexSong) => {
     dispatch(addNewSongs({ songs: playlistDetail.songs, indexSong }));
     dispatch(setIsPlaying(true));
@@ -39,7 +41,9 @@ function Playlist() {
 
   const like = async () => {
     if (!user) return dispatch(toggleLoginModal());
+    if (isUpdateRef.current) return;
 
+    isUpdateRef.current = true;
     let likedPlaylist = [...user.likedPlaylist];
 
     if (!isLiked) {
@@ -59,10 +63,10 @@ function Playlist() {
         ? await client.patch(id).dec({ likes: 1 }).commit()
         : await client.patch(id).inc({ likes: 1 }).commit();
       setLikeCount(response?.likes);
-      dispatch(getUserData(user.uid));
       setIsLiked(!isLiked);
 
       toast(message);
+      isUpdateRef.current = false;
     } catch (err) {
       console.log(err);
     }
@@ -81,7 +85,7 @@ function Playlist() {
       const likedPlaylist = user.likedPlaylist;
       setIsLiked(likedPlaylist.includes(id));
     }
-  }, [user, id]);
+  }, [user, id, dispatch]);
 
   if (!playlistDetail) return <p>Loading..</p>;
   return (

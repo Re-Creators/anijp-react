@@ -11,10 +11,16 @@ import TippyMenu from "../tippy/TippyMenu";
 
 function Song(props) {
   const { song, songIndex, activeSong, isPlaying } = props;
-  const { playSong, toggleMenu, onShowModal, onAddToQueue, setSelectedSong } =
-    props;
+  const {
+    playSong,
+    toggleMenu,
+    onShowModal,
+    onAddToQueue,
+    setSelectedSong,
+    isSongLiked,
+    likeSong,
+  } = props;
 
-  console.log("render song");
   return (
     <div className="grid grid-cols-playlist items-center gap-8 py-3 px-5 transition duration-200 hover:bg-list-hover rounded-sm group mb-5 md:text-sm lg:text-lg">
       <div className="flex w-10 ">
@@ -47,11 +53,15 @@ function Song(props) {
       </div>
       <div className="text-sm">{song.duration}</div>
       <div className="flex flex-row relative">
-        <button>
-          <MdOutlineFavoriteBorder
-            className="mr-2 md:text-lg lg:text-xl"
-            title="Favorite"
-          />
+        <button onClick={() => likeSong(song._id)}>
+          {isSongLiked(song._id) ? (
+            <MdFavorite className="mr-2 md:text-lg lg:text-xl" />
+          ) : (
+            <MdOutlineFavoriteBorder
+              className="mr-2 md:text-lg lg:text-xl"
+              title="Favorite"
+            />
+          )}
         </button>
         <button>
           <MdShare className=" mr-2 md:text-lg lg:text-xl" title="Share" />

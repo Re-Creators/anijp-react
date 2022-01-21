@@ -4,13 +4,17 @@ import {
   selectIsPlaying,
 } from "../../features/music-player/musicPlayerSlice";
 import PortalContainer from "../portal/PortalContainer";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 import { useDispatch } from "react-redux";
 import { addOneSong } from "../../features/music-player/musicPlayerSlice";
 import { selectUser } from "../../features/user/userSlice";
 import { toggleLoginModal } from "../../features/modals/modalSlice";
 import Song from "../listitems/Song";
+import { db } from "../../firebase-config";
+import { doc, updateDoc } from "firebase/firestore";
+import { client } from "../../sanityClient";
+import { toast } from "react-toastify";
 
 function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   console.log("Song list render");
@@ -22,6 +26,8 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
   const [selectedSong, setSelectedSong] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showChildModal, setShowChildModal] = useState(false);
+  const [likedSong, setLikedSong] = useState([]);
+  const isUpdateRef = useRef(false);
 
   const onAddToQueue = () => {
     dispatch(addOneSong(selectedSong));
@@ -49,9 +55,49 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
     }
   };
 
-  const likeSong = async () => {
-    if (!user) return dispatch(toggleLoginModal());
+  const isSongLiked = (songId) => {
+    if (likedSong) {
+      return likedSong.includes(songId);
+    }
+    return false;
   };
+
+  const likeSong = async (songId) => {
+    if (!user) return dispatch(toggleLoginModal());
+    if (isUpdateRef.current) return;
+
+    isUpdateRef.current = true;
+
+    const likedSongTmp = [...likedSong];
+    const isLiked = isSongLiked(songId);
+
+    if (!isLiked) {
+      likedSongTmp.push(songId);
+    } else {
+      const deletedIndex = likedSongTmp.indexOf(songId);
+      likedSongTmp.splice(deletedIndex, 1);
+    }
+    try {
+      const message = isLiked ? "Removed from favorite" : "Added to favorite";
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, { likedSong: likedSongTmp }, { merge: true });
+      isLiked
+        ? await client.patch(songId).dec({ likes: 1 }).commit()
+        : await client.patch(songId).inc({ likes: 1 }).commit();
+
+      setLikedSong(likedSongTmp);
+      toast(message);
+      isUpdateRef.current = false;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      setLikedSong(user.likedSong);
+    }
+  }, [user]);
 
   if (songs.length <= 0) return null;
   return (
@@ -89,68 +135,9 @@ function SongList({ songs, onPlayAll, onSetPlaying, toggleMenu }) {
             onShowModal={onShowModal}
             onAddToQueue={onAddToQueue}
             setSelectedSong={setSelectedSong}
+            isSongLiked={isSongLiked}
+            likeSong={likeSong}
           />
-          // <div
-          //   className="grid grid-cols-playlist items-center gap-8 py-3 px-5 transition duration-200 hover:bg-list-hover rounded-sm group mb-5 md:text-sm lg:text-lg"
-          //   key={song._id}
-          // >
-          //   <div className="flex w-10 ">
-          //     {(activeSong?._id !== song._id || !isPlaying) && (
-          //       <div className="block group-hover:hidden text-sm ml-3">
-          //         {index + 1}
-          //       </div>
-          //     )}
-
-          //     {activeSong?._id === song._id && isPlaying && <BarAnimation />}
-
-          //     <button
-          //       className="hidden group-hover:block"
-          //       onClick={() => playSong(index, song._id)}
-          //     >
-          //       {isPlaying && activeSong._id === song._id ? (
-          //         <MdPauseCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
-          //       ) : (
-          //         <MdPlayCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
-          //       )}
-          //     </button>
-          //   </div>
-          //   <div className="text-sm my-1">
-          //     <h1 className="font-semibold">{song.title}</h1>
-          //     <span className="text-xs text-description">{song.artist}</span>
-          //   </div>
-          //   <div className="flex flex-row items-center">
-          //     <MdFavorite className="md:text-sm lg:text-xl" />
-          //     <span className="ml-2 text-sm">{song.likes}</span>
-          //   </div>
-          //   <div className="text-sm">{song.duration}</div>
-          //   <div className="flex flex-row relative">
-          //     <button>
-          //       <MdOutlineFavoriteBorder
-          //         className="mr-2 md:text-lg lg:text-xl"
-          //         title="Favorite"
-          //       />
-          //     </button>
-          //     <button>
-          //       <MdShare
-          //         className=" mr-2 md:text-lg lg:text-xl"
-          //         title="Share"
-          //       />
-          //     </button>
-          //     <TippyMenu
-          //       toggleMenu={toggleMenu}
-          //       onShowModal={onShowModal}
-          //       onAddToQueue={onAddToQueue}
-          //     >
-          //       <button
-          //         className="hidden group-hover:block md:text-lg lg:text-xl"
-          //         title="More option"
-          //         onClick={() => setSelectedSong(song)}
-          //       >
-          //         <MdOutlineMoreHoriz className="text-gray-400" />
-          //       </button>
-          //     </TippyMenu>
-          //   </div>
-          // </div>
         ))}
       </div>
     </div>
