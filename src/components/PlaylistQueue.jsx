@@ -35,8 +35,9 @@ function PlaylistQueue({ onClose }) {
       dispatch(changeActiveSong(song));
     }
   };
+
   return (
-    <div className="absolute z-40 md:z-30 inset-x-0 bottom-[100px] h-[450px]  bg-primary-400 py-2 md:pb-48">
+    <div className="absolute z-40 md:z-30 inset-x-0 bottom-[50px] h-[450px]  bg-primary-400 py-2 md:pb-48">
       <button className="absolute right-5 top-3" onClick={onClose}>
         <MdKeyboardArrowDown className="text-gray-400 hover:text-white text-5xl" />
       </button>
