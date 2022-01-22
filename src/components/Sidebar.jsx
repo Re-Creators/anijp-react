@@ -10,11 +10,16 @@ import {
 } from "../features/user/userSlice";
 import { getLikedPlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
+import {
+  getUserPlaylist,
+  selectUserPlaylist,
+} from "../features/user-playlist/userPlaylistSlice";
 
 function Sidebar() {
   const dispatch = useDispatch();
   const likedPlaylistIds = useSelector(selectLikedPlaylist);
   const user = useSelector(selectUser);
+  const userPlaylist = useSelector(selectUserPlaylist);
   const [likedPlaylist, setLikedPlaylist] = useState([]);
 
   useEffect(() => {
@@ -25,6 +30,13 @@ function Sidebar() {
       });
     }
   }, [likedPlaylistIds, user]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getUserPlaylist(user.uid));
+    }
+  }, [user, dispatch]);
+
   return (
     <nav className="fixed z-20 left-0 px-5 hidden md:block md:w-sidebar-md lg:w-1/4 xl:w-[18%] h-screen bg-primary text-white shadow-2xl">
       <Link to="/">
@@ -67,20 +79,37 @@ function Sidebar() {
       </div>
       <div className="divider border-t border-primary-300 mt-10"></div>
       <div className="mt-5">
-        <Link to="/favorite" className="flex flex-row items-center relative">
-          <div className="w-8 h-8 bg-red-500 flex justify-center items-center rounded-sm">
-            <MdFavorite className="text-xl" />
-          </div>
-          <span className="line-clamp-2 text-gray-300 text-sm hover:text-white w-32 ml-3">
-            Favorite Songs
-          </span>
-        </Link>
-        <ul className="mt-5">
+        <ul className="mt-1 hide-scrollbar h-[20rem] ">
+          <Link to="/favorite" className="flex flex-row items-center relative">
+            <div className="w-8 h-8 bg-red-500 flex justify-center items-center rounded-sm">
+              <MdFavorite className="text-xl" />
+            </div>
+            <span className="line-clamp-2 text-gray-300 text-sm hover:text-white w-32 ml-3">
+              Favorite Songs
+            </span>
+          </Link>
           {/* Liked Playlist */}
           {likedPlaylist.map((playlist) => (
             <li key={playlist._id} className="mt-3">
               <Link
                 to={`/playlist/${playlist._id}`}
+                className="flex flex-row items-center"
+              >
+                <div className="w-8 h-8">
+                  <img src={playlist.cover} alt="" className="w-full h-full" />
+                </div>
+                <span className="clamp-2 text-gray-300 text-sm ml-3 hover:text-white w-32">
+                  {playlist.name}
+                </span>
+              </Link>
+            </li>
+          ))}
+
+          {/* User Playlist */}
+          {userPlaylist.slice(0, 5).map((playlist) => (
+            <li key={playlist.id} className="mt-3">
+              <Link
+                to={`/myplaylist/${playlist.id}`}
                 className="flex flex-row items-center"
               >
                 <div className="w-8 h-8">
