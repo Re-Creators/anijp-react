@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import PlayerController from "./PlayerController";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -29,6 +29,7 @@ function MusicPlayer() {
   const trackIndex = useRef(0);
 
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.5);
   const [timeProgress, setTimeProgress] = useState(0);
 
   const [isShuffle, setIsShuffle] = useState(false);
@@ -48,6 +49,8 @@ function MusicPlayer() {
 
     dispatch(setIsPlaying(!isPlaying));
   };
+
+  const onChangeVolume = useCallback((vol) => setVolume(vol), []);
 
   const onUpdateTime = (e) => {
     if (!progressMoving) {
@@ -134,6 +137,13 @@ function MusicPlayer() {
     }
   }, [isPlaying]);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+    console.log("Volume change");
+  }, [volume]);
+
   return (
     <div className="fixed z-50 w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl select-none">
       <div className="md:w-1/4 lg:w-1/5 flex flex-row items-center relative">
@@ -174,7 +184,7 @@ function MusicPlayer() {
         onProgressMove={onProgressMove}
       />
 
-      <PlayerExtraControl />
+      <PlayerExtraControl changeVolume={onChangeVolume} />
 
       <audio
         ref={audioRef}
