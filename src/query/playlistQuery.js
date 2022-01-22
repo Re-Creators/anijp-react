@@ -34,7 +34,7 @@ export const getOnePlaylist = (id) => `*[_type == 'playlist' && _id == '${id}']
  }
 }`;
 
-export const getLikedPlaylist = `*[_type == 'playlist' && _id in $listId] 
+export const getLikedPlaylist = `*[_type == 'playlist' && _id in $listId]
 {
   _id,
   name,
