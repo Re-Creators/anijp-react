@@ -13,12 +13,18 @@ import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { ref, deleteObject } from "firebase/storage";
 import Detail from "../components/playlist/Detail";
+import { getUserPlaylist } from "../features/user-playlist/userPlaylistSlice";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/user/userSlice";
+
 function UserPlaylist() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showOption, setShowOption] = useState(false);
   const [playlistDetail, setPlaylistDetail] = useState(null);
+
+  const user = useSelector(selectUser);
 
   const docRef = useRef(null);
 
@@ -48,6 +54,7 @@ function UserPlaylist() {
     setShowOption(false);
     addPlaylistSong(playlistDetail.songs);
   };
+
   const deletePlaylist = async () => {
     setShowOption(false);
     try {
@@ -59,6 +66,7 @@ function UserPlaylist() {
         await deleteObject(docRef);
       }
 
+      dispatch(getUserPlaylist(user.uid));
       navigate("/collection");
       toast.update(toastLoading, {
         render: "Playlist deleted!",

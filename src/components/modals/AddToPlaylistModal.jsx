@@ -4,6 +4,11 @@ import { useUserPlaylist } from "../../hooks/useUserPlaylist";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import {
+  getUserPlaylist,
+  selectUserPlaylist,
+} from "../../features/user-playlist/userPlaylistSlice";
 
 function AddToPlaylistModal({
   showChildModal,
@@ -11,8 +16,9 @@ function AddToPlaylistModal({
   closeModal,
   user,
   selectedSong,
+  dispatch,
 }) {
-  const { userPlaylist, fetchData } = useUserPlaylist(user);
+  const userPlaylist = useSelector(selectUserPlaylist);
 
   const addToPlaylist = async (id) => {
     closeModal();
@@ -46,7 +52,10 @@ function AddToPlaylistModal({
   return (
     <>
       {showChildModal ? (
-        <NewPlaylistModal hideModal={toggleChildModal} fetchData={fetchData} />
+        <NewPlaylistModal
+          hideModal={toggleChildModal}
+          fetchData={dispatch(getUserPlaylist(user.uid))}
+        />
       ) : (
         <div className="modal w-full h-full md:h-auto md:w-1/2 lg:w-2/5 py-8 bg-primary md:rounded-lg">
           <div className="flex flex-row justify-between text-white px-8 mb-3">

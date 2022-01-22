@@ -14,12 +14,16 @@ import {
   addNewSongs,
   setIsPlaying,
 } from "../features/music-player/musicPlayerSlice";
+import {
+  getUserPlaylist,
+  selectUserPlaylist,
+} from "../features/user-playlist/userPlaylistSlice";
 
 function Collection() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const likedPlaylist = useSelector(selectLikedPlaylist);
-  const { userPlaylist, fetchData } = useUserPlaylist(user);
+  const userPlaylist = useSelector(selectUserPlaylist);
 
   const [showModal, setShowModal] = useState(false);
   const [likedPlaylistData, setLikedPlaylistData] = useState([]);
@@ -146,7 +150,7 @@ function Collection() {
       >
         <NewPlaylistModal
           hideModal={() => setShowModal(false)}
-          fetchData={fetchData}
+          fetchData={() => dispatch(getUserPlaylist(user.uid))}
         />
       </PortalContainer>
     </div>

@@ -109,6 +109,7 @@ function SongList({ songs, toggleMenu, dispatch }) {
           toggleChildModal={() => setShowChildModal(!showChildModal)}
           closeModal={onCloseModal}
           selectedSong={selectedSong}
+          dispatch={dispatch}
         />
       </PortalContainer>
 
