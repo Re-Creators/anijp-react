@@ -13,6 +13,7 @@ import { setLoggedIn } from "./features/user/userSlice";
 import { getUserData } from "./features/user/userSlice";
 import AuthLayout from "./pages/AuthLayout";
 import FavoriteSong from "./pages/FavoriteSongs";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,15 +32,28 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="playlist/:id" element={<Playlist />} />
-            <Route path="myplaylist/:id" element={<UserPlaylist />} />
+            <Route
+              path="myplaylist/:id"
+              element={
+                <RequireAuth>
+                  <UserPlaylist />
+                </RequireAuth>
+              }
+            />
             <Route path="collection" element={<Collection />} />
-            <Route path="favorite" element={<FavoriteSong />} />
+            <Route
+              path="favorite"
+              element={
+                <RequireAuth>
+                  <FavoriteSong />
+                </RequireAuth>
+              }
+            />
           </Route>
           <Route
             path="/login"
             element={
               <AuthLayout>
-                {" "}
                 <Login />
               </AuthLayout>
             }

@@ -14,6 +14,7 @@ import {
   getUserPlaylist,
   selectUserPlaylist,
 } from "../features/user-playlist/userPlaylistSlice";
+import { toggleLoginModal } from "../features/modals/modalSlice";
 
 function Sidebar() {
   const dispatch = useDispatch();
@@ -80,7 +81,16 @@ function Sidebar() {
       <div className="divider border-t border-primary-300 mt-10"></div>
       <div className="mt-5">
         <ul className="mt-1 hide-scrollbar h-[20rem] ">
-          <Link to="/favorite" className="flex flex-row items-center relative">
+          <Link
+            to="/favorite"
+            className="flex flex-row items-center relative"
+            onClick={(e) => {
+              if (!user) {
+                e.preventDefault();
+                return dispatch(toggleLoginModal());
+              }
+            }}
+          >
             <div className="w-8 h-8 bg-red-500 flex justify-center items-center rounded-sm">
               <MdFavorite className="text-xl" />
             </div>
