@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
 import { MdLibraryMusic, MdFavorite } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,31 +50,31 @@ function Sidebar() {
       <div className="mt-10">
         <ul className="grid grid-flow-row gap-y-8">
           <li className="menu-item">
-            <Link
+            <NavLink
               to="/"
-              className="flex flex-row items-center transition duration-150 hover:text-link-active"
+              className={({ isActive }) => (isActive ? "nav-active" : "nav")}
             >
               <AiFillHome className="text-2xl" />
               <span className="text-md ml-5">Home</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link
+            <NavLink
               to="/"
-              className="flex flex-row items-center transition duration-150 hover:text-link-active"
+              className={({ isActive }) => (isActive ? "nav-active" : "nav")}
             >
               <AiOutlineSearch className="text-2xl" />
               <span className="text-md ml-5">Explore</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="menu-item">
-            <Link
+            <NavLink
               to="/collection"
-              className="flex flex-row items-center transition duration-150 hover:text-link-active"
+              className={({ isActive }) => (isActive ? "nav-active" : "nav")}
             >
               <MdLibraryMusic className="text-2xl" />
               <span className="text-md ml-5">Collection</span>
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>
