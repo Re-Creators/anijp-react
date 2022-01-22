@@ -1,16 +1,9 @@
 import { useRef, useState, memo } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { MdCreate } from "react-icons/md";
-import { collection, addDoc } from "firebase/firestore";
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
-import { db, storage } from "../../firebase-config";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/user/userSlice";
 import { toast } from "react-toastify";
+import { createNewPlaylist } from "../../services/firebaseAPI";
 
 function NewPlaylistModal({ hideModal, fetchData }) {
   const user = useSelector(selectUser);
@@ -21,35 +14,13 @@ function NewPlaylistModal({ hideModal, fetchData }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     hideModal();
 
     const toastLoading = toast.loading("Creating new playlist");
 
-    let coverUrl = "";
-    let coverPath = "";
-
-    if (imageFileRef.current) {
-      const docRef = storageRef(storage, "playlistCover/" + uuidv4());
-      try {
-        // Upload files
-        await uploadBytes(docRef, imageFileRef.current);
-        coverUrl = await getDownloadURL(docRef);
-        coverPath = docRef.fullPath;
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    addDoc(collection(db, "user_playlists"), {
-      name: name,
-      cover: coverUrl,
-      coverPathStorage: coverPath,
-      songs: [],
-      description: description,
-      user_id: user.uid,
-    })
+    createNewPlaylist(imageFileRef.current, user.uid, name, description)
       .then(() => {
         fetchData();
         toast.update(toastLoading, {
@@ -60,7 +31,7 @@ function NewPlaylistModal({ hideModal, fetchData }) {
         });
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
