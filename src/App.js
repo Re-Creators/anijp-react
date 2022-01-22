@@ -14,6 +14,8 @@ import { getUserData } from "./features/user/userSlice";
 import AuthLayout from "./pages/AuthLayout";
 import FavoriteSong from "./pages/FavoriteSongs";
 import RequireAuth from "./components/RequireAuth";
+import Search from "./pages/Search";
+import SearchResult from "./pages/SearchResult";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +34,9 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="playlist/:id" element={<Playlist />} />
+            <Route path="search" element={<Search />}>
+              <Route path=":keyword" element={<SearchResult />} />
+            </Route>
             <Route
               path="myplaylist/:id"
               element={

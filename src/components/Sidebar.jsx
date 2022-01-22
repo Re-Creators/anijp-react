@@ -60,11 +60,11 @@ function Sidebar() {
           </li>
           <li className="menu-item">
             <NavLink
-              to="/"
+              to="/search"
               className={({ isActive }) => (isActive ? "nav-active" : "nav")}
             >
               <AiOutlineSearch className="text-2xl" />
-              <span className="text-md ml-5">Explore</span>
+              <span className="text-md ml-5">Search</span>
             </NavLink>
           </li>
           <li className="menu-item">

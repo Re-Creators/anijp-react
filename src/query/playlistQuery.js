@@ -49,3 +49,19 @@ export const getLikedPlaylist = `*[_type == 'playlist' && _id in $listId]
     likes
   }
 }`;
+
+export const searchPlaylist = `*[_type == 'playlist' && name match $keyword]
+{
+  _id,
+  name,
+  "cover" : image.asset->url,
+  songs[]->{
+    _id,
+    artist,
+    title,
+    "image" : image.asset->url,
+    "songUrl" : song.asset->url,
+    duration,
+    likes
+  }
+}`;
