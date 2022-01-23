@@ -1,14 +1,12 @@
 import { MdOutlineClose } from "react-icons/md";
 import NewPlaylistModal from "./NewPlaylistModal";
-import { useUserPlaylist } from "../../hooks/useUserPlaylist";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase-config";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
   getUserPlaylist,
   selectUserPlaylist,
 } from "../../features/user-playlist/userPlaylistSlice";
+import { addSongIntoPlaylist } from "../../services/firebaseAPI";
 
 function AddToPlaylistModal({
   showChildModal,
@@ -22,32 +20,28 @@ function AddToPlaylistModal({
 
   const addToPlaylist = async (id) => {
     closeModal();
-    const docRef = doc(db, "user_playlists", id);
+    const toastLoading = toast.loading("Adding song");
 
-    try {
-      const doc = await getDoc(docRef);
-      const songs = doc.data().songs;
-      const newSong = selectedSong;
-      const songExist = songs.some((oldSong) => newSong._id === oldSong._id);
-
-      if (!songExist) {
-        const toastLoading = toast.loading("Adding song");
-
-        songs.push(newSong);
-        await updateDoc(docRef, { songs: songs }, { merge: true });
+    addSongIntoPlaylist(selectedSong, id)
+      .then(() => {
+        dispatch(getUserPlaylist(user.uid));
         toast.update(toastLoading, {
           render: "Song successfully added",
           type: "success",
           isLoading: false,
           autoClose: 3000,
         });
-      } else {
-        closeModal();
-        toast.error("Song already in playlist");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+      })
+      .catch((err) => {
+        if (err.message) {
+          toast.update(toastLoading, {
+            render: "Song already added",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        }
+      });
   };
   return (
     <>

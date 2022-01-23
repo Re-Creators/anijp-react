@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import {
   getDownloadURL,
   uploadBytes,
@@ -33,6 +33,26 @@ export async function createNewPlaylist(
       description: description,
       user_id: userId,
     });
+  } catch (err) {
+    return err;
+  }
+}
+
+export async function addSongIntoPlaylist(newSong, playlistId) {
+  const docRef = doc(db, "user_playlists", playlistId);
+
+  try {
+    const doc = await getDoc(docRef);
+    const songs = doc.data().songs;
+
+    const songExist = songs.some((oldSong) => newSong._id === oldSong._id);
+    songs.push(newSong);
+
+    if (!songExist) {
+      return updateDoc(docRef, { songs: songs }, { merge: true });
+    }
+
+    return Promise.reject({ message: "Song already in playlist" });
   } catch (err) {
     return err;
   }
