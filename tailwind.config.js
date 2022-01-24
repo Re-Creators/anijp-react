@@ -2,6 +2,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      flex: {
+        "mobile-size": "0 0 33.33333%",
+      },
       colors: {
         primary: "#14284A",
         "primary-100": "rgba(20, 40, 74, .55)",
@@ -22,6 +25,9 @@ module.exports = {
       },
       minWidth: {
         "slide-item": "34rem",
+      },
+      maxWidth: {
+        "1/3": "33.333333%",
       },
       blur: {
         xs: "2px",

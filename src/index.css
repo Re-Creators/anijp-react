@@ -62,6 +62,13 @@ body {
   margin: 0px -10px !important;
 }
 
+.category-slider .slick-slide > div {
+  margin: 0px 10px;
+}
+.category-slider .slick-list {
+  margin: 0px -20px !important;
+}
+
 /* Custom Arrow */
 .slick-prev:before,
 .slick-next:before {

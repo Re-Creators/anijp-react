@@ -5,7 +5,7 @@ import { MdLibraryMusic, MdFavorite } from "react-icons/md";
 
 function MenuBar() {
   return (
-    <div className="fixed z-30 inset-x-0 bottom-0 bg-primary p-5 flex flex-row justify-between text-white">
+    <div className="bg-primary p-5 flex flex-row justify-between text-white">
       <div>
         <Link className="flex flex-col items-center" to="/">
           <AiFillHome fontSize={20} />
