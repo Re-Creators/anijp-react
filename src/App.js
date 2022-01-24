@@ -16,9 +16,54 @@ import FavoriteSong from "./pages/FavoriteSongs";
 import RequireAuth from "./components/RequireAuth";
 import Search from "./pages/Search";
 import SearchResult from "./pages/SearchResult";
+import useScreenCheck from "./hooks/useScreenCheck";
+import MobileLayout from "./pages/mobile/MobileLayout";
+import HomeMobile from "./pages/mobile/HomeMobile";
+
+const DesktopScreen = (
+  <Route path="/" element={<Layout />}>
+    <Route index element={<Home />} />
+    <Route path="playlist/:id" element={<Playlist />} />
+    <Route path="search" element={<Search />}>
+      <Route path=":keyword" element={<SearchResult />} />
+    </Route>
+    <Route
+      path="myplaylist/:id"
+      element={
+        <RequireAuth>
+          <UserPlaylist />
+        </RequireAuth>
+      }
+    />
+    <Route path="collection" element={<Collection />} />
+    <Route
+      path="favorite"
+      element={
+        <RequireAuth>
+          <FavoriteSong />
+        </RequireAuth>
+      }
+    />
+  </Route>
+);
+
+const renderScreen = (screen) => {
+  if (screen === "DESKTOP") return DesktopScreen;
+  else if (screen === "MOBILE") return MobileScreen;
+  return undefined;
+};
+
+const MobileScreen = (
+  <>
+    <Route path="/" element={<MobileLayout />}>
+      <Route index element={<HomeMobile />} />
+    </Route>
+  </>
+);
 
 function App() {
   const dispatch = useDispatch();
+  const screen = useScreenCheck();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -31,30 +76,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="playlist/:id" element={<Playlist />} />
-            <Route path="search" element={<Search />}>
-              <Route path=":keyword" element={<SearchResult />} />
-            </Route>
-            <Route
-              path="myplaylist/:id"
-              element={
-                <RequireAuth>
-                  <UserPlaylist />
-                </RequireAuth>
-              }
-            />
-            <Route path="collection" element={<Collection />} />
-            <Route
-              path="favorite"
-              element={
-                <RequireAuth>
-                  <FavoriteSong />
-                </RequireAuth>
-              }
-            />
-          </Route>
+          {renderScreen(screen)}
           <Route
             path="/login"
             element={
