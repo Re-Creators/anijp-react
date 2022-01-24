@@ -8,8 +8,8 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    toggleLoginModal: (state) => {
-      state.showModal = !state.showModal;
+    toggleLoginModal: (state, { payload }) => {
+      state.showModal = payload ? !payload : !state.showModal;
     },
   },
 });
