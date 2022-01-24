@@ -144,7 +144,7 @@ function MusicPlayer() {
   }, [volume]);
 
   return (
-    <div className="fixed z-50 w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl select-none">
+    <div className="fixed z-50 min-w-[765px] md:w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl select-none">
       <div className="md:w-1/4 lg:w-1/5 flex flex-row items-center relative">
         <div className="w-20 h-20 p-3  bg-secondary rounded-full absolute">
           <ProgressRing stroke={4} radius={48} progress={percent} />

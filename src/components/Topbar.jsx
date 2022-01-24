@@ -23,7 +23,7 @@ function Topbar() {
   };
 
   return (
-    <header className="w-full z-10 bg-primary py-3 px-10 fixed top-0 left-0 flex flex-row justify-end shadow-md">
+    <header className="w-[765px] md:w-full z-10 bg-primary py-3 px-10 fixed top-0 left-0 flex flex-row justify-end shadow-md">
       <PortalContainer
         isShow={showModal}
         zIndex={50}

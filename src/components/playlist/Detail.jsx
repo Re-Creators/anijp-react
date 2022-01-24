@@ -22,7 +22,7 @@ function Detail(props) {
               className="w-full h-full object-cover object-center rounded-md shadow-md"
             />
           </div>
-          <div className="md:ml-5 lg:ml-8 flex flex-col justify-between">
+          <div className="ml-3 md:ml-5 lg:ml-8 flex flex-col justify-between">
             <div>
               <span className="text-xs uppercase">{type}</span>
               <h1 className="title md:text-4xl lg:text-4xl xl:text-6xl mt-3">
