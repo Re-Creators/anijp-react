@@ -22,7 +22,6 @@ function App() {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user);
       dispatch(setLoggedIn(true));
       dispatch(getUserData(user.uid));
     }

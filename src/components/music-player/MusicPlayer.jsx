@@ -141,7 +141,6 @@ function MusicPlayer() {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
-    console.log("Volume change");
   }, [volume]);
 
   return (

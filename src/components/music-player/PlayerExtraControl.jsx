@@ -10,7 +10,6 @@ import PlaylistQueue from "../PlaylistQueue";
 import PortalContainer from "../portal/PortalContainer";
 
 function PlayerExtraControl({ changeVolume }) {
-  console.log("Render PlayerExtraControl");
   const [showQueue, setShowQueue] = useState(false);
   const [volume, setVolume] = useState(0.5);
 

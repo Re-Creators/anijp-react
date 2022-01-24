@@ -18,7 +18,6 @@ import {
 import BarAnimation from "./UI/BarAnimation";
 
 function PlaylistQueue({ onClose }) {
-  console.log("PlaylistQueue");
   const dispatch = useDispatch();
 
   const activeSong = useSelector(selectActiveSong);

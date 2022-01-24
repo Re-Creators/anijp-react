@@ -22,8 +22,6 @@ import { client } from "../../sanityClient";
 import { toast } from "react-toastify";
 
 function SongList({ songs, toggleMenu, dispatch }) {
-  console.log("Song list render");
-
   const activeSong = useSelector(selectActiveSong);
   const isPlaying = useSelector(selectIsPlaying);
   const user = useSelector(selectUser);

@@ -22,7 +22,6 @@ import { toggleLoginModal } from "../features/modals/modalSlice";
 import { toast } from "react-toastify";
 
 function Playlist() {
-  console.log("render Playlist");
   const dispatch = useDispatch();
   const { id } = useParams();
 

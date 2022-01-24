@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import PortalContainer from "../portal/PortalContainer";
 import { toggleLoginModal } from "../../features/modals/modalSlice";
 import MainLogin from "../login/MainLogin";
-import { selectIsLoggedIn, selectUser } from "../../features/user/userSlice";
+import { selectIsLoggedIn } from "../../features/user/userSlice";
 
 function LoginModalContainer() {
   const dispatch = useDispatch();
