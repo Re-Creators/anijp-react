@@ -19,6 +19,7 @@ import SearchResult from "./pages/SearchResult";
 import useScreenCheck from "./hooks/useScreenCheck";
 import MobileLayout from "./pages/mobile/MobileLayout";
 import HomeMobile from "./pages/mobile/HomeMobile";
+import PlaylistMobile from "./pages/mobile/PlaylistMobile";
 
 const DesktopScreen = (
   <Route path="/" element={<Layout />}>
@@ -57,6 +58,7 @@ const MobileScreen = (
   <>
     <Route path="/" element={<MobileLayout />}>
       <Route index element={<HomeMobile />} />
+      <Route path="playlist/:id" element={<PlaylistMobile />} />
     </Route>
   </>
 );

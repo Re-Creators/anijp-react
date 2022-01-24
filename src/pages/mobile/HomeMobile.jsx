@@ -24,7 +24,7 @@ function HomeMobile() {
                 key={playlist._id}
               >
                 <div className="overflow-hidden pt-[100%] rounded-sm relative block w-full">
-                  <Link to="/">
+                  <Link to={`/playlist/${playlist._id}`}>
                     <img
                       src={playlist.cover}
                       alt=""
