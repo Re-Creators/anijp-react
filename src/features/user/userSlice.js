@@ -1,8 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { db, storage } from "../../firebase-config";
+import { db, storage, authApp, auth } from "../../firebase-config";
 import { v4 as uuidv4 } from "uuid";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
 const initialState = {
   loggedIn: false,
@@ -10,6 +15,7 @@ const initialState = {
   likedPlaylist: [],
   likedSongs: [],
   isLoading: false,
+  error: null,
 };
 
 export const getUserData = createAsyncThunk("user/fetch", async (userId) => {
@@ -46,6 +52,44 @@ export const updateUserData = createAsyncThunk(
 
       onSuccess();
       return { username: newData.username, photo: photoURL };
+    } catch (err) {
+      return err;
+    }
+  }
+);
+
+export const login = createAsyncThunk("user/login", async (userData) => {
+  const response = await signInWithEmailAndPassword(
+    authApp,
+    userData.email,
+    userData.password
+  );
+  return response;
+});
+
+export const loginWithGoogle = createAsyncThunk(
+  "user/loginWithGoogle",
+  async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const { user } = await signInWithPopup(auth, provider);
+      const newUserRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(newUserRef);
+
+      if (docSnap.exists()) {
+        return docSnap.data();
+      }
+
+      const newUser = await setDoc(newUserRef, {
+        username: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        likedPlaylist: [],
+        likedSong: [],
+      });
+
+      return newUser;
     } catch (err) {
       return err;
     }
@@ -93,6 +137,25 @@ const userSlice = createSlice({
     [updateUserData.rejected]: (state) => {
       state.isLoading = false;
     },
+    [login.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [login.fulfilled]: (state, _) => {
+      state.isLoading = false;
+    },
+    [login.rejected]: (state, { error }) => {
+      if (error.code === "auth/invalid-email") {
+        state.error = { password: null, email: "Enter a valid email" };
+      } else if (error.code === "auth/wrong-password") {
+        state.error = {
+          email: null,
+          password: "Password doesn't match with our records",
+        };
+      } else if (error.code === "auth/user-not-found") {
+        state.error = { password: null, email: "User not found" };
+      }
+      state.isLoading = false;
+    },
   },
 });
 
@@ -103,5 +166,6 @@ export const selectUser = (state) => state.user.user;
 export const selectisLoading = (state) => state.user.isLoading;
 export const selectLikedSongs = (state) => state.user.likedSongs;
 export const selectLikedPlaylist = (state) => state.user.likedPlaylist;
+export const selectError = (state) => state.user.error;
 
 export default userSlice.reducer;
