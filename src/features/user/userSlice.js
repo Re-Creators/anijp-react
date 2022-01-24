@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 const initialState = {
@@ -58,14 +59,21 @@ export const updateUserData = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk("user/login", async (userData) => {
-  const response = await signInWithEmailAndPassword(
-    authApp,
-    userData.email,
-    userData.password
-  );
-  return response;
-});
+export const login = createAsyncThunk(
+  "user/login",
+  async (userData, { rejectWithValue }) => {
+    try {
+      await signInWithEmailAndPassword(
+        authApp,
+        userData.email,
+        userData.password
+      );
+      return null;
+    } catch (err) {
+      return rejectWithValue(err.code);
+    }
+  }
+);
 
 export const loginWithGoogle = createAsyncThunk(
   "user/loginWithGoogle",
@@ -92,6 +100,33 @@ export const loginWithGoogle = createAsyncThunk(
       return newUser;
     } catch (err) {
       return err;
+    }
+  }
+);
+
+export const register = createAsyncThunk(
+  "user/register",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        userData.email,
+        userData.password
+      );
+      const user = response.user;
+      const newUserRef = doc(db, "users", user.uid);
+      await setDoc(newUserRef, {
+        username: userData.username,
+        email: userData.email,
+        photo:
+          "https://firebasestorage.googleapis.com/v0/b/ani-jp.appspot.com/o/userPhoto%2Fdefault-user-imge.jpeg?alt=media&token=b0623059-35ce-4efc-963d-8184d842f27d",
+        likedPlaylist: [],
+        likedSong: [],
+      });
+
+      return null;
+    } catch (err) {
+      return rejectWithValue(err.code);
     }
   }
 );
@@ -143,16 +178,28 @@ const userSlice = createSlice({
     [login.fulfilled]: (state, _) => {
       state.isLoading = false;
     },
-    [login.rejected]: (state, { error }) => {
-      if (error.code === "auth/invalid-email") {
+    [login.rejected]: (state, { payload }) => {
+      if (payload === "auth/invalid-email") {
         state.error = { password: null, email: "Enter a valid email" };
-      } else if (error.code === "auth/wrong-password") {
+      } else if (payload === "auth/wrong-password") {
         state.error = {
           email: null,
           password: "Password doesn't match with our records",
         };
-      } else if (error.code === "auth/user-not-found") {
+      } else if (payload === "auth/user-not-found") {
         state.error = { password: null, email: "User not found" };
+      }
+      state.isLoading = false;
+    },
+    [register.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [register.fulfilled]: (state) => {
+      state.isLoading = false;
+    },
+    [register.rejected]: (state, { payload }) => {
+      if (payload === "auth/email-already-in-use") {
+        state.error = "Email already used.";
       }
       state.isLoading = false;
     },
