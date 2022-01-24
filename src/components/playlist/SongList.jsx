@@ -6,7 +6,7 @@ import {
   setIsPlaying,
 } from "../../features/music-player/musicPlayerSlice";
 import PortalContainer from "../portal/PortalContainer";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import AddToPlaylistModal from "../modals/AddToPlaylistModal";
 import { addOneSong } from "../../features/music-player/musicPlayerSlice";
 import {

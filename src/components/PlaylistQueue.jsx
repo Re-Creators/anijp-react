@@ -11,7 +11,6 @@ import {
   selectIsPlaying,
   setIsPlaying,
   changeActiveSong,
-  addNewSongs,
   clearSongs,
   removeOneSong,
 } from "../features/music-player/musicPlayerSlice";

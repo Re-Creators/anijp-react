@@ -4,10 +4,8 @@ import {
   MdPlayCircleFilled,
   MdSkipPrevious,
   MdSkipNext,
-  MdVolumeDownAlt,
   MdOutlineRepeatOne,
   MdOutlineRepeat,
-  MdList,
 } from "react-icons/md";
 import { getDurationString } from "../../utils";
 import ProggressBar from "./ProggressBar";

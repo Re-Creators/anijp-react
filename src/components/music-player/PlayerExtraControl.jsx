@@ -4,7 +4,6 @@ import {
   MdList,
   MdVolumeOff,
   MdVolumeUp,
-  MdVolumeMute,
 } from "react-icons/md";
 import PlaylistQueue from "../PlaylistQueue";
 import PortalContainer from "../portal/PortalContainer";
