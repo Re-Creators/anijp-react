@@ -167,5 +167,6 @@ export const selectisLoading = (state) => state.user.isLoading;
 export const selectLikedSongs = (state) => state.user.likedSongs;
 export const selectLikedPlaylist = (state) => state.user.likedPlaylist;
 export const selectError = (state) => state.user.error;
+export const selectIsLoggedIn = (state) => state.user.loggedIn;
 
 export default userSlice.reducer;

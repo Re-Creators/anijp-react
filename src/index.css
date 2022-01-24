@@ -10,6 +10,9 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
+.login-container {
+  min-height: calc(100vh - 1px);
+}
 
 @layer components {
   .modal {
