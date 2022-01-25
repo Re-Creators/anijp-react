@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { selectLikedPlaylist, selectUser } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { toggleLoginModal } from "../features/modals/modalSlice";
-import { useUserPlaylist } from "../hooks/useUserPlaylist";
 import { getLikedPlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
 import {
@@ -51,7 +50,7 @@ function Collection() {
   }, [likedPlaylist]);
 
   return (
-    <div className="pl-10 mt-20 text-white pb-96 h-screen hide-scrollbar">
+    <div className="mt-5 pl-5 md:pl-10 text-white pb-96 h-screen hide-scrollbar">
       <h1 className="font-bold text-2xl md:text-4xl">My Collection</h1>
       <div className="flex flex-row flex-wrap mt-8">
         {/* New Playlist */}
@@ -74,12 +73,12 @@ function Collection() {
         {/* Liked Playlist */}
         {likedPlaylistData.map((playlist) => (
           <div
-            className="mr-5 md:mr-8 flex flex-col items-center mb-5"
+            className="mr-5 md:mr-8 flex flex-col items-center mb-5 w-40 md:w-52"
             key={playlist._id}
           >
             <Link
               to={`/playlist/${playlist._id}`}
-              className="relative block w-40 h-40 md:w-52 md:h-52  overflow-y-hidden mb-3 group"
+              className="relative block h-40  md:h-52  overflow-y-hidden mb-3 group"
             >
               <img
                 src={playlist.cover}
@@ -100,7 +99,7 @@ function Collection() {
                 </button>
               </div>
             </Link>
-            <div className="text-semibold w-full md:w-52">
+            <div className="text-semibold w-full w-full">
               <span className="line-clamp-2">{playlist.name}</span>
             </div>
           </div>

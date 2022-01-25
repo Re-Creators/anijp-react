@@ -19,7 +19,7 @@ function MenuBar() {
         </Link>
       </div>
       <div>
-        <Link className="flex flex-col  items-center" to="/">
+        <Link className="flex flex-col  items-center" to="/collection">
           <MdLibraryMusic fontSize={20} />
           <span className="text-xs mt-2">Collection</span>
         </Link>

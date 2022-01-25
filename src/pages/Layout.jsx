@@ -14,7 +14,9 @@ function Layout() {
         <Sidebar />
         <div className="w-full md:w-view-md lg:w-3/4 xl:w-[82%] ">
           <Topbar />
-          <Outlet />
+          <div className="pt-15">
+            <Outlet />
+          </div>
         </div>
       </div>
 

@@ -59,6 +59,7 @@ const MobileScreen = (
     <Route path="/" element={<MobileLayout />}>
       <Route index element={<HomeMobile />} />
       <Route path="playlist/:id" element={<PlaylistMobile />} />
+      <Route path="collection" element={<Collection />} />
     </Route>
   </>
 );
