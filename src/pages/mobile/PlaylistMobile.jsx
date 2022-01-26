@@ -1,13 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { MdFavorite, MdLibraryMusic, MdPlayArrow } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import Song from "../../components/mobile/list-items/Song";
+import {
+  addNewSongs,
+  selectActiveSong,
+  selectIsPlaying,
+  setIsPlaying,
+} from "../../features/music-player/musicPlayerSlice";
 import { getOnePlaylist } from "../../query/playlistQuery";
 import { client } from "../../sanityClient";
 
 function PlaylistMobile() {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
+  const isPlaying = useSelector(selectIsPlaying);
+  const activeSong = useSelector(selectActiveSong);
   const [playlistDetail, setPlayListDetail] = useState(null);
+
+  const onPlaySong = (indexSong, songId) => {
+    if (activeSong !== null && songId === activeSong._id) {
+      dispatch(setIsPlaying(!isPlaying));
+    } else {
+      dispatch(addNewSongs({ songs: playlistDetail.songs, indexSong }));
+      dispatch(setIsPlaying(true));
+    }
+  };
 
   useEffect(() => {
     const query = getOnePlaylist(id);
@@ -57,7 +78,15 @@ function PlaylistMobile() {
       <div className="w-full h-96 bg-playlist-container">
         <div className="px-2 py-5 pb-56">
           <div>
-            <button className="flex flex-row items-center mb-10">
+            <button
+              className="flex flex-row items-center mb-10"
+              onClick={() => {
+                dispatch(
+                  addNewSongs({ songs: playlistDetail.songs, indexSong: 0 })
+                );
+                dispatch(setIsPlaying(true));
+              }}
+            >
               <svg
                 viewBox="0 0 80 80"
                 fill="none"
@@ -74,19 +103,18 @@ function PlaylistMobile() {
             </button>
           </div>
           <div className="text-white px-1">
-            {playlistDetail.songs.map((song) => (
-              <div
-                className="flex flex-row w-full justify-between py-3 px-5 mb-2"
+            {playlistDetail.songs.map((song, index) => (
+              <Song
                 key={song._id}
-              >
-                <div>
-                  <h1>{song.title} </h1>
-                  <span className="text-sm text-gray-300">{song.artist} </span>
-                </div>
-                <button>
-                  <MdPlayArrow className="text-2xl" />
-                </button>
-              </div>
+                indexSong={index}
+                title={song.title}
+                artist={song.artist}
+                dispatch={dispatch}
+                activeSong={activeSong}
+                isPlaying={isPlaying}
+                songId={song._id}
+                onPlaySong={onPlaySong}
+              />
             ))}
           </div>
         </div>
