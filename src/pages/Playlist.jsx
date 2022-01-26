@@ -9,8 +9,6 @@ import {
 } from "..//features/music-player/musicPlayerSlice";
 import { db } from "../firebase-config";
 import { doc, updateDoc } from "firebase/firestore";
-import { getOnePlaylist } from "../query/playlistQuery";
-import { client } from "../sanityClient";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -21,20 +19,20 @@ import {
 import { toggleLoginModal } from "../features/modals/modalSlice";
 import { toast } from "react-toastify";
 import usePlaylistDetail from "../hooks/usePlaylistDetail";
+import useUpdatePlaylistLike from "../hooks/useUpdatePlaylistLike";
 
 function Playlist() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { data, isLoading, status } = usePlaylistDetail(id);
+  const { data, isLoading } = usePlaylistDetail(id);
+  const { mutate } = useUpdatePlaylistLike();
 
   const user = useSelector(selectUser);
   const likedPlaylist = useSelector(selectLikedPlaylist);
   const [isLiked, setIsLiked] = useState(false);
 
   const [showMenu, setShowMenu] = useState(true);
-  const [likeCount, setLikeCount] = useState(0);
-
   const isUpdateRef = useRef(false);
 
   const like = async () => {
@@ -66,10 +64,7 @@ function Playlist() {
       setIsLiked(!isLiked);
       toast(message);
 
-      let response = isLiked
-        ? await client.patch(id).dec({ likes: 1 }).commit()
-        : await client.patch(id).inc({ likes: 1 }).commit();
-      setLikeCount(response?.likes);
+      mutate({ isLiked, id });
 
       isUpdateRef.current = false;
     } catch (err) {
@@ -77,18 +72,11 @@ function Playlist() {
     }
   };
 
-  useState(() => {
-    if (status === "success") {
-      setLikeCount(data.likes);
-    }
-  }, [status]);
-
   useEffect(() => {
-    if (user) {
-      const likedPlaylist = user.likedPlaylist;
+    if (likedPlaylist) {
       setIsLiked(likedPlaylist.includes(id));
     }
-  }, [user, id, dispatch]);
+  }, [likedPlaylist, id, dispatch]);
 
   if (isLoading) return <p>Loading..</p>;
   return (
@@ -103,7 +91,7 @@ function Playlist() {
         playlistName={data.name}
         cover={data.cover}
         description={data.description}
-        likeCount={likeCount}
+        likeCount={data.likes}
         type="playlist"
       />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
