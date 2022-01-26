@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { CSSTransition } from "react-transition-group";
 import {
   changeActiveSong,
   selectActiveSong,
@@ -8,6 +9,7 @@ import {
   selectSongs,
   setIsPlaying,
 } from "../../../features/music-player/musicPlayerSlice";
+import MusicInfo from "./MusicInfo";
 
 function MusicPlayerMobile() {
   const dispatch = useDispatch();
@@ -15,6 +17,8 @@ function MusicPlayerMobile() {
   const isPlaying = useSelector(selectIsPlaying);
   const songs = useSelector(selectSongs);
   const activeSong = useSelector(selectActiveSong);
+
+  const [showMusicInfo, setShowMusicInfo] = useState(false);
 
   const trackIndex = useRef(0);
 
@@ -49,7 +53,7 @@ function MusicPlayerMobile() {
   };
 
   return (
-    <div className="relative w-full bg-primary border-b-2 border-primary-300 p-5 text-white flex flex-row justify-between">
+    <div className="relative w-full bg-primary border-b-2 border-primary-300 px-5  text-white flex flex-row justify-between h-[60px]">
       <div className="w-16 h-16 p-3  bg-secondary rounded-full absolute -top-2">
         <img
           src={activeSong ? activeSong.image : "/images/new-playlist.png"}
@@ -57,11 +61,16 @@ function MusicPlayerMobile() {
           className={`w-full h-full object-cover rounded-full animate-spin-slow ${
             isPlaying ? "" : "animation-pause"
           }`}
+          onClick={() => setShowMusicInfo(true)}
         />
       </div>
-      <div className="text-white ml-20 w-48 text-sm">
-        <span className="text-xs clamp-1 text-gray-300">
-          {activeSong?.title}
+      <div
+        className="text-white ml-20 w-full h-full text-sm py-3 flex flex-col"
+        onClick={() => setShowMusicInfo(true)}
+      >
+        <span className="text-sm clamp-1  ">{activeSong?.title}</span>
+        <span className="text-[0.65rem] clamp-1 text-gray-300">
+          {activeSong?.artist}
         </span>
       </div>
 
@@ -74,6 +83,15 @@ function MusicPlayerMobile() {
       <button onClick={() => dispatch(setIsPlaying(!isPlaying))}>
         {isPlaying ? <MdPause fontSize={28} /> : <MdPlayArrow fontSize={28} />}
       </button>
+
+      <CSSTransition
+        in={showMusicInfo}
+        timeout={400}
+        classNames="slideUpInfo"
+        unmountOnExit
+      >
+        <MusicInfo hide={() => setShowMusicInfo(false)} />
+      </CSSTransition>
     </div>
   );
 }
