@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllPlaylist } from "../../query/playlistQuery";
-import { client } from "../../sanityClient";
+import useCategoryPlaylist from "../../hooks/useCategoryPlaylist";
 
 function HomeMobile() {
-  const [playlistData, setPlaylistData] = useState([]);
-
-  useEffect(() => {
-    client.fetch(getAllPlaylist).then((data) => {
-      setPlaylistData(data);
-    });
-  }, []);
-
+  const data = useCategoryPlaylist();
   return (
     <div className="py-3 text-white">
       <div className="mt-5">
         <div className="px-3">
           <h1 className="font-semibold text-center">Popular Japanese Singer</h1>
           <div className="flex flex-wrap mt-5">
-            {playlistData.map((playlist) => (
+            {data.map((playlist) => (
               <div
                 className="px-[3px] flex-mobile-size max-w-1/3 mb-5"
                 key={playlist._id}

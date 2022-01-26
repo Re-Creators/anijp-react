@@ -90,7 +90,10 @@ function MusicPlayerMobile() {
         classNames="slideUpInfo"
         unmountOnExit
       >
-        <MusicInfo hide={() => setShowMusicInfo(false)} />
+        <MusicInfo
+          hide={() => setShowMusicInfo(false)}
+          activeSong={activeSong}
+        />
       </CSSTransition>
     </div>
   );

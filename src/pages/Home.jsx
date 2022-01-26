@@ -2,24 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HomeSlider from "../components/home/HomeSlider";
 import { MdPlayCircleFilled } from "react-icons/md";
-import { client } from "../sanityClient";
-import { getAllPlaylist } from "../query/playlistQuery";
 import { useDispatch } from "react-redux";
 import {
   addNewSongs,
   setIsPlaying,
 } from "../features/music-player/musicPlayerSlice";
+import useCategoryPlaylist from "../hooks/useCategoryPlaylist";
 
 function Home() {
-  const [playlistData, setPlaylistData] = useState([]);
+  const { data, isLoading } = useCategoryPlaylist();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    client.fetch(getAllPlaylist).then((data) => {
-      setPlaylistData(data);
-    });
-  }, []);
-
+  if (isLoading) return <p>loading</p>;
   return (
     <div className="mt-5 px-10 pb-96 h-screen hide-scrollbar">
       <HomeSlider />
@@ -28,7 +22,7 @@ function Home() {
           Most Popular Soundtrack
         </h1>
         <div className="text-white mt-5 flex flex-row flex-wrap">
-          {playlistData.map((playlist) => (
+          {data.map((playlist) => (
             <div className="mr-10 mb-5" key={playlist._id}>
               <Link
                 to={`/playlist/${playlist._id}`}
