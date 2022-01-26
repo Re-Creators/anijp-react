@@ -20,15 +20,18 @@ import {
 } from "../features/user/userSlice";
 import { toggleLoginModal } from "../features/modals/modalSlice";
 import { toast } from "react-toastify";
+import usePlaylistDetail from "../hooks/usePlaylistDetail";
 
 function Playlist() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const { data, isLoading, status } = usePlaylistDetail(id);
+
   const user = useSelector(selectUser);
   const likedPlaylist = useSelector(selectLikedPlaylist);
   const [isLiked, setIsLiked] = useState(false);
-  const [playlistDetail, setPlayListDetail] = useState(null);
+
   const [showMenu, setShowMenu] = useState(true);
   const [likeCount, setLikeCount] = useState(0);
 
@@ -74,13 +77,11 @@ function Playlist() {
     }
   };
 
-  useEffect(() => {
-    const query = getOnePlaylist(id);
-    client.fetch(query).then((data) => {
-      setPlayListDetail(data[0]);
-      setLikeCount(data[0].likes);
-    });
-  }, [id]);
+  useState(() => {
+    if (status === "success") {
+      setLikeCount(data.likes);
+    }
+  }, [status]);
 
   useEffect(() => {
     if (user) {
@@ -89,7 +90,7 @@ function Playlist() {
     }
   }, [user, id, dispatch]);
 
-  if (!playlistDetail) return <p>Loading..</p>;
+  if (isLoading) return <p>Loading..</p>;
   return (
     <div
       className={`text-white ${
@@ -98,10 +99,10 @@ function Playlist() {
     >
       {/* Playlist Details  */}
       <Detail
-        songCount={playlistDetail.songs.length}
-        playlistName={playlistDetail.name}
-        cover={playlistDetail.cover}
-        description={playlistDetail.description}
+        songCount={data.songs.length}
+        playlistName={data.name}
+        cover={data.cover}
+        description={data.description}
         likeCount={likeCount}
         type="playlist"
       />
@@ -109,9 +110,7 @@ function Playlist() {
         <div className="flex flex-row items-center mb-10">
           <button
             onClick={() => {
-              dispatch(
-                addNewSongs({ songs: playlistDetail.songs, indexSong: 0 })
-              );
+              dispatch(addNewSongs({ songs: data.songs, indexSong: 0 }));
               dispatch(setIsPlaying(true));
             }}
           >
@@ -138,7 +137,7 @@ function Playlist() {
         </div>
 
         <SongList
-          songs={playlistDetail?.songs}
+          songs={data.songs}
           dispatch={dispatch}
           toggleMenu={() => setShowMenu(!showMenu)}
         />
