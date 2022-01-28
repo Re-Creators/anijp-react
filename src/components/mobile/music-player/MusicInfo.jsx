@@ -1,29 +1,79 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   MdExpandMore,
   MdFavorite,
   MdList,
+  MdPauseCircleFilled,
   MdPlayCircleFilled,
   MdPlaylistAdd,
   MdShare,
   MdSkipNext,
   MdSkipPrevious,
 } from "react-icons/md";
+import { useSelector } from "react-redux";
+import {
+  selectActiveSong,
+  setIsPlaying,
+} from "../../../features/music-player/musicPlayerSlice";
+import { getDurationString } from "../../../utils";
+import ProggressBar from "../../music-player/ProggressBar";
 
-function MusicInfo({ hide }) {
+function MusicInfo({
+  hide,
+  audioRef,
+  isPlaying,
+  activeSong,
+  dispatch,
+  changeSongHandler,
+}) {
+  const [timeProgress, setTimeProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  const [progressMoving, setProgressMoving] = useState(false);
+
+  let percent = isNaN(timeProgress / duration)
+    ? 0
+    : (timeProgress / duration) * 100;
+
+  const onChangeTime = (time) => {
+    setProgressMoving(false);
+    audioRef.current.currentTime = time;
+  };
+
+  const onProgressMove = (time) => {
+    setProgressMoving(true);
+    setTimeProgress(time);
+  };
+
+  const onTimeUpdate = useCallback((e) => {
+    const { currentTime } = e.srcElement;
+    setTimeProgress(currentTime);
+  }, []);
+
+  useEffect(() => {
+    setDuration(audioRef.current.duration);
+    const audioRefValue = audioRef.current;
+
+    audioRefValue.addEventListener("timeupdate", onTimeUpdate);
+
+    return () => {
+      audioRefValue.removeEventListener("timeupdate", onTimeUpdate);
+    };
+  }, [audioRef, onTimeUpdate]);
+
   return (
     <div className="fixed z-40 inset-0 bg-music-info p-3">
       <button onClick={hide}>
         <MdExpandMore className="text-4xl text-white" />
       </button>
       <img
-        src="/sample/images/snk.jpg"
+        src={activeSong.image}
         alt=""
         className="w-4/5 h-[300px] mx-auto rounded-md object-cover"
       />
       <div className="text-white mt-5 text-2xl text-center">
-        <h1>currentSong.title </h1>
-        <h2 className="text-lg text-gray-300"> currentSong.artist </h2>
+        <h1>{activeSong.title} </h1>
+        <h2 className="text-lg text-gray-300"> {activeSong.artist} </h2>
       </div>
       <div className="absolute bottom-10 w-full  px-3">
         <div className="w-full flex flex-row justify-between text-white">
@@ -31,13 +81,20 @@ function MusicInfo({ hide }) {
             <MdFavorite className="text-4xl" />
           </button>
           <div className="flex flex-row">
-            <button>
+            <button onClick={() => changeSongHandler(-1)}>
               <MdSkipPrevious className="text-4xl" />
             </button>
-            <button className="mx-3">
-              <MdPlayCircleFilled className="text-5xl" />
+            <button
+              className="mx-3"
+              onClick={() => dispatch(setIsPlaying(!isPlaying))}
+            >
+              {isPlaying ? (
+                <MdPauseCircleFilled className="text-5xl" />
+              ) : (
+                <MdPlayCircleFilled className="text-5xl" />
+              )}
             </button>
-            <button>
+            <button onClick={() => changeSongHandler(1)}>
               <MdSkipNext className="text-4xl" />
             </button>
           </div>
@@ -46,13 +103,19 @@ function MusicInfo({ hide }) {
           </button>
         </div>
         <div className="flex flex-row text-white text-xs items-center mr-5 mt-5 justify-between">
-          <span className="w-10"> 00:00 </span>
-          <div className="relative w-4/5 h-1 bg-white  ml-3 mr-6">
-            <div className="h-full w-0 bg-primary relative">
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 rounded-full bg-white"></div>
-            </div>
-          </div>
-          <span className="w-10"> 00:00</span>
+          <span className="w-10">{getDurationString(timeProgress)}</span>
+          <ProggressBar
+            percent={percent}
+            duration={duration}
+            onChangeTime={onChangeTime}
+            onProgressMove={onProgressMove}
+            progressBarColor="bg-white"
+            barColor="bg-primary"
+            showPoint
+            pointColor="bg-white"
+          />
+
+          <span className="w-10">{activeSong.duration}</span>
         </div>
         <div className="flex flex-row justify-between text-white mt-5">
           <button className="mr-5">

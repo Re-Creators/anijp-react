@@ -1,6 +1,15 @@
 import React, { useEffect, useRef } from "react";
 
-function ProggressBar({ percent, onChangeTime, onProgressMove, duration }) {
+function ProggressBar({
+  percent,
+  onChangeTime,
+  onProgressMove,
+  duration,
+  progressBarColor,
+  barColor,
+  pointColor,
+  showPoint,
+}) {
   const progressBar = useRef();
   const progress = useRef();
 
@@ -63,18 +72,19 @@ function ProggressBar({ percent, onChangeTime, onProgressMove, duration }) {
   return (
     <div className="w-4/5 mx-3">
       <div
-        className="relative bg-primary-300 w-full h-1 cursor-pointer group"
+        className={`relative ${progressBarColor} w-full h-1 cursor-pointer group`}
         onClick={progressBarClick}
         onMouseDown={() => {
           startMove.current = true;
         }}
         ref={progressBar}
       >
-        <div
-          className="absolute h-full left-0 bg-secondary w-1/2"
-          ref={progress}
-        >
-          <span className="hidden absolute top-1/2 transform -translate-y-1/2 -right-3 h-3 w-3 rounded-full bg-secondary group-hover:block"></span>
+        <div className={`absolute h-full left-0 ${barColor}`} ref={progress}>
+          <span
+            className={`${
+              showPoint ? "" : "hidden"
+            } absolute top-1/2 transform -translate-y-1/2 -right-3 h-3 w-3 rounded-full ${pointColor} group-hover:block`}
+          ></span>
         </div>
       </div>
     </div>

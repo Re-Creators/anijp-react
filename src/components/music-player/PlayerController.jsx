@@ -90,6 +90,10 @@ function PlayerController(props) {
           onChangeTime={onChangeTime}
           duration={duration}
           onProgressMove={onProgressMove}
+          progressBarColor="bg-primary-300"
+          barColor="bg-secondary"
+          pointColor="bg-secondary"
+          showPoint={false}
         />
         <span className="text-xs select-none">
           {getDurationString(duration)}

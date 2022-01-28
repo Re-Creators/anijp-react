@@ -22,6 +22,24 @@ function MusicPlayerMobile() {
 
   const trackIndex = useRef(0);
 
+  const changeSongHandler = (value) => {
+    if (songs.length <= 0) return;
+    trackIndex.current = trackIndex.current + value;
+
+    if (trackIndex.current < 0) {
+      trackIndex.current = songs.length - 1;
+    } else if (trackIndex.current >= songs.length) {
+      trackIndex.current = 0;
+    }
+
+    if (!isPlaying) {
+      dispatch(setIsPlaying(true));
+    }
+    dispatch(changeActiveSong(songs[trackIndex.current]));
+
+    audioRef.current.autoplay = true;
+  };
+
   useEffect(() => {
     if (activeSong) {
       trackIndex.current = songs.findIndex(
@@ -92,7 +110,11 @@ function MusicPlayerMobile() {
       >
         <MusicInfo
           hide={() => setShowMusicInfo(false)}
+          audioRef={audioRef}
           activeSong={activeSong}
+          isPlaying={isPlaying}
+          dispatch={dispatch}
+          changeSongHandler={changeSongHandler}
         />
       </CSSTransition>
     </div>
