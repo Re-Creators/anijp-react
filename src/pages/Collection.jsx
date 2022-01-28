@@ -99,7 +99,7 @@ function Collection() {
                 </button>
               </div>
             </Link>
-            <div className="text-semibold w-full w-full">
+            <div className="text-semibold w-full">
               <span className="line-clamp-2">{playlist.name}</span>
             </div>
           </div>

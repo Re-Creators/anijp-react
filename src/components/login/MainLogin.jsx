@@ -10,6 +10,7 @@ import {
 } from "../../features/user/userSlice";
 import { useSelector } from "react-redux";
 import Spinner from "../UI/Spinner";
+import useScreenCheck from "../../hooks/useScreenCheck";
 
 function MainLogin({
   parentClassNames,
@@ -18,6 +19,7 @@ function MainLogin({
   sidePanelClassNames,
 }) {
   const dispatch = useDispatch();
+  const device = useScreenCheck();
 
   const isLoading = useSelector(selectisLoading);
   const error = useSelector(selectError);
@@ -42,7 +44,7 @@ function MainLogin({
           <h1 className="text-center mb-10 text-4xl">Sign In</h1>
           <div
             className="w-full flex flex-row items-center mb-5 py-4 px-3 rounded-md border-2 cursor-pointer hover:bg-gray-200"
-            onClick={() => dispatch(loginWithGoogle())}
+            onClick={() => dispatch(loginWithGoogle(device))}
           >
             <img src="/icons/google.svg" alt="" className="h-5 mr-3" />
             <span>Sign in with Google</span>

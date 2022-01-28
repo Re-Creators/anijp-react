@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
+  signInWithRedirect,
 } from "firebase/auth";
 
 const initialState = {
@@ -77,11 +78,17 @@ export const login = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "user/loginWithGoogle",
-  async () => {
+  async (device) => {
     const provider = new GoogleAuthProvider();
-
+    let response = null;
     try {
-      const { user } = await signInWithPopup(auth, provider);
+      if (device === "DESKTOP") {
+        response = await signInWithPopup(auth, provider);
+      } else if (device === "MOBILE") {
+        response = await signInWithRedirect(auth, provider);
+      }
+
+      const user = response.user;
       const newUserRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(newUserRef);
 
