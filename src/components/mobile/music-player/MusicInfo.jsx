@@ -10,13 +10,11 @@ import {
   MdSkipNext,
   MdSkipPrevious,
 } from "react-icons/md";
-import { useSelector } from "react-redux";
-import {
-  selectActiveSong,
-  setIsPlaying,
-} from "../../../features/music-player/musicPlayerSlice";
+import { CSSTransition } from "react-transition-group";
+import { setIsPlaying } from "../../../features/music-player/musicPlayerSlice";
 import { getDurationString } from "../../../utils";
 import ProggressBar from "../../music-player/ProggressBar";
+import PlaylistQueueMobile from "../PlaylistQueueMobile";
 
 function MusicInfo({
   hide,
@@ -28,20 +26,17 @@ function MusicInfo({
 }) {
   const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-
-  const [progressMoving, setProgressMoving] = useState(false);
+  const [showQueue, setShowQueue] = useState(false);
 
   let percent = isNaN(timeProgress / duration)
     ? 0
     : (timeProgress / duration) * 100;
 
   const onChangeTime = (time) => {
-    setProgressMoving(false);
     audioRef.current.currentTime = time;
   };
 
   const onProgressMove = (time) => {
-    setProgressMoving(true);
     setTimeProgress(time);
   };
 
@@ -118,7 +113,7 @@ function MusicInfo({
           <span className="w-10">{activeSong.duration}</span>
         </div>
         <div className="flex flex-row justify-between text-white mt-5">
-          <button className="mr-5">
+          <button className="mr-5" onClick={() => setShowQueue(true)}>
             <MdList className="text-3xl" />
           </button>
           <button className="mr-5">
@@ -126,6 +121,18 @@ function MusicInfo({
           </button>
         </div>
       </div>
+
+      <CSSTransition
+        in={showQueue}
+        timeout={400}
+        classNames="slideUpInfo"
+        unmountOnExit
+      >
+        <PlaylistQueueMobile
+          hide={() => setShowQueue(false)}
+          dispatch={dispatch}
+        />
+      </CSSTransition>
     </div>
   );
 }
