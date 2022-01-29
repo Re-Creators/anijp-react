@@ -23,7 +23,7 @@ function LoginModalContainer() {
   }, [isLoggedIn, dispatch]);
 
   return (
-    <div>
+    <>
       <PortalContainer
         isShow={showModal}
         onClose={() => dispatch(toggleLoginModal())}
@@ -40,7 +40,7 @@ function LoginModalContainer() {
           />
         )}
       </PortalContainer>
-    </div>
+    </>
   );
 }
 

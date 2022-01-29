@@ -8,7 +8,12 @@ import LoginModalContainer from "../../components/modals/LoginModalContainer";
 function MobileLayout() {
   return (
     <div className="">
-      <ToastContainer autoClose={3000} theme="colored" position="top-center" />
+      <ToastContainer
+        autoClose={3000}
+        theme="colored"
+        position="top-center"
+        hideProgressBar={true}
+      />
       <LoginModalContainer />
       <Outlet />
       <div className="fixed inset-x-0 z-20 bottom-0">

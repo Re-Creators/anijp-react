@@ -50,13 +50,13 @@ function Collection() {
   }, [likedPlaylist]);
 
   return (
-    <div className="mt-5 px-3 md:pl-10 text-white pb-96 h-screen hide-scrollbar">
+    <div className="mt-5 px-3 md:pl-10 text-white pb-96 hide-scrollbar">
       <h1 className="font-bold text-2xl md:text-4xl">My Collection</h1>
       <div className="flex flex-row flex-wrap mt-8">
         {/* New Playlist */}
         <div className="w-1/3 px-[3px] md:px-0 md:w-52 md:mr-8 flex flex-col items-center cursor-pointer">
           <div
-            className="w-full h-[130px] md:h-52 p-5 border-dashed border-2 border-gray-400 mb-3"
+            className="w-full h-[130px] md:h-52 p-3 md:p-5 border-dashed border-2 border-gray-400 mb-3 rounded-md"
             onClick={newPlaylistHandler}
           >
             <img
@@ -100,7 +100,7 @@ function Collection() {
               </div>
             </Link>
             <div className="text-semibold w-full text-xs md:text-base">
-              <span className="line-clamp-2">{playlist.name}</span>
+              <span className="line-clamp-2 capitalize">{playlist.name}</span>
             </div>
           </div>
         ))}
@@ -132,7 +132,7 @@ function Collection() {
               </div>
             </Link>
             <div className="text-semibold w-full md:w-52 text-xs md:text-sm">
-              <span className="line-clamp-2">{playlist.name}</span>
+              <span className="line-clamp-2 capitalize">{playlist.name}</span>
             </div>
           </div>
         ))}
