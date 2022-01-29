@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   MdExpandMore,
   MdFavorite,
+  MdFavoriteBorder,
   MdList,
   MdPauseCircleFilled,
   MdPlayCircleFilled,
@@ -10,8 +12,19 @@ import {
   MdSkipNext,
   MdSkipPrevious,
 } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { CSSTransition } from "react-transition-group";
+import { toggleLoginModal } from "../../../features/modals/modalSlice";
 import { setIsPlaying } from "../../../features/music-player/musicPlayerSlice";
+import {
+  selectIsLoggedIn,
+  selectLikedSongs,
+  selectUser,
+  updateLikedSongs,
+} from "../../../features/user/userSlice";
+import { db } from "../../../firebase-config";
+import { client } from "../../../sanityClient";
 import { getDurationString } from "../../../utils";
 import ProggressBar from "../../music-player/ProggressBar";
 import PlaylistQueueMobile from "../PlaylistQueueMobile";
@@ -24,9 +37,14 @@ function MusicInfo({
   dispatch,
   changeSongHandler,
 }) {
+  console.log("RENDE");
+  const user = useSelector(selectUser);
+  const likedSongs = useSelector(selectLikedSongs);
   const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showQueue, setShowQueue] = useState(false);
+
+  const [isLiked, setIsLiked] = useState(false);
 
   let percent = isNaN(timeProgress / duration)
     ? 0
@@ -45,6 +63,32 @@ function MusicInfo({
     setTimeProgress(currentTime);
   }, []);
 
+  const likeHandler = async () => {
+    if (!user) return dispatch(toggleLoginModal());
+
+    const likedSongsTmp = [...likedSongs];
+
+    if (!isLiked) {
+      likedSongsTmp.push(activeSong._id);
+    } else {
+      const deletedIndex = likedSongsTmp.indexOf(activeSong._id);
+      likedSongsTmp.splice(deletedIndex, 1);
+    }
+    try {
+      const message = isLiked ? "Removed from favorite" : "Added to favorite";
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, { likedSong: likedSongsTmp }, { merge: true });
+      isLiked
+        ? await client.patch(activeSong._id).dec({ likes: 1 }).commit()
+        : await client.patch(activeSong._id).inc({ likes: 1 }).commit();
+
+      dispatch(updateLikedSongs(likedSongsTmp));
+      toast(message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     setDuration(audioRef.current.duration);
     const audioRefValue = audioRef.current;
@@ -56,6 +100,13 @@ function MusicInfo({
     };
   }, [audioRef, onTimeUpdate]);
 
+  useEffect(() => {
+    setIsLiked(likedSongs.includes(activeSong._id));
+  }, [likedSongs, activeSong]);
+
+  useEffect(() => {
+    toast.success("tes");
+  }, []);
   return (
     <div className="fixed z-40 inset-0 bg-music-info p-3">
       <button onClick={hide}>
@@ -72,8 +123,12 @@ function MusicInfo({
       </div>
       <div className="absolute bottom-10 w-full  px-3">
         <div className="w-full flex flex-row justify-between text-white">
-          <button>
-            <MdFavorite className="text-4xl" />
+          <button onClick={likeHandler}>
+            {isLiked ? (
+              <MdFavorite className="text-4xl" />
+            ) : (
+              <MdFavoriteBorder className="text-4xl" />
+            )}
           </button>
           <div className="flex flex-row">
             <button onClick={() => changeSongHandler(-1)}>
