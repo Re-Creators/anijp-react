@@ -31,6 +31,12 @@ function NewPlaylistModal({ hideModal, fetchData }) {
         });
       })
       .catch((err) => {
+        toast.update(toastLoading, {
+          render: "Failed create playlist",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
         console.error(err);
       });
   };

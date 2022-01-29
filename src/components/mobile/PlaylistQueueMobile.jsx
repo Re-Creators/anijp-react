@@ -25,6 +25,7 @@ function PlaylistQueueMobile({ hide, dispatch }) {
         <div className="mt-5 h-full hide-scrollbar">
           {songs.map((song) => (
             <div
+              key={song._id}
               className={`flex flex-row items-center text-white py-3 px-5 transition duration-200  rounded-sm cursor-pointer group mb-3 ${
                 activeSong._id === song._id ? "bg-list-hover" : ""
               }`}

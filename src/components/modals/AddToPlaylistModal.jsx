@@ -48,7 +48,7 @@ function AddToPlaylistModal({
       {showChildModal ? (
         <NewPlaylistModal
           hideModal={toggleChildModal}
-          fetchData={dispatch(getUserPlaylist(user.uid))}
+          fetchData={() => dispatch(getUserPlaylist(user.uid))}
         />
       ) : (
         <div className="modal w-full h-full md:h-auto md:w-1/2 lg:w-2/5 py-8 bg-primary md:rounded-lg">

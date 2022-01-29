@@ -10,6 +10,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithRedirect,
 } from "firebase/auth";
+import { getUserPlaylist } from "../user-playlist/userPlaylistSlice";
 
 const initialState = {
   loggedIn: false,
@@ -20,15 +21,21 @@ const initialState = {
   error: null,
 };
 
-export const getUserData = createAsyncThunk("user/fetch", async (userId) => {
-  try {
-    const userRef = doc(db, "users", userId);
-    const userSnap = await getDoc(userRef);
-    return { ...userSnap.data(), uid: userId };
-  } catch (err) {
-    return err;
+export const getUserData = createAsyncThunk(
+  "user/fetch",
+  async (userId, { dispatch }) => {
+    try {
+      const userRef = doc(db, "users", userId);
+      const userSnap = await getDoc(userRef);
+
+      dispatch(getUserPlaylist(userId));
+
+      return { ...userSnap.data(), uid: userId };
+    } catch (err) {
+      return err;
+    }
   }
-});
+);
 
 export const updateUserData = createAsyncThunk(
   "user/update",

@@ -10,10 +10,7 @@ import {
 } from "../features/user/userSlice";
 import { getLikedPlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
-import {
-  getUserPlaylist,
-  selectUserPlaylist,
-} from "../features/user-playlist/userPlaylistSlice";
+import { selectUserPlaylist } from "../features/user-playlist/userPlaylistSlice";
 import { toggleLoginModal } from "../features/modals/modalSlice";
 
 function Sidebar() {
@@ -31,12 +28,6 @@ function Sidebar() {
       });
     }
   }, [likedPlaylistIds, user]);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getUserPlaylist(user.uid));
-    }
-  }, [user, dispatch]);
 
   return (
     <nav className="fixed z-20 left-0 px-5 hidden md:block md:w-sidebar-md lg:w-1/4 xl:w-[18%] h-screen bg-primary text-white shadow-2xl">

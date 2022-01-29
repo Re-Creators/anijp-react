@@ -26,7 +26,9 @@ import {
 import { db } from "../../../firebase-config";
 import { client } from "../../../sanityClient";
 import { getDurationString } from "../../../utils";
+import AddToPlaylistModal from "../../modals/AddToPlaylistModal";
 import ProggressBar from "../../music-player/ProggressBar";
+import PortalContainer from "../../portal/PortalContainer";
 import PlaylistQueueMobile from "../PlaylistQueueMobile";
 
 function MusicInfo({
@@ -42,7 +44,10 @@ function MusicInfo({
   const likedSongs = useSelector(selectLikedSongs);
   const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+
+  const [showModal, setShowModal] = useState(false);
   const [showQueue, setShowQueue] = useState(false);
+  const [showChildModal, setShowChildModal] = useState(false);
 
   const [isLiked, setIsLiked] = useState(false);
 
@@ -62,6 +67,11 @@ function MusicInfo({
     const { currentTime } = e.srcElement;
     setTimeProgress(currentTime);
   }, []);
+
+  const addToPlaylistHandler = async () => {
+    if (!user) return dispatch(toggleLoginModal());
+    setShowModal(true);
+  };
 
   const likeHandler = async () => {
     if (!user) return dispatch(toggleLoginModal());
@@ -89,6 +99,15 @@ function MusicInfo({
     }
   };
 
+  const onCloseModal = () => {
+    if (showChildModal) {
+      setShowChildModal(false);
+      return;
+    }
+
+    setShowModal(false);
+  };
+
   useEffect(() => {
     setDuration(audioRef.current.duration);
     const audioRefValue = audioRef.current;
@@ -104,11 +123,19 @@ function MusicInfo({
     setIsLiked(likedSongs.includes(activeSong._id));
   }, [likedSongs, activeSong]);
 
-  useEffect(() => {
-    toast.success("tes");
-  }, []);
   return (
     <div className="fixed z-40 inset-0 bg-music-info p-3">
+      <PortalContainer isShow={showModal} onClose={onCloseModal} zIndex={50}>
+        <AddToPlaylistModal
+          user={user}
+          showChildModal={showChildModal}
+          toggleChildModal={() => setShowChildModal(!showChildModal)}
+          closeModal={onCloseModal}
+          selectedSong={activeSong}
+          dispatch={dispatch}
+        />
+      </PortalContainer>
+
       <button onClick={hide}>
         <MdExpandMore className="text-4xl text-white" />
       </button>
@@ -148,7 +175,7 @@ function MusicInfo({
               <MdSkipNext className="text-4xl" />
             </button>
           </div>
-          <button className="mr-5">
+          <button className="mr-5" onClick={addToPlaylistHandler}>
             <MdPlaylistAdd className="text-4xl" />
           </button>
         </div>
