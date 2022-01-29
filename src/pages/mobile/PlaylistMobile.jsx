@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { MdFavorite, MdLibraryMusic, MdPlayArrow } from "react-icons/md";
+import { MdFavorite, MdLibraryMusic } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -10,66 +9,54 @@ import {
   selectIsPlaying,
   setIsPlaying,
 } from "../../features/music-player/musicPlayerSlice";
-import { getOnePlaylist } from "../../query/playlistQuery";
-import { client } from "../../sanityClient";
+import usePlaylistDetail from "../../hooks/usePlaylistDetail";
 
 function PlaylistMobile() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  const { data, status } = usePlaylistDetail(id);
   const isPlaying = useSelector(selectIsPlaying);
   const activeSong = useSelector(selectActiveSong);
-  const [playlistDetail, setPlayListDetail] = useState(null);
 
   const onPlaySong = (indexSong, songId) => {
     if (activeSong !== null && songId === activeSong._id) {
       dispatch(setIsPlaying(!isPlaying));
     } else {
-      dispatch(addNewSongs({ songs: playlistDetail.songs, indexSong }));
+      dispatch(addNewSongs({ songs: data.songs, indexSong }));
       dispatch(setIsPlaying(true));
     }
   };
 
-  useEffect(() => {
-    const query = getOnePlaylist(id);
-    client.fetch(query).then((data) => {
-      setPlayListDetail(data[0]);
-    });
-  }, [id]);
-
-  if (!playlistDetail) return null;
+  if (status === "loading" || status === "error") return null;
   return (
     <div className="h-screen overflow-y-auto">
       <div className="h-96 w-full relative">
         <img
-          src={playlistDetail.cover}
+          src={data.cover}
           alt="background-cover"
           className="absolute w-full h-full object-cover object-center z-0 filter blur-sm"
         />
         <div className="absolute text-white w-full h-full flex flex-col items-center justify-center backdrop-filter backdrop-blur-2xl">
           <img
-            src={playlistDetail.cover}
+            src={data.cover}
             alt="playlist Cover"
             className="w-40 h-44 rounded-md "
           />
-          <h1 className="mt-2 font-semibold text-2xl">
-            {playlistDetail.name}{" "}
-          </h1>
+          <h1 className="mt-2 font-semibold text-2xl">{data.name} </h1>
           <div className="text-xs mt-3 w-4/5 flex flex-col items-center">
-            <p className=" text-center clamp-2">
-              {playlistDetail.description}{" "}
-            </p>
+            <p className=" text-center clamp-2">{data.description} </p>
             <div className="flex flex-row  text-xs mt-3">
               <div
                 className="flex flex-row items-center mr-3"
                 v-if="route.meta.mobileName !== 'myPlaylistMobile'"
               >
                 <MdFavorite className="text-lg mr-1" />
-                <span> {playlistDetail.likes} Likes</span>
+                <span> {data.likes} Likes</span>
               </div>
               <div className="flex flex-row items-center">
                 <MdLibraryMusic className="text-lg mr-1" />
-                <span> {playlistDetail.songs.length} Songs</span>
+                <span> {data.songs.length} Songs</span>
               </div>
             </div>
           </div>
@@ -81,9 +68,7 @@ function PlaylistMobile() {
             <button
               className="flex flex-row items-center mb-10"
               onClick={() => {
-                dispatch(
-                  addNewSongs({ songs: playlistDetail.songs, indexSong: 0 })
-                );
+                dispatch(addNewSongs({ songs: data.songs, indexSong: 0 }));
                 dispatch(setIsPlaying(true));
               }}
             >
@@ -103,7 +88,7 @@ function PlaylistMobile() {
             </button>
           </div>
           <div className="text-white px-1">
-            {playlistDetail.songs.map((song, index) => (
+            {data.songs.map((song, index) => (
               <Song
                 key={song._id}
                 indexSong={index}
