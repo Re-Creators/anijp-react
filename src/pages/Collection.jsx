@@ -50,13 +50,13 @@ function Collection() {
   }, [likedPlaylist]);
 
   return (
-    <div className="mt-5 pl-5 md:pl-10 text-white pb-96 h-screen hide-scrollbar">
+    <div className="mt-5 px-3 md:pl-10 text-white pb-96 h-screen hide-scrollbar">
       <h1 className="font-bold text-2xl md:text-4xl">My Collection</h1>
       <div className="flex flex-row flex-wrap mt-8">
         {/* New Playlist */}
-        <div className="mr-8 flex flex-col items-center cursor-pointer">
+        <div className="w-1/3 px-[3px] md:px-0 md:w-52 md:mr-8 flex flex-col items-center cursor-pointer">
           <div
-            className="w-40 h-40 md:w-52 md:h-52 p-5 border-dashed border-2 border-gray-400 mb-3"
+            className="w-full h-[130px] md:h-52 p-5 border-dashed border-2 border-gray-400 mb-3"
             onClick={newPlaylistHandler}
           >
             <img
@@ -67,18 +67,18 @@ function Collection() {
           </div>
           <div className="flex flex-row" onClick={newPlaylistHandler}>
             <MdAdd />
-            <span className="ml-3">New Playlist</span>
+            <span className="ml-3 text-xs md:text-sm">New Playlist</span>
           </div>
         </div>
         {/* Liked Playlist */}
         {likedPlaylistData.map((playlist) => (
           <div
-            className="mr-5 md:mr-8 flex flex-col items-center mb-5 w-40 md:w-52"
+            className="w-1/3 px-[3px] md:px-0 md:mr-8 flex flex-col items-center mb-5  md:w-52"
             key={playlist._id}
           >
             <Link
               to={`/playlist/${playlist._id}`}
-              className="relative block h-40  md:h-52  overflow-y-hidden mb-3 group"
+              className="relative block w-full h-[130px] md:h-52  overflow-y-hidden mb-3 group"
             >
               <img
                 src={playlist.cover}
@@ -99,7 +99,7 @@ function Collection() {
                 </button>
               </div>
             </Link>
-            <div className="text-semibold w-full">
+            <div className="text-semibold w-full text-xs md:text-base">
               <span className="line-clamp-2">{playlist.name}</span>
             </div>
           </div>
@@ -108,12 +108,12 @@ function Collection() {
         {/* Users Playlist  */}
         {userPlaylist.map((playlist) => (
           <div
-            className="mr-5 md:mr-8 flex flex-col items-center mb-5"
+            className="w-1/3 px-[3px] md:px-0 md:w-52 md:mr-8 flex flex-col items-center mb-5"
             key={playlist.id}
           >
             <Link
               to={`/myplaylist/${playlist.id}`}
-              className="relative block w-40 h-40 md:w-52 md:h-52  overflow-y-hidden mb-3 group"
+              className="relative block h-[130px] md:w-52 md:h-52  overflow-y-hidden mb-3 group"
             >
               <img
                 src={playlist.cover}
@@ -131,7 +131,7 @@ function Collection() {
                 </button>
               </div>
             </Link>
-            <div className="text-semibold w-full md:w-52">
+            <div className="text-semibold w-full md:w-52 text-xs md:text-sm">
               <span className="line-clamp-2">{playlist.name}</span>
             </div>
           </div>
