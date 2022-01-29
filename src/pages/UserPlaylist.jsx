@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { MdOutlineMoreHoriz, MdPlaylistAdd, MdDelete } from "react-icons/md";
 import UserSongList from "../components/user-playlist/UserSongList";
 import { useDispatch } from "react-redux";
@@ -8,28 +8,28 @@ import {
   addPlaylistSong,
 } from "..//features/music-player/musicPlayerSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { db, storage } from "../firebase-config";
-import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { toast } from "react-toastify";
-import { ref, deleteObject } from "firebase/storage";
 import Detail from "../components/playlist/Detail";
 import { getUserPlaylist } from "../features/user-playlist/userPlaylistSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/user/userSlice";
+import { useUserPlaylist } from "../hooks/useUserPlaylist";
 
 function UserPlaylist() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showOption, setShowOption] = useState(false);
-  const [playlistDetail, setPlaylistDetail] = useState(null);
 
+  const [showOption, setShowOption] = useState(false);
   const user = useSelector(selectUser);
 
-  const docRef = useRef(null);
+  const { data, onDeleteSong, deletePlaylist } = useUserPlaylist(id, () => {
+    setShowOption(false);
+    dispatch(getUserPlaylist(user.uid));
+    navigate("/collection");
+  });
 
   const onPlayAll = (indexSong) => {
-    dispatch(addNewSongs({ songs: playlistDetail.songs, indexSong }));
+    dispatch(addNewSongs({ songs: data.songs, indexSong }));
     dispatch(setIsPlaying(true));
   };
 
@@ -37,74 +37,19 @@ function UserPlaylist() {
     dispatch(setIsPlaying(value));
   };
 
-  const onDeleteSong = async (songIndex) => {
-    const newSongs = playlistDetail.songs.filter(
-      (el, index) => index !== songIndex
-    );
-    try {
-      await updateDoc(docRef.current, { songs: newSongs }, { merge: true });
-      setPlaylistDetail({ ...playlistDetail, songs: newSongs });
-      toast.success("Song successfully deleted");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const addToQueue = () => {
     setShowOption(false);
-    addPlaylistSong(playlistDetail.songs);
+    addPlaylistSong(data.songs);
   };
 
-  const deletePlaylist = async () => {
-    setShowOption(false);
-    try {
-      const toastLoading = toast.loading("Deleting playlist");
-      await deleteDoc(doc(db, "user_playlists", id));
-      if (playlistDetail.coverPathStorage !== "") {
-        const docRef = ref(storage, playlistDetail.coverPathStorage);
-
-        await deleteObject(docRef);
-      }
-
-      dispatch(getUserPlaylist(user.uid));
-      navigate("/collection");
-      toast.update(toastLoading, {
-        render: "Playlist deleted!",
-        type: "success",
-        isLoading: false,
-        autoClose: 4000,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        docRef.current = doc(db, "user_playlists", id);
-        const docSnap = await getDoc(docRef.current);
-        if (docSnap.exists()) {
-          setPlaylistDetail(docSnap.data());
-        }
-      } catch (err) {
-        console.log(err);
-      }
-
-      return;
-    };
-
-    fetchData();
-  }, [id]);
-
-  if (!playlistDetail) return <p>loading..</p>;
+  if (!data) return <p>loading..</p>;
   return (
     <div className="text-white hide-scrollbar h-screen">
       <Detail
-        songCount={playlistDetail.songs.length}
-        playlistName={playlistDetail.name}
-        cover={playlistDetail.cover}
-        description={playlistDetail.description}
+        songCount={data.songs.length}
+        playlistName={data.name}
+        cover={data.cover}
+        description={data.description}
         type="my playlist"
       />
       <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
@@ -150,7 +95,7 @@ function UserPlaylist() {
         </div>
 
         <UserSongList
-          songs={playlistDetail.songs}
+          songs={data.songs}
           onPlayAll={onPlayAll}
           onSetPlaying={onSetPlaying}
           onDeleteSong={onDeleteSong}

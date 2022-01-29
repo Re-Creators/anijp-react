@@ -1,41 +1,63 @@
-import { useCallback, useEffect, useState } from "react";
-import { db } from "../firebase-config";
-import { collection, getDocs, where, query } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
+import { db, storage } from "../firebase-config";
+import { getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
+import { deleteObject, ref } from "firebase/storage";
 
-export function useUserPlaylist(user) {
-  const [userPlaylist, setUserPlaylist] = useState([]);
+export function useUserPlaylist(id, successDelete) {
+  const [data, setData] = useState(null);
 
-  const fetchData = useCallback(async () => {
-    if (user) {
-      const playlistRef = collection(db, "user_playlists");
-      const q = query(playlistRef, where("user_id", "==", user.uid));
+  const docRef = useRef(null);
 
-      try {
-        const { docs } = await getDocs(q);
-        let playlist = [];
-
-        docs.forEach((doc) => {
-          const data = {
-            id: doc.id,
-            name: doc.data().name,
-            user_id: doc.data().user_id,
-            songs: doc.data().songs,
-            cover: doc.data().cover,
-            coverPathStorage: doc.data().coverPathStorage,
-          };
-          playlist.push(data);
-        });
-        setUserPlaylist(playlist);
-        return;
-      } catch (err) {
-        console.log("err");
-      }
+  const onDeleteSong = async (songIndex) => {
+    const newSongs = data.songs.filter((el, index) => index !== songIndex);
+    try {
+      await updateDoc(docRef.current, { songs: newSongs }, { merge: true });
+      setData({ ...data, songs: newSongs });
+      toast.success("Song successfully deleted");
+    } catch (err) {
+      console.log(err);
     }
-  }, [user]);
+  };
+
+  const deletePlaylist = async () => {
+    try {
+      const toastLoading = toast.loading("Deleting playlist");
+      await deleteDoc(doc(db, "user_playlists", id));
+      if (data.coverPathStorage !== "") {
+        const docRef = ref(storage, data.coverPathStorage);
+
+        await deleteObject(docRef);
+      }
+
+      successDelete();
+      toast.update(toastLoading, {
+        render: "Playlist deleted!",
+        type: "success",
+        isLoading: false,
+        autoClose: 4000,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    const fetchData = async () => {
+      try {
+        docRef.current = doc(db, "user_playlists", id);
+        const docSnap = await getDoc(docRef.current);
+        if (docSnap.exists()) {
+          setData(docSnap.data());
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      return;
+    };
 
-  return { userPlaylist, fetchData };
+    fetchData();
+  }, [id]);
+
+  return { data, onDeleteSong, deletePlaylist };
 }
