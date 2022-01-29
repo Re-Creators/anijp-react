@@ -113,7 +113,7 @@ function Collection() {
           >
             <Link
               to={`/myplaylist/${playlist.id}`}
-              className="relative block h-[130px] md:w-52 md:h-52  overflow-y-hidden mb-3 group"
+              className="relative block h-[130px] w-full md:w-52 md:h-52  overflow-y-hidden mb-3 group"
             >
               <img
                 src={playlist.cover}
