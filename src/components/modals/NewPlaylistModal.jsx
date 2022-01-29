@@ -1,13 +1,17 @@
-import { useRef, useState, memo } from "react";
+import { useRef, useState, memo, useContext } from "react";
 import { MdCreate } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/user/userSlice";
 import { toast } from "react-toastify";
 import { createNewPlaylist } from "../../services/firebaseAPI";
+import portalContext from "../../context/PortalContext";
+import Spinner from "../UI/Spinner";
 
 function NewPlaylistModal({ hideModal, fetchData }) {
+  const { loading, setLoading } = useContext(portalContext);
   const user = useSelector(selectUser);
 
+  console.log(loading);
   const prevImageRef = useRef();
   const imageFileRef = useRef();
 
@@ -16,29 +20,20 @@ function NewPlaylistModal({ hideModal, fetchData }) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    hideModal();
+    if (name === "" || description === "") return;
 
-    const toastLoading = toast.loading("Creating new playlist");
-
+    setLoading(true);
     createNewPlaylist(imageFileRef.current, user.uid, name, description)
       .then(() => {
         fetchData();
-        toast.update(toastLoading, {
-          render: "Playlist created!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
+        setLoading(false);
+        toast.success("Playlist created");
       })
       .catch((err) => {
-        toast.update(toastLoading, {
-          render: "Failed create playlist",
-          type: "error",
-          isLoading: false,
-          autoClose: 3000,
-        });
+        setLoading(false);
         console.error(err);
-      });
+      })
+      .finally(() => hideModal());
   };
 
   const fileChangeHandler = (e) => {
@@ -48,6 +43,12 @@ function NewPlaylistModal({ hideModal, fetchData }) {
 
   return (
     <div className="modal w-4/5 md:w-2/3 lg:w-1/2 xl:w-2/5 bg-primary p-5 md:p-8 rounded-lg">
+      {loading && (
+        <div className="absolute z-[60] inset-0 bg-overlay-playlist-dark rounded-lg flex items-center justify-center">
+          <Spinner classSize="h-16 w-16" />
+        </div>
+      )}
+
       <h1 className="text-white text-xl mb-3">New Playlist</h1>
       <form onSubmit={submitHandler}>
         <div className="flex flex-col md:flex-row w-full">

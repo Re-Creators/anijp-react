@@ -15,7 +15,8 @@ export async function createNewPlaylist(
 ) {
   const docRef = storageRef(storage, "playlistCover/" + uuidv4());
 
-  let coverUrl = "";
+  let coverUrl =
+    "https://firebasestorage.googleapis.com/v0/b/ani-jp.appspot.com/o/playlistCover%2Fnew-playlist.png?alt=media&token=76592067-cf7b-48dd-a5d0-298df94c01e0";
   let coverPath = "";
 
   try {

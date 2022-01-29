@@ -1,5 +1,7 @@
 import { CSSTransition } from "react-transition-group";
 import { createPortal } from "react-dom";
+import { useMemo, useState } from "react";
+import PortalContext from "../../context/PortalContext";
 
 function PortalContainer({
   isShow,
@@ -10,6 +12,8 @@ function PortalContainer({
   zIndex = 30,
   backgroundColor = "rgba(47, 69, 108, 0.83)",
 }) {
+  const [loading, setLoading] = useState(false);
+  const value = useMemo(() => ({ loading, setLoading }), [loading]);
   return createPortal(
     <>
       <CSSTransition
@@ -20,18 +24,20 @@ function PortalContainer({
       >
         <div
           className={`fixed inset-0 bg-overlay-dark`}
-          onClick={() => onClose()}
+          onClick={() => !loading && onClose()}
           style={{ zIndex: zIndex, backgroundColor: backgroundColor }}
         ></div>
       </CSSTransition>
-      <CSSTransition
-        in={isShow}
-        timeout={timeout}
-        classNames={transitionName}
-        unmountOnExit
-      >
-        {children}
-      </CSSTransition>
+      <PortalContext.Provider value={value}>
+        <CSSTransition
+          in={isShow}
+          timeout={timeout}
+          classNames={transitionName}
+          unmountOnExit
+        >
+          {children}
+        </CSSTransition>
+      </PortalContext.Provider>
     </>,
     document.getElementById("portal")
   );
