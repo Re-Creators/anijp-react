@@ -17,15 +17,16 @@ import {
   getUserPlaylist,
   selectUserPlaylist,
 } from "../features/user-playlist/userPlaylistSlice";
+import useLikedPlaylist from "../hooks/useLikedPlaylist";
 
 function Collection() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const likedPlaylist = useSelector(selectLikedPlaylist);
+  const likedPlaylistIds = useSelector(selectLikedPlaylist);
   const userPlaylist = useSelector(selectUserPlaylist);
 
+  const { data } = useLikedPlaylist(likedPlaylistIds, user);
   const [showModal, setShowModal] = useState(false);
-  const [likedPlaylistData, setLikedPlaylistData] = useState([]);
 
   const newPlaylistHandler = () => {
     if (!user) return dispatch(toggleLoginModal());
@@ -39,15 +40,6 @@ function Collection() {
       dispatch(setIsPlaying(true));
     }
   };
-
-  useEffect(() => {
-    if (likedPlaylist && likedPlaylist.length > 0) {
-      const query = getLikedPlaylist;
-      client.fetch(query, { listId: likedPlaylist }).then((data) => {
-        setLikedPlaylistData(data);
-      });
-    }
-  }, [likedPlaylist]);
 
   return (
     <div className="mt-5 px-3 md:pl-10 text-white pb-96 hide-scrollbar">
@@ -71,39 +63,40 @@ function Collection() {
           </div>
         </div>
         {/* Liked Playlist */}
-        {likedPlaylistData.map((playlist) => (
-          <div
-            className="w-1/3 px-[3px] md:px-0 md:mr-8 flex flex-col items-center mb-5  md:w-52"
-            key={playlist._id}
-          >
-            <Link
-              to={`/playlist/${playlist._id}`}
-              className="relative block w-full h-[130px] md:h-52  overflow-y-hidden mb-3 group"
+        {data &&
+          data.map((playlist) => (
+            <div
+              className="w-1/3 px-[3px] md:px-0 md:mr-8 flex flex-col items-center mb-5  md:w-52"
+              key={playlist._id}
             >
-              <img
-                src={playlist.cover}
-                alt=""
-                className="w-full h-full rounded-lg object-cover"
-              />
-              <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(
-                      addNewSongs({ songs: playlist.songs, indexSong: 0 })
-                    );
-                    dispatch(setIsPlaying(true));
-                  }}
-                >
-                  <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
-                </button>
+              <Link
+                to={`/playlist/${playlist._id}`}
+                className="relative block w-full h-[130px] md:h-52  overflow-y-hidden mb-3 group"
+              >
+                <img
+                  src={playlist.cover}
+                  alt=""
+                  className="w-full h-full rounded-lg object-cover"
+                />
+                <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(
+                        addNewSongs({ songs: playlist.songs, indexSong: 0 })
+                      );
+                      dispatch(setIsPlaying(true));
+                    }}
+                  >
+                    <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+                  </button>
+                </div>
+              </Link>
+              <div className="text-semibold w-full text-xs md:text-base">
+                <span className="line-clamp-2 capitalize">{playlist.name}</span>
               </div>
-            </Link>
-            <div className="text-semibold w-full text-xs md:text-base">
-              <span className="line-clamp-2 capitalize">{playlist.name}</span>
             </div>
-          </div>
-        ))}
+          ))}
 
         {/* Users Playlist  */}
         {userPlaylist.map((playlist) => (

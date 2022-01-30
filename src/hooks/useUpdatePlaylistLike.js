@@ -11,7 +11,11 @@ const updateLike = async (playlist) => {
 export default function useUpdatePlaylistLike() {
   const queryClient = useQueryClient();
   return useMutation(updateLike, {
-    onSuccess: (data, variables) => {
+    onSuccess: async (data, variables) => {
+      await queryClient.invalidateQueries("likedPlaylist", {
+        exact: true,
+        refetchActive: false,
+      });
       const previousData = queryClient.getQueryData(["playlist", variables.id]);
       queryClient.setQueriesData(["playlist", variables.id], {
         ...previousData,
