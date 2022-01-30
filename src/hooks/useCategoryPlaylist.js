@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
-import { getAllPlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
+import getCategories from "../query/categoryQuery";
 
 export default function useCategoryPlaylist() {
   return useQuery(
     "categories",
     async () => {
-      const data = await client.fetch(getAllPlaylist);
+      const data = await client.fetch(getCategories);
 
       return data;
     },
