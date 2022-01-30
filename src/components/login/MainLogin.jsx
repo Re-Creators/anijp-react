@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -20,6 +20,7 @@ function MainLogin({
 }) {
   const dispatch = useDispatch();
   const device = useScreenCheck();
+  const navigate = useNavigate();
 
   const isLoading = useSelector(selectisLoading);
   const error = useSelector(selectError);
@@ -31,6 +32,7 @@ function MainLogin({
       e.preventDefault();
       try {
         await dispatch(login({ email, password })).unwrap();
+        navigate("/");
       } catch (err) {
         console.error(err);
       }
