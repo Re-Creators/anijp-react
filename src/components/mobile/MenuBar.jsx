@@ -33,7 +33,7 @@ function MenuBar() {
       <div>
         <Link
           className="flex flex-col items-center"
-          to="/"
+          to="/account"
           onClick={(e) => {
             if (!user) {
               e.preventDefault();

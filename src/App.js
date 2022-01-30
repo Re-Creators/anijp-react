@@ -21,6 +21,7 @@ import MobileLayout from "./pages/mobile/MobileLayout";
 import HomeMobile from "./pages/mobile/HomeMobile";
 import PlaylistMobile from "./pages/mobile/PlaylistMobile";
 import UserPlaylistMobile from "./pages/mobile/UserPlaylistMobile";
+import Account from "./pages/mobile/Account";
 
 const DesktopScreen = (
   <Route path="/" element={<Layout />}>
@@ -62,6 +63,7 @@ const MobileScreen = (
       <Route path="playlist/:id" element={<PlaylistMobile />} />
       <Route path="myplaylist/:id" element={<UserPlaylistMobile />} />
       <Route path="collection" element={<Collection />} />
+      <Route path="account" element={<Account />} />
       <Route path="search" element={<Search />}>
         <Route path=":keyword" element={<SearchResult />} />
       </Route>
