@@ -1,5 +1,3 @@
-import React from "react";
-
 function ProgressRing({ radius, stroke, progress }) {
   const normalizedRadius = radius - stroke * 2;
   const circumference = normalizedRadius * 2 * Math.PI;

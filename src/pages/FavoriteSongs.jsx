@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Detail from "../components/playlist/Detail";
 import SongList from "../components/playlist/SongList";
 import { useDispatch } from "react-redux";

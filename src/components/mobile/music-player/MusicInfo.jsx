@@ -1,5 +1,5 @@
 import { doc, updateDoc } from "firebase/firestore";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   MdExpandMore,
   MdFavorite,
@@ -18,7 +18,6 @@ import { CSSTransition } from "react-transition-group";
 import { toggleLoginModal } from "../../../features/modals/modalSlice";
 import { setIsPlaying } from "../../../features/music-player/musicPlayerSlice";
 import {
-  selectIsLoggedIn,
   selectLikedSongs,
   selectUser,
   updateLikedSongs,

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useCategoryPlaylist from "../../hooks/useCategoryPlaylist";
 
 function HomeMobile() {
   const { data, status } = useCategoryPlaylist();
-  if (status === "loading") return <p>Loading...</p>;
+  if (status === "loading") return null;
 
   return (
     <div className="py-3 text-white">

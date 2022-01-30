@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
-import { MdLibraryMusic, MdFavorite, MdPerson } from "react-icons/md";
+import { MdLibraryMusic, MdPerson } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/user/userSlice";
 import { useDispatch } from "react-redux";

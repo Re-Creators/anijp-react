@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MdAdd, MdPlayCircleFilled } from "react-icons/md";
 import { Link } from "react-router-dom";
 import NewPlaylistModal from "../components/modals/NewPlaylistModal";
@@ -7,8 +7,6 @@ import { useSelector } from "react-redux";
 import { selectLikedPlaylist, selectUser } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import { toggleLoginModal } from "../features/modals/modalSlice";
-import { getLikedPlaylist } from "../query/playlistQuery";
-import { client } from "../sanityClient";
 import {
   addNewSongs,
   setIsPlaying,

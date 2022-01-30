@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useUserPlaylist } from "../../hooks/useUserPlaylist";
 import PlaylistDetail from "../../components/mobile/playlist/PlaylistDetail";
