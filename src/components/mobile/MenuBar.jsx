@@ -19,7 +19,7 @@ function MenuBar() {
         </Link>
       </div>
       <div>
-        <Link className="flex flex-col  items-center" to="/">
+        <Link className="flex flex-col  items-center" to="/search">
           <AiOutlineSearch fontSize={20} />
           <span className="text-xs mt-2">Search</span>
         </Link>
@@ -32,7 +32,7 @@ function MenuBar() {
       </div>
       <div>
         <Link
-          className="flex flex-col  items-center"
+          className="flex flex-col items-center"
           to="/"
           onClick={(e) => {
             if (!user) {

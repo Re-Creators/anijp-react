@@ -62,6 +62,9 @@ const MobileScreen = (
       <Route path="playlist/:id" element={<PlaylistMobile />} />
       <Route path="myplaylist/:id" element={<UserPlaylistMobile />} />
       <Route path="collection" element={<Collection />} />
+      <Route path="search" element={<Search />}>
+        <Route path=":keyword" element={<SearchResult />} />
+      </Route>
     </Route>
   </>
 );
