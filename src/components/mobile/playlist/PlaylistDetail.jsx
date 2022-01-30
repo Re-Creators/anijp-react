@@ -27,11 +27,14 @@ function PlaylistDetail({ detail }) {
   return (
     <div className="h-screen overflow-y-auto">
       <div className="h-96 w-full relative">
-        <img
-          src={detail.cover}
-          alt="background-cover"
-          className="absolute w-full h-full object-cover object-center z-0 filter blur-sm"
-        />
+        <div className="absolute w-full h-full">
+          <img
+            src={detail.cover}
+            alt="background-cover"
+            className="absolute w-full h-full object-cover object-center z-0 filter blur-sm"
+          />
+          <div className="absolute inset-0 bg-overlay-playlist-dark"></div>
+        </div>
         <div className="absolute text-white w-full h-full flex flex-col items-center justify-center backdrop-filter backdrop-blur-2xl">
           <img
             src={detail.cover}

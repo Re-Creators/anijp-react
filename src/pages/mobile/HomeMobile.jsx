@@ -7,7 +7,7 @@ function HomeMobile() {
 
   return (
     <div className="py-3 text-white hide-scrollbar h-screen pb-80">
-      <div className="mt-10">
+      <div className="mt-5">
         <div className="px-3">
           {data.map((category) => (
             <div key={category._id}>

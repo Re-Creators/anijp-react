@@ -33,18 +33,21 @@ function SearchResult() {
       <h1 className="md:font-semibold text-lg md:text-xl">
         Result for "{keyword}"
       </h1>
-      <div className="text-white mt-5 flex flex-row flex-wrap justify-between md:justify-start">
+      <div className="text-white mt-5 flex flex-row flex-wrap  md:justify-start">
         {results.length <= 0 && !isFetching && (
           <h1 className="text-center text-xl font-semibold w-full mt-10">
             No Result
           </h1>
         )}
         {results.map((playlist) => (
-          <div className="md:mr-10 mb-3" key={playlist._id}>
+          <div
+            className="md:mr-10 mb-5 w-1/3 px-[3px] md:px-0"
+            key={playlist._id}
+          >
             <Link
               to={`/playlist/${playlist._id}`}
               href=""
-              className="relative block w-32 h-40 md:w-40 lg:w-48 md:h-52 lg:h-60 overflow-y-hidden group"
+              className="relative block h-[130px] md:w-40 lg:w-48 md:h-52 lg:h-60 overflow-y-hidden group"
             >
               <img
                 src={playlist.cover}
