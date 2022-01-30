@@ -26,6 +26,8 @@ function ProggressBar({
     const clickPos = e.pageX - rect.left;
     const time = (clickPos / rect.width) * duration;
 
+    console.log(time);
+
     onChangeTime(time);
   };
 

@@ -42,7 +42,7 @@ function PlaylistDetail({ detail }) {
           <div className="text-xs mt-3 w-4/5 flex flex-col items-center">
             <p className=" text-center clamp-2">{detail.description} </p>
             <div className="flex flex-row  text-xs mt-3">
-              {detail?.likes && (
+              {detail.likes !== undefined && (
                 <div className="flex flex-row items-center mr-3">
                   <MdFavorite className="text-lg mr-1" />
                   <span> {detail.likes} Likes</span>

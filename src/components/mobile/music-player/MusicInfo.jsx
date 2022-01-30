@@ -34,15 +34,14 @@ function MusicInfo({
   hide,
   audioRef,
   isPlaying,
+  duration,
   activeSong,
   dispatch,
   changeSongHandler,
 }) {
-  console.log("RENDE");
   const user = useSelector(selectUser);
   const likedSongs = useSelector(selectLikedSongs);
   const [timeProgress, setTimeProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
 
   const [showModal, setShowModal] = useState(false);
   const [showQueue, setShowQueue] = useState(false);
@@ -108,7 +107,6 @@ function MusicInfo({
   };
 
   useEffect(() => {
-    setDuration(audioRef.current.duration);
     const audioRefValue = audioRef.current;
 
     audioRefValue.addEventListener("timeupdate", onTimeUpdate);

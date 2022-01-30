@@ -19,6 +19,7 @@ function MusicPlayerMobile() {
   const activeSong = useSelector(selectActiveSong);
 
   const [showMusicInfo, setShowMusicInfo] = useState(false);
+  const [duration, setDuration] = useState(0);
 
   const trackIndex = useRef(0);
 
@@ -96,6 +97,7 @@ function MusicPlayerMobile() {
         ref={audioRef}
         src={activeSong?.songUrl}
         onEnded={songEndHanlder}
+        onLoadedMetadata={(e) => setDuration(e.target.duration)}
       ></audio>
 
       <button onClick={() => dispatch(setIsPlaying(!isPlaying))}>
@@ -115,6 +117,7 @@ function MusicPlayerMobile() {
           isPlaying={isPlaying}
           dispatch={dispatch}
           changeSongHandler={changeSongHandler}
+          duration={duration}
         />
       </CSSTransition>
     </div>
