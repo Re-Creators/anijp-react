@@ -1,11 +1,18 @@
 import { signOut } from "firebase/auth";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { selectUser } from "../../features/user/userSlice";
 import { authApp } from "../../firebase-config";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 function Account() {
   const user = useSelector(selectUser);
+  const { setTitle } = useDocumentTitle();
+
+  useEffect(() => {
+    setTitle(`${user.username} Profile | AniJP`);
+  }, [user, setTitle]);
 
   const logoutHandler = () => {
     signOut(authApp)
@@ -19,9 +26,9 @@ function Account() {
 
   if (!user) return <Navigate to="/" />;
   return (
-    <div className="text-white h-full w-full flex flex-col">
+    <div className="flex h-full w-full flex-col text-white">
       <button
-        className="self-end mr-3 mt-3 border-2 px-3 py-1 text-sm"
+        className="mr-3 mt-3 self-end border-2 px-3 py-1 text-sm"
         onClick={logoutHandler}
       >
         Logout
@@ -31,7 +38,7 @@ function Account() {
         <img
           src={user.photo}
           alt=""
-          className="w-40 h-40 object-cover object-center rounded-full mb-3"
+          className="mb-3 h-40 w-40 rounded-full object-cover object-center"
         />
         <span className="capitalize">{user.username}</span>
       </div>

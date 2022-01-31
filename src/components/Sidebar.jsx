@@ -3,11 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
 import { MdLibraryMusic, MdFavorite } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectLikedPlaylist,
-  selectUser,
-  set,
-} from "../features/user/userSlice";
+import { selectLikedPlaylist, selectUser } from "../features/user/userSlice";
 import { getLikedPlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
 import { selectUserPlaylist } from "../features/user-playlist/userPlaylistSlice";
@@ -30,12 +26,12 @@ function Sidebar() {
   }, [likedPlaylistIds, user]);
 
   return (
-    <nav className="fixed z-20 left-0 px-5 hidden md:block md:w-sidebar-md lg:w-1/4 xl:w-[18%] h-screen bg-primary text-white shadow-2xl">
+    <nav className="md:w-sidebar-md bg-primary fixed left-0 z-20 hidden h-screen px-5 text-white shadow-2xl md:block lg:w-1/4 xl:w-[18%]">
       <Link to="/">
         <img
           src="/logo_anijp.svg"
           alt="AniJP Logo"
-          className="w-1/2 mx-auto mt-8"
+          className="mx-auto mt-8 w-1/2"
         />
       </Link>
       <div className="mt-10">
@@ -69,12 +65,12 @@ function Sidebar() {
           </li>
         </ul>
       </div>
-      <div className="divider border-t border-primary-300 mt-10"></div>
+      <div className="divider border-primary-300 mt-10 border-t"></div>
       <div className="mt-5">
-        <ul className="mt-1 hide-scrollbar h-[20rem] ">
+        <ul className="hide-scrollbar mt-1 h-[20rem] ">
           <Link
             to="/favorite"
-            className="flex flex-row items-center relative"
+            className="relative flex flex-row items-center"
             onClick={(e) => {
               if (!user) {
                 e.preventDefault();
@@ -82,10 +78,10 @@ function Sidebar() {
               }
             }}
           >
-            <div className="w-8 h-8 bg-red-500 flex justify-center items-center rounded-sm">
+            <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-red-500">
               <MdFavorite className="text-xl" />
             </div>
-            <span className="line-clamp-2 text-gray-300 text-sm hover:text-white w-32 ml-3">
+            <span className="line-clamp-2 ml-3 w-32 text-sm text-gray-300 hover:text-white">
               Favorite Songs
             </span>
           </Link>
@@ -96,10 +92,10 @@ function Sidebar() {
                 to={`/playlist/${playlist._id}`}
                 className="flex flex-row items-center"
               >
-                <div className="w-8 h-8">
-                  <img src={playlist.cover} alt="" className="w-full h-full" />
+                <div className="h-8 w-8">
+                  <img src={playlist.cover} alt="" className="h-full w-full" />
                 </div>
-                <span className="clamp-2 text-gray-300 text-sm ml-3 hover:text-white w-32">
+                <span className="clamp-2 ml-3 w-32 text-sm text-gray-300 hover:text-white">
                   {playlist.name}
                 </span>
               </Link>
@@ -113,10 +109,10 @@ function Sidebar() {
                 to={`/myplaylist/${playlist.id}`}
                 className="flex flex-row items-center"
               >
-                <div className="w-8 h-8">
-                  <img src={playlist.cover} alt="" className="w-full h-full" />
+                <div className="h-8 w-8">
+                  <img src={playlist.cover} alt="" className="h-full w-full" />
                 </div>
-                <span className="clamp-2 text-gray-300 text-sm ml-3 hover:text-white w-32">
+                <span className="clamp-2 ml-3 w-32 text-sm text-gray-300 hover:text-white">
                   {playlist.name}
                 </span>
               </Link>
