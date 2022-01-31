@@ -15,7 +15,7 @@ function Home() {
   const { data, isLoading } = useCategoryPlaylist();
   const dispatch = useDispatch();
 
-  if (isLoading) return <p>loading</p>;
+  if (isLoading) return null;
   return (
     <div className="hide-scrollbar mt-5 h-screen px-10 pb-96">
       <HomeSlider />

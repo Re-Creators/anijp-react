@@ -5,44 +5,44 @@ function Detail(props) {
     props;
 
   return (
-    <div className="w-full h-80 relative mt-10">
+    <div className="relative  h-80 w-full">
       {type !== "favorite" && (
         <div
-          className="absolute  w-full h-full bg-no-repeat bg-cover bg-center  z-0"
+          className="absolute  z-0 h-full w-full bg-cover bg-center  bg-no-repeat"
           style={{ backgroundImage: `url("${cover}")` }}
         ></div>
       )}
 
-      <div className="relative w-full h-full backdrop-filter backdrop-blur-3xl bg-overlay-playlist-dark">
-        <div className="absolute top-1/2 left-10 transform -translate-y-1/2 z-0 w-full flex flex-row">
-          <div className="w-48 h-52">
+      <div className="bg-overlay-playlist-dark relative h-full w-full backdrop-blur-3xl backdrop-filter">
+        <div className="absolute top-1/2 left-10 z-0 flex w-full -translate-y-1/2 transform flex-row">
+          <div className="h-52 w-48">
             <img
               src={cover}
               alt=""
-              className="w-full h-full object-cover object-center rounded-md shadow-md"
+              className="h-full w-full rounded-md object-cover object-center shadow-md"
             />
           </div>
-          <div className="ml-3 md:ml-5 lg:ml-8 flex flex-col justify-between">
+          <div className="ml-3 flex flex-col justify-between md:ml-5 lg:ml-8">
             <div>
               <span className="text-xs uppercase">{type}</span>
-              <h1 className="title md:text-4xl lg:text-4xl xl:text-6xl mt-3">
+              <h1 className="title mt-3 md:text-4xl lg:text-4xl xl:text-6xl">
                 {playlistName}
               </h1>
             </div>
             <div>
-              <p className="text-xs overflow-hidden text-gray-300 w-52 lg:w-96 truncate">
+              <p className="w-52 overflow-hidden truncate text-xs text-gray-300 lg:w-96">
                 {description}
               </p>
-              <div className="flex flex-row text-xs mt-3">
+              <div className="mt-3 flex flex-row text-xs">
                 {likeCount >= 0 && (
-                  <div className="flex flex-row items-center mr-3">
-                    <MdFavorite className="text-lg mr-1" />
+                  <div className="mr-3 flex flex-row items-center">
+                    <MdFavorite className="mr-1 text-lg" />
                     <span> {likeCount} Likes</span>
                   </div>
                 )}
 
                 <div className="flex flex-row items-center">
-                  <MdLibraryMusic className="text-lg mr-1" />
+                  <MdLibraryMusic className="mr-1 text-lg" />
                   <span>{songCount} Songs</span>
                 </div>
               </div>

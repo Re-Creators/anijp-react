@@ -50,7 +50,7 @@ function UserPlaylist() {
     }
   }, [data, setTitle]);
 
-  if (!data) return <p>loading..</p>;
+  if (!data) return null;
   return (
     <div className="hide-scrollbar h-screen text-white">
       <Detail
