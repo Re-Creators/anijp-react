@@ -1,6 +1,9 @@
 import MainLogin from "../components/login/MainLogin";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function Login() {
+  useDocumentTitle("Login | AniJP");
+
   return (
     <>
       <MainLogin

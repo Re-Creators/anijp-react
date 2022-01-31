@@ -10,9 +10,10 @@ import { client } from "../sanityClient";
 import { useSelector } from "react-redux";
 import { selectLikedSongs } from "../features/user/userSlice";
 import { getFavoriteSongs } from "../query/songQuery";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function FavoriteSong() {
-  console.log("render Playlist");
+  useDocumentTitle("Favorite Song | AniJP");
   const dispatch = useDispatch();
 
   const likedSongs = useSelector(selectLikedSongs);
@@ -43,8 +44,8 @@ function FavoriteSong() {
         description="Collection favorite song"
         type="favorite"
       />
-      <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen pb-36 ">
-        <div className="flex flex-row items-center mb-10">
+      <div className="bg-playlist-container min-h-screen w-full py-5 pb-36 md:px-5 lg:px-10 ">
+        <div className="mb-10 flex flex-row items-center">
           <button
             onClick={() => {
               dispatch(addNewSongs({ songs, indexSong: 0 }));
@@ -55,7 +56,7 @@ function FavoriteSong() {
               viewBox="0 0 80 80"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="w-16 h-16"
+              className="h-16 w-16"
             >
               <circle cx="40" cy="40" r="25" fill="white" />
               <path

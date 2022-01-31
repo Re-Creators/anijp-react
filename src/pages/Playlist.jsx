@@ -20,14 +20,15 @@ import { toggleLoginModal } from "../features/modals/modalSlice";
 import { toast } from "react-toastify";
 import usePlaylistDetail from "../hooks/usePlaylistDetail";
 import useUpdatePlaylistLike from "../hooks/useUpdatePlaylistLike";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function Playlist() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { data, isLoading } = usePlaylistDetail(id);
+  const { data, status } = usePlaylistDetail(id);
   const { mutate } = useUpdatePlaylistLike();
-
+  const { setTitle } = useDocumentTitle();
   const user = useSelector(selectUser);
   const likedPlaylist = useSelector(selectLikedPlaylist);
   const [isLiked, setIsLiked] = useState(false);
@@ -78,7 +79,13 @@ function Playlist() {
     }
   }, [likedPlaylist, id, dispatch]);
 
-  if (isLoading) return <p>Loading..</p>;
+  useEffect(() => {
+    if (data) {
+      setTitle(`${data.name} | AniJP Playlist`);
+    }
+  }, [data, setTitle]);
+
+  if (status === "loading") return <p>Loading..</p>;
   return (
     <div
       className={`text-white ${
@@ -94,8 +101,8 @@ function Playlist() {
         likeCount={data.likes}
         type="playlist"
       />
-      <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
-        <div className="flex flex-row items-center mb-10">
+      <div className="bg-playlist-container min-h-screen w-full py-5 md:px-5 lg:px-10">
+        <div className="mb-10 flex flex-row items-center">
           <button
             onClick={() => {
               dispatch(addNewSongs({ songs: data.songs, indexSong: 0 }));
@@ -106,7 +113,7 @@ function Playlist() {
               viewBox="0 0 80 80"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="w-16 h-16"
+              className="h-16 w-16"
             >
               <circle cx="40" cy="40" r="25" fill="white" />
               <path

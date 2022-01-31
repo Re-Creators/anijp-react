@@ -8,8 +8,10 @@ import {
   selectisLoading,
 } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function Register() {
+  useDocumentTitle("Register | AniJP");
   const dispatch = useDispatch();
 
   const isLoading = useSelector(selectisLoading);
@@ -26,9 +28,9 @@ function Register() {
 
   return (
     <div className="flex flex-row">
-      <div className="w-full md:w-1/2 bg-white min-h-screen  relative flex items-center justify-center">
-        <div className="p-10 w-full lg:w-2/3">
-          <h1 className="text-center mb-10 text-4xl">Sign Up</h1>
+      <div className="relative flex min-h-screen w-full  items-center justify-center bg-white md:w-1/2">
+        <div className="w-full p-10 lg:w-2/3">
+          <h1 className="mb-10 text-center text-4xl">Sign Up</h1>
           <form
             className="flex flex-col "
             onSubmit={submitHandler}
@@ -38,34 +40,34 @@ function Register() {
               <span>Username</span>
               <input
                 type="text"
-                className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
+                className="border-primary mt-1 w-full border-2  px-3 py-3 text-sm"
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
-            <div className="flex flex-col mt-5">
+            <div className="mt-5 flex flex-col">
               <span>Email</span>
               <input
                 type="email"
-                className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
+                className="border-primary mt-1 w-full border-2  px-3 py-3 text-sm"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
               {error && (
-                <span className="mt-3 text-xs text-red-500 italic">
+                <span className="mt-3 text-xs italic text-red-500">
                   {error}
                 </span>
               )}
             </div>
-            <div className="flex flex-col mt-5">
+            <div className="mt-5 flex flex-col">
               <span>Password</span>
               <input
                 type="password"
-                className="w-full px-3 py-3 border-2 border-primary mt-1 text-sm"
+                className="border-primary mt-1 w-full border-2 px-3 py-3 text-sm"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -74,7 +76,7 @@ function Register() {
             </div>
             <button
               type="sumbit"
-              className="w-full py-3 bg-secondary text-white mt-5 rounded-lg"
+              className="bg-secondary mt-5 w-full rounded-lg py-3 text-white"
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : " Sign Up"}
@@ -89,10 +91,10 @@ function Register() {
         </div>
       </div>
 
-      <div className="hidden md:w-1/2 h-full min-h-screen md:flex flex-col justify-between">
-        <div className="flex flex-col w-full items-center my-auto">
+      <div className="hidden h-full min-h-screen flex-col justify-between md:flex md:w-1/2">
+        <div className="my-auto flex w-full flex-col items-center">
           <img src="/logo_anijp.svg" alt="" className="w-32" />
-          <h1 className="text-white md:text-4xl lg:text-5xl font-bold">
+          <h1 className="font-bold text-white md:text-4xl lg:text-5xl">
             Music For Life
           </h1>
         </div>

@@ -16,8 +16,10 @@ import {
   selectUserPlaylist,
 } from "../features/user-playlist/userPlaylistSlice";
 import useLikedPlaylist from "../hooks/useLikedPlaylist";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function Collection() {
+  useDocumentTitle("My Collection | AniJP");
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const likedPlaylistIds = useSelector(selectLikedPlaylist);
@@ -40,19 +42,19 @@ function Collection() {
   };
 
   return (
-    <div className="mt-5 px-3 md:pl-10 text-white pb-96 hide-scrollbar">
-      <h1 className="font-bold text-2xl md:text-4xl">My Collection</h1>
-      <div className="flex flex-row flex-wrap mt-8">
+    <div className="hide-scrollbar mt-5 px-3 pb-96 text-white md:pl-10">
+      <h1 className="text-2xl font-bold md:text-4xl">My Collection</h1>
+      <div className="mt-8 flex flex-row flex-wrap">
         {/* New Playlist */}
-        <div className="w-1/3 px-[3px] md:px-0 md:w-52 md:mr-8 flex flex-col items-center cursor-pointer">
+        <div className="flex w-1/3 cursor-pointer flex-col items-center px-[3px] md:mr-8 md:w-52 md:px-0">
           <div
-            className="w-full h-[130px] md:h-52 p-3 md:p-5 border-dashed border-2 border-gray-400 mb-3 rounded-md"
+            className="mb-3 h-[130px] w-full rounded-md border-2 border-dashed border-gray-400 p-3 md:h-52 md:p-5"
             onClick={newPlaylistHandler}
           >
             <img
               src="/images/new-playlist.png"
               alt="New Playlist"
-              className="w-full h-full rounded-lg"
+              className="h-full w-full rounded-lg"
             />
           </div>
           <div className="flex flex-row" onClick={newPlaylistHandler}>
@@ -64,19 +66,19 @@ function Collection() {
         {data &&
           data.map((playlist) => (
             <div
-              className="w-1/3 px-[3px] md:px-0 md:mr-8 flex flex-col items-center mb-5  md:w-52"
+              className="mb-5 flex w-1/3 flex-col items-center px-[3px] md:mr-8 md:w-52  md:px-0"
               key={playlist._id}
             >
               <Link
                 to={`/playlist/${playlist._id}`}
-                className="relative block w-full h-[130px] md:h-52  overflow-y-hidden mb-3 group"
+                className="group relative mb-3 block h-[130px]  w-full overflow-y-hidden md:h-52"
               >
                 <img
                   src={playlist.cover}
                   alt=""
-                  className="w-full h-full rounded-lg object-cover"
+                  className="h-full w-full rounded-lg object-cover"
                 />
-                <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
+                <div className="bg-card-hover absolute bottom-0 hidden h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0 md:block">
                   <button
                     onClick={(e) => {
                       e.preventDefault();
@@ -86,7 +88,7 @@ function Collection() {
                       dispatch(setIsPlaying(true));
                     }}
                   >
-                    <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+                    <MdPlayCircleFilled className="absolute right-3 bottom-3 text-4xl" />
                   </button>
                 </div>
               </Link>
@@ -99,30 +101,30 @@ function Collection() {
         {/* Users Playlist  */}
         {userPlaylist.map((playlist) => (
           <div
-            className="w-1/3 px-[3px] md:px-0 md:w-52 md:mr-8 flex flex-col items-center mb-5"
+            className="mb-5 flex w-1/3 flex-col items-center px-[3px] md:mr-8 md:w-52 md:px-0"
             key={playlist.id}
           >
             <Link
               to={`/myplaylist/${playlist.id}`}
-              className="relative block h-[130px] w-full md:w-52 md:h-52  overflow-y-hidden mb-3 group"
+              className="group relative mb-3 block h-[130px] w-full  overflow-y-hidden md:h-52 md:w-52"
             >
               <img
                 src={playlist.cover}
                 alt=""
-                className="w-full h-full rounded-lg object-cover"
+                className="h-full w-full rounded-lg object-cover"
               />
-              <div className="hidden md:block transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
+              <div className="bg-card-hover absolute bottom-0 hidden h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0 md:block">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     playUserPlaylist(playlist);
                   }}
                 >
-                  <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+                  <MdPlayCircleFilled className="absolute right-3 bottom-3 text-4xl" />
                 </button>
               </div>
             </Link>
-            <div className="text-semibold w-full md:w-52 text-xs md:text-sm">
+            <div className="text-semibold w-full text-xs md:w-52 md:text-sm">
               <span className="line-clamp-2 capitalize">{playlist.name}</span>
             </div>
           </div>

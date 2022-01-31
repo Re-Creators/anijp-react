@@ -7,34 +7,37 @@ import {
   setIsPlaying,
 } from "../features/music-player/musicPlayerSlice";
 import useCategoryPlaylist from "../hooks/useCategoryPlaylist";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function Home() {
+  useDocumentTitle("AniJP | Music For Life");
+
   const { data, isLoading } = useCategoryPlaylist();
   const dispatch = useDispatch();
 
   if (isLoading) return <p>loading</p>;
   return (
-    <div className="mt-5 px-10 pb-96 h-screen hide-scrollbar">
+    <div className="hide-scrollbar mt-5 h-screen px-10 pb-96">
       <HomeSlider />
       <div className="mt-10">
         {data.map((category) => (
           <div className="" key={category._id}>
-            <h1 className="text-white md:text-lg lg:text-xl font-semibold">
+            <h1 className="font-semibold text-white md:text-lg lg:text-xl">
               {category.name}
             </h1>
-            <div className="text-white mt-5 flex flex-row flex-wrap">
+            <div className="mt-5 flex flex-row flex-wrap text-white">
               {category.playlist.map((playlist) => (
                 <div className="mr-10 mb-5" key={playlist._id}>
                   <Link
                     to={`/playlist/${playlist._id}`}
-                    className="relative block w-32 h-40 md:w-40 lg:w-48 md:h-52 lg:h-60 overflow-y-hidden mb-2 group"
+                    className="group relative mb-2 block h-40 w-32 overflow-y-hidden md:h-52 md:w-40 lg:h-60 lg:w-48"
                   >
                     <img
                       src={playlist.cover}
                       alt=""
-                      className="w-full h-full rounded-lg object-cover"
+                      className="h-full w-full rounded-lg object-cover"
                     />
-                    <div className="transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
+                    <div className="bg-card-hover absolute bottom-0 h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0">
                       <button
                         onClick={(e) => {
                           e.preventDefault();
@@ -44,11 +47,11 @@ function Home() {
                           dispatch(setIsPlaying(true));
                         }}
                       >
-                        <MdPlayCircleFilled className="material-icons text-4xl absolute right-3 bottom-3" />
+                        <MdPlayCircleFilled className="material-icons absolute right-3 bottom-3 text-4xl" />
                       </button>
                     </div>
                   </Link>
-                  <span className="md:w-40 lg:w-48 line-clamp-2 overflow-x-hidden text-xs md:text-sm lg:text-base">
+                  <span className="line-clamp-2 overflow-x-hidden text-xs md:w-40 md:text-sm lg:w-48 lg:text-base">
                     {playlist.name}
                   </span>
                 </div>

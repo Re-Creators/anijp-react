@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineMoreHoriz, MdPlaylistAdd, MdDelete } from "react-icons/md";
 import UserSongList from "../components/user-playlist/UserSongList";
 import { useDispatch } from "react-redux";
@@ -13,12 +13,14 @@ import { getUserPlaylist } from "../features/user-playlist/userPlaylistSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/user/userSlice";
 import { useUserPlaylist } from "../hooks/useUserPlaylist";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function UserPlaylist() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { setTitle } = useDocumentTitle();
   const [showOption, setShowOption] = useState(false);
   const user = useSelector(selectUser);
 
@@ -42,9 +44,15 @@ function UserPlaylist() {
     addPlaylistSong(data.songs);
   };
 
+  useEffect(() => {
+    if (data) {
+      setTitle(`${data.name} | AniJP Playlist`);
+    }
+  }, [data, setTitle]);
+
   if (!data) return <p>loading..</p>;
   return (
-    <div className="text-white hide-scrollbar h-screen">
+    <div className="hide-scrollbar h-screen text-white">
       <Detail
         songCount={data.songs.length}
         playlistName={data.name}
@@ -52,14 +60,14 @@ function UserPlaylist() {
         description={data.description}
         type="my playlist"
       />
-      <div className="w-full bg-playlist-container md:px-5 lg:px-10 py-5 min-h-screen">
-        <div className="flex flex-row items-center mb-10 relative">
+      <div className="bg-playlist-container min-h-screen w-full py-5 md:px-5 lg:px-10">
+        <div className="relative mb-10 flex flex-row items-center">
           <button onClick={() => onPlayAll(0)}>
             <svg
               viewBox="0 0 80 80"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="w-16 h-16"
+              className="h-16 w-16"
             >
               <circle cx="40" cy="40" r="25" fill="white" />
               <path
@@ -75,19 +83,19 @@ function UserPlaylist() {
             <MdOutlineMoreHoriz className="text-4xl" />
           </button>
           {showOption && (
-            <div className="absolute bg-secondary z-50 -top-20 left-28 rounded-lg flex flex-col p-2">
+            <div className="bg-secondary absolute -top-20 left-28 z-50 flex flex-col rounded-lg p-2">
               <div
-                className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm flex flex-row items-center cursor-pointer"
+                className="hover:bg-primary-300 flex cursor-pointer flex-row items-center rounded-sm px-3 py-2 pr-10"
                 onClick={addToQueue}
               >
                 <MdPlaylistAdd className="mr-2 text-xl" />
                 <span>Add to queue</span>
               </div>
               <div
-                className="px-3 py-2 pr-10 hover:bg-primary-300 rounded-sm flex flex-row items-center cursor-pointer"
+                className="hover:bg-primary-300 flex cursor-pointer flex-row items-center rounded-sm px-3 py-2 pr-10"
                 onClick={deletePlaylist}
               >
-                <MdDelete className="text-lg mr-2" />
+                <MdDelete className="mr-2 text-lg" />
                 <span>Delete playlist</span>
               </div>
             </div>
