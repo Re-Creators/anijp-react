@@ -125,7 +125,7 @@ function Collection() {
               </div>
             </Link>
             <div className="text-semibold w-full text-xs md:w-52 md:text-sm">
-              <span className="line-clamp-2 capitalize">{playlist.name}</span>
+              <span className="line-clamp-2">{playlist.name}</span>
             </div>
           </div>
         ))}
