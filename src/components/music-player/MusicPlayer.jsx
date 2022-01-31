@@ -58,10 +58,10 @@ function MusicPlayer() {
     }
   };
 
-  const onProgressMove = (time) => {
+  const onProgressMove = useCallback((time) => {
     setProgressMoving(true);
     setTimeProgress(time);
-  };
+  }, []);
 
   const repeatHandler = () => {
     if (repeatMode === REPEAT.off) {
@@ -83,12 +83,12 @@ function MusicPlayer() {
     }
   }, [activeSong, dispatch, songs]);
 
-  const onChangeTime = (time) => {
+  const onChangeTime = useCallback((time) => {
     if (audioRef.current) {
       setProgressMoving(false);
       audioRef.current.currentTime = time;
     }
-  };
+  }, []);
 
   const changeSongHandler = (value) => {
     if (songs.length <= 0) return;

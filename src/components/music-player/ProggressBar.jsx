@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 function ProggressBar({
   percent,
@@ -26,13 +26,11 @@ function ProggressBar({
     const clickPos = e.pageX - rect.left;
     const time = (clickPos / rect.width) * duration;
 
-    console.log(time);
-
     onChangeTime(time);
   };
 
-  useEffect(() => {
-    const onMove = (e) => {
+  const onMove = useCallback(
+    (e) => {
       if (startMove.current) {
         const rect = progressBar.current.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
@@ -44,9 +42,12 @@ function ProggressBar({
           onProgressMove(time);
         }
       }
-    };
+    },
+    [onProgressMove, duration]
+  );
 
-    const onEndMove = (e) => {
+  const onEndMove = useCallback(
+    (e) => {
       if (startMove.current) {
         const rect = progressBar.current.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
@@ -58,8 +59,12 @@ function ProggressBar({
 
         startMove.current = false;
       }
-    };
+    },
+    [onChangeTime, duration]
+  );
 
+  useEffect(() => {
+    console.log("CAcla");
     document.addEventListener("mousemove", onMove);
     document.addEventListener("mouseup", onEndMove);
 
@@ -67,9 +72,7 @@ function ProggressBar({
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseup", onEndMove);
     };
-
-    // eslint-disable-next-line
-  }, [duration]);
+  }, [onEndMove, onMove]);
 
   return (
     <div className="w-4/5 mx-3">

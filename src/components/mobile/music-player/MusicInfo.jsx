@@ -53,13 +53,16 @@ function MusicInfo({
     ? 0
     : (timeProgress / duration) * 100;
 
-  const onChangeTime = (time) => {
-    audioRef.current.currentTime = time;
-  };
+  const onChangeTime = useCallback(
+    (time) => {
+      audioRef.current.currentTime = time;
+    },
+    [audioRef]
+  );
 
-  const onProgressMove = (time) => {
+  const onProgressMove = useCallback((time) => {
     setTimeProgress(time);
-  };
+  }, []);
 
   const onTimeUpdate = useCallback((e) => {
     const { currentTime } = e.srcElement;
