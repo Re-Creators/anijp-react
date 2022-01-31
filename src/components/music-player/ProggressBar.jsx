@@ -64,7 +64,6 @@ function ProggressBar({
   );
 
   useEffect(() => {
-    console.log("CAcla");
     document.addEventListener("mousemove", onMove);
     document.addEventListener("mouseup", onEndMove);
 

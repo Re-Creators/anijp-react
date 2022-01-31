@@ -41,13 +41,13 @@ function SearchResult() {
         )}
         {results.map((playlist) => (
           <div
-            className="md:mr-10 mb-5 w-1/3 px-[3px] md:px-0"
+            className="md:mr-5 mb-5 w-1/3 px-[3px] md:px-0 md:w-40 lg:w-48"
             key={playlist._id}
           >
             <Link
               to={`/playlist/${playlist._id}`}
               href=""
-              className="relative block h-[130px] md:w-40 lg:w-48 md:h-52 lg:h-60 overflow-y-hidden group"
+              className="relative block h-[130px]  md:h-52 lg:h-60 overflow-y-hidden group"
             >
               <img
                 src={playlist.cover}
