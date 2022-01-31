@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
 import { MdLibraryMusic, MdPerson } from "react-icons/md";
 import { useSelector } from "react-redux";
@@ -13,26 +13,43 @@ function MenuBar() {
   return (
     <div className="bg-primary p-5 flex flex-row justify-between text-white">
       <div>
-        <Link className="flex flex-col items-center" to="/">
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "nav-mobile-active" : "nav-mobile"
+          }
+          to="/"
+        >
           <AiFillHome fontSize={20} />
           <span className="text-xs mt-2">Home</span>
-        </Link>
+        </NavLink>
       </div>
       <div>
-        <Link className="flex flex-col  items-center" to="/search">
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "nav-mobile-active" : "nav-mobile"
+          }
+          to="/search"
+        >
           <AiOutlineSearch fontSize={20} />
           <span className="text-xs mt-2">Search</span>
-        </Link>
+        </NavLink>
       </div>
       <div>
-        <Link className="flex flex-col  items-center" to="/collection">
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "nav-mobile-active" : "nav-mobile"
+          }
+          to="/collection"
+        >
           <MdLibraryMusic fontSize={20} />
           <span className="text-xs mt-2">Collection</span>
-        </Link>
+        </NavLink>
       </div>
       <div>
-        <Link
-          className="flex flex-col items-center"
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "nav-mobile-active" : "nav-mobile"
+          }
           to="/account"
           onClick={(e) => {
             if (!user) {
@@ -43,7 +60,7 @@ function MenuBar() {
         >
           <MdPerson fontSize={20} />
           <span className="text-xs mt-2">Account</span>
-        </Link>
+        </NavLink>
       </div>
     </div>
   );

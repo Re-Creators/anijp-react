@@ -26,6 +26,14 @@ body {
   .nav-active {
     @apply flex flex-row items-center transition duration-150 text-link-active;
   }
+
+  .nav-mobile {
+    @apply flex flex-col items-center;
+  }
+
+  .nav-mobile-active {
+    @apply flex flex-col items-center text-link-active;
+  }
 }
 
 /* Toastify */
