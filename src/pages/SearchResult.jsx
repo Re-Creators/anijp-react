@@ -10,7 +10,7 @@ function SearchResult() {
   const [results, setResults] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
 
-  const doCityFilter = useMemo(
+  const doSearch = useMemo(
     () =>
       debounce((keyword) => {
         setIsFetching(true);
@@ -25,40 +25,40 @@ function SearchResult() {
   );
 
   useEffect(() => {
-    doCityFilter(keyword);
-  }, [keyword, doCityFilter]);
+    doSearch(keyword);
+  }, [keyword, doSearch]);
 
   return (
-    <div className="text-white mt-3 md:mt-10 md:px-5">
-      <h1 className="md:font-semibold text-lg md:text-xl">
+    <div className="mt-3 text-white md:mt-10 md:px-5">
+      <h1 className="text-lg md:text-xl md:font-semibold">
         Result for "{keyword}"
       </h1>
-      <div className="text-white mt-5 flex flex-row flex-wrap  md:justify-start">
+      <div className="mt-5 flex flex-row flex-wrap text-white  md:justify-start">
         {results.length <= 0 && !isFetching && (
-          <h1 className="text-center text-xl font-semibold w-full mt-10">
+          <h1 className="mt-10 w-full text-center text-xl font-semibold">
             No Result
           </h1>
         )}
         {results.map((playlist) => (
           <div
-            className="md:mr-5 mb-5 w-1/3 px-[3px] md:px-0 md:w-40 lg:w-48"
+            className="mb-5 w-1/3 px-[3px] md:mr-5 md:w-40 md:px-0 lg:w-48"
             key={playlist._id}
           >
             <Link
               to={`/playlist/${playlist._id}`}
               href=""
-              className="relative block h-[130px]  md:h-52 lg:h-60 overflow-y-hidden group"
+              className="group bg-primary-100 relative  block h-[130px] overflow-hidden overflow-y-hidden rounded-lg md:h-52 lg:h-60"
             >
               <img
                 src={playlist.cover}
                 alt=""
-                className="w-full h-full rounded-lg object-cover"
+                className="h-full w-full object-cover"
               />
-              <div className="transition duration-300 transform translate-y-48 absolute w-full h-32 bottom-0 bg-card-hover group-hover:translate-y-0">
-                <MdPlayCircleFilled className="text-4xl absolute right-3 bottom-3" />
+              <div className="bg-card-hover absolute bottom-0 h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0">
+                <MdPlayCircleFilled className="absolute right-3 bottom-3 text-4xl" />
               </div>
             </Link>
-            <span className="text-xs md:text-sm lg:text-base font-semibold">
+            <span className="text-xs font-semibold md:text-sm lg:text-base">
               {playlist.name}
             </span>
           </div>

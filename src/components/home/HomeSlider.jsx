@@ -4,12 +4,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Arrow from "../slick/Arrow";
 import { MdPlayCircleFilled } from "react-icons/md";
-import useCategoryBanner from "../../hooks/useCategoryBanner";
 import { Link } from "react-router-dom";
 
-function HomeSlider() {
-  const { data, status } = useCategoryBanner();
-
+function HomeSlider({ data }) {
   const settings = {
     className: "center",
     centerMode: true,
@@ -24,17 +21,16 @@ function HomeSlider() {
     nextArrow: <Arrow type="right" />,
   };
 
-  if (status === "loading") return null;
   return (
     <div className="home-slider">
       <Slider {...settings}>
         {data.playlist.map((playlist) => (
           <div
-            className="relative cursor-pointer pb-[32%] lg:pb-[28%]"
+            className="bg-primary-100 relative cursor-pointer overflow-hidden rounded-md pb-[32%] lg:pb-[28%]"
             key={playlist._id}
           >
             <Link to={`/playlist/${playlist._id}`}>
-              <div className="absolute inset-0 overflow-hidden rounded-md">
+              <div className="absolute inset-0">
                 <img
                   src={playlist.banner}
                   className="aspect-banner h-auto w-full"

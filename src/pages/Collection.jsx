@@ -71,12 +71,12 @@ function Collection() {
             >
               <Link
                 to={`/playlist/${playlist._id}`}
-                className="group relative mb-3 block h-[130px]  w-full overflow-y-hidden md:h-52"
+                className="group bg-primary-100 relative mb-3 block  h-[130px] w-full overflow-hidden  rounded-lg md:h-52"
               >
                 <img
                   src={playlist.cover}
                   alt=""
-                  className="h-full w-full rounded-lg object-cover"
+                  className="h-full w-full object-cover"
                 />
                 <div className="bg-card-hover absolute bottom-0 hidden h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0 md:block">
                   <button
@@ -106,7 +106,7 @@ function Collection() {
           >
             <Link
               to={`/myplaylist/${playlist.id}`}
-              className="group relative mb-3 block h-[130px] w-full  overflow-y-hidden md:h-52 md:w-52"
+              className="group bg-primary-100 relative mb-3 block h-[130px]   w-full  overflow-hidden rounded-lg md:h-52 md:w-52"
             >
               <img
                 src={playlist.cover}

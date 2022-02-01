@@ -8,17 +8,19 @@ import {
 } from "../features/music-player/musicPlayerSlice";
 import useCategoryPlaylist from "../hooks/useCategoryPlaylist";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import useCategoryBanner from "../hooks/useCategoryBanner";
 
 function Home() {
   useDocumentTitle("AniJP | Music For Life");
 
   const { data, isLoading } = useCategoryPlaylist();
+  const { data: dataBanner, status } = useCategoryBanner();
   const dispatch = useDispatch();
 
-  if (isLoading) return null;
+  if (isLoading || status === "loading") return null;
   return (
     <div className="hide-scrollbar mt-5 h-screen min-w-[765px] px-10 pb-96">
-      <HomeSlider />
+      <HomeSlider data={dataBanner} />
       <div className="mt-10">
         {data.map((category) => (
           <div className="" key={category._id}>
@@ -30,7 +32,8 @@ function Home() {
                 <div className="mr-10 mb-5" key={playlist._id}>
                   <Link
                     to={`/playlist/${playlist._id}`}
-                    className="group relative mb-2 block h-40 w-32 overflow-y-hidden md:h-52 md:w-40 lg:h-60 lg:w-48"
+                    className="group bg-primary-100 relative mb-2 block h-40 w-32 overflow-hidden overflow-y-hidden rounded-md shadow-lg md:h-52 md:w-40 lg:h-60 lg:w-48
+                    "
                   >
                     <img
                       src={playlist.cover}

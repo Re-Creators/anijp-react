@@ -15,11 +15,11 @@ function Detail(props) {
 
       <div className="bg-overlay-playlist-dark relative h-full w-full backdrop-blur-3xl backdrop-filter">
         <div className="absolute top-1/2 left-10 z-0 flex w-full -translate-y-1/2 transform flex-row">
-          <div className="h-52 w-48">
+          <div className="bg-primary-100 h-52 w-48 overflow-hidden rounded-md">
             <img
               src={cover}
               alt=""
-              className="h-full w-full rounded-md object-cover object-center shadow-md"
+              className="h-full w-full object-cover object-center shadow-md"
             />
           </div>
           <div className="ml-3 flex flex-col justify-between md:ml-5 lg:ml-8">
