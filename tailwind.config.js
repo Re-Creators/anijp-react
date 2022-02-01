@@ -57,6 +57,9 @@ module.exports = {
         playlist: "40px 3fr repeat(3, 2fr)",
         myplaylist: "40px 3fr repeat(2, 2fr)",
       },
+      aspectRatio: {
+        banner: "auto 170 / 170",
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],
