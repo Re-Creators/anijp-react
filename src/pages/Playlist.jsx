@@ -85,7 +85,7 @@ function Playlist() {
     }
   }, [data, setTitle]);
 
-  if (status === "loading") return <p>Loading..</p>;
+  if (status === "loading") return null;
   return (
     <div
       className={`text-white ${
@@ -101,7 +101,7 @@ function Playlist() {
         likeCount={data.likes}
         type="playlist"
       />
-      <div className="bg-playlist-container min-h-screen w-full py-5 md:px-5 lg:px-10">
+      <div className="bg-playlist-container min-h-screen w-full py-5 pb-80 md:px-5 lg:px-10">
         <div className="mb-10 flex flex-row items-center">
           <button
             onClick={() => {

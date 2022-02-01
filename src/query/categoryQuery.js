@@ -6,7 +6,7 @@ export const getCategories = `*[_type == 'category' && name != 'Featured Banner'
         _id,
         name,
         description,
-        "cover" : image.asset->url,
+        "cover" : cover.asset->url,
         songs[]->{
             _id,
             artist,
@@ -27,7 +27,8 @@ export const getCategoryBanner = `*[_type == 'category' && name == 'Featured Ban
        _id,
        name,
        description,
-       "cover" : image.asset->url,
+       "cover" : cover.asset->url,
+       "banner" : banner.asset->url,
        songs[]->{
            _id,
            artist,

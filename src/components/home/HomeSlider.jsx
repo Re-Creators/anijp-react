@@ -36,7 +36,7 @@ function HomeSlider() {
             <Link to={`/playlist/${playlist._id}`}>
               <div className="absolute inset-0 overflow-hidden rounded-md">
                 <img
-                  src={playlist.cover}
+                  src={playlist.banner}
                   className="aspect-banner h-auto w-full"
                   width={178}
                   height={178}
