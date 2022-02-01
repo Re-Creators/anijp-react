@@ -5,7 +5,7 @@ function Detail(props) {
     props;
 
   return (
-    <div className="relative  h-80 w-full">
+    <div className="relative h-80 w-full">
       {type !== "favorite" && (
         <div
           className="absolute  z-0 h-full w-full bg-cover bg-center  bg-no-repeat"

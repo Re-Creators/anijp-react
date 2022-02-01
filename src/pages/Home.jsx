@@ -17,7 +17,7 @@ function Home() {
 
   if (isLoading) return null;
   return (
-    <div className="hide-scrollbar mt-5 h-screen px-10 pb-96">
+    <div className="hide-scrollbar mt-5 h-screen min-w-[765px] px-10 pb-96">
       <HomeSlider />
       <div className="mt-10">
         {data.map((category) => (
