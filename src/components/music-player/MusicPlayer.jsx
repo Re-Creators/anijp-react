@@ -11,12 +11,7 @@ import {
 } from "../../features/music-player/musicPlayerSlice";
 import ProgressRing from "./ProgressRing";
 import PlayerExtraControl from "./PlayerExtraControl";
-
-const REPEAT = {
-  off: "OFF",
-  once: "ONCE",
-  list: "LIST",
-};
+import { REPEAT } from "../../utils/types";
 
 function MusicPlayer() {
   const dispatch = useDispatch();
@@ -94,7 +89,9 @@ function MusicPlayer() {
     if (songs.length <= 0) return;
     trackIndex.current = trackIndex.current + value;
 
-    if (trackIndex.current < 0) {
+    if (isShuffle) {
+      trackIndex.current = Math.floor(Math.random() * songs.length);
+    } else if (trackIndex.current < 0) {
       trackIndex.current = songs.length - 1;
     } else if (trackIndex.current >= songs.length) {
       trackIndex.current = 0;
@@ -144,25 +141,25 @@ function MusicPlayer() {
   }, [volume]);
 
   return (
-    <div className="fixed z-50 min-w-[765px] md:w-full flex flex-row items-center justify-between py-5 px-5 bottom-0 bg-primary shadow-2xl select-none">
-      <div className="md:w-1/4 lg:w-1/5 flex flex-row items-center relative">
-        <div className="w-20 h-20 p-3  bg-secondary rounded-full absolute">
+    <div className="bg-primary fixed bottom-0 z-50 flex min-w-[765px] select-none flex-row items-center justify-between py-5 px-5 shadow-2xl md:w-full">
+      <div className="relative flex flex-row items-center md:w-1/4 lg:w-1/5">
+        <div className="bg-secondary absolute h-20  w-20 rounded-full p-3">
           <ProgressRing stroke={4} radius={48} progress={percent} />
-          <div className="absolute w-full h-full top-0 left-0 scale-[.70]">
+          <div className="absolute top-0 left-0 h-full w-full scale-[.70]">
             <img
               src={activeSong ? activeSong.image : "/images/new-playlist.png"}
               alt=""
-              className={`w-full h-full object-cover rounded-full animate-spin-slow ${
+              className={`animate-spin-slow h-full w-full rounded-full object-cover ${
                 isPlaying ? "" : "animation-pause"
               }`}
             />
           </div>
         </div>
-        <div className="text-white ml-24">
-          <h1 className="md:text-sm lg:text-base md:w-28 lg:w-auto line-clamp-1">
+        <div className="ml-24 text-white">
+          <h1 className="line-clamp-1 md:w-28 md:text-sm lg:w-auto lg:text-base">
             {activeSong?.title}
           </h1>
-          <span className="md:text-xs lg:text-sm text-gray-300  md:w-28 lg:w-auto line-clamp-1">
+          <span className="line-clamp-1 text-gray-300 md:w-28  md:text-xs lg:w-auto lg:text-sm">
             {activeSong?.artist}
           </span>
         </div>
