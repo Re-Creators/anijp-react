@@ -1,10 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Collection from "./pages/Collection";
-import Home from "./pages/Home";
-import Layout from "./pages/Layout";
 import Login from "./pages/Login";
-import UserPlaylist from "./pages/UserPlaylist";
-import Playlist from "./pages/Playlist";
 import Register from "./pages/Register";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
@@ -12,64 +7,15 @@ import { useDispatch } from "react-redux";
 import { setLoggedIn } from "./features/user/userSlice";
 import { getUserData } from "./features/user/userSlice";
 import AuthLayout from "./pages/AuthLayout";
-import FavoriteSong from "./pages/FavoriteSongs";
-import RequireAuth from "./components/RequireAuth";
-import Search from "./pages/Search";
-import SearchResult from "./pages/SearchResult";
 import useScreenCheck from "./hooks/useScreenCheck";
-import MobileLayout from "./pages/mobile/MobileLayout";
-import HomeMobile from "./pages/mobile/HomeMobile";
-import PlaylistMobile from "./pages/mobile/PlaylistMobile";
-import UserPlaylistMobile from "./pages/mobile/UserPlaylistMobile";
-import Account from "./pages/mobile/Account";
+import MobileRoute from "./router/MobileRoute";
+import DesktopRoute from "./router/DesktopRoute";
 
-const DesktopScreen = (
-  <Route path="/" element={<Layout />}>
-    <Route index element={<Home />} />
-    <Route path="playlist/:id" element={<Playlist />} />
-    <Route path="search" element={<Search />}>
-      <Route path=":keyword" element={<SearchResult />} />
-    </Route>
-    <Route
-      path="myplaylist/:id"
-      element={
-        <RequireAuth>
-          <UserPlaylist />
-        </RequireAuth>
-      }
-    />
-    <Route path="collection" element={<Collection />} />
-    <Route
-      path="favorite"
-      element={
-        <RequireAuth>
-          <FavoriteSong />
-        </RequireAuth>
-      }
-    />
-  </Route>
-);
-
-const renderScreen = (screen) => {
-  if (screen === "DESKTOP") return DesktopScreen;
-  else if (screen === "MOBILE") return MobileScreen;
+const renderRoute = (screen) => {
+  if (screen === "DESKTOP") return DesktopRoute;
+  else if (screen === "MOBILE") return MobileRoute;
   return undefined;
 };
-
-const MobileScreen = (
-  <>
-    <Route path="/" element={<MobileLayout />}>
-      <Route index element={<HomeMobile />} />
-      <Route path="playlist/:id" element={<PlaylistMobile />} />
-      <Route path="myplaylist/:id" element={<UserPlaylistMobile />} />
-      <Route path="collection" element={<Collection />} />
-      <Route path="account" element={<Account />} />
-      <Route path="search" element={<Search />}>
-        <Route path=":keyword" element={<SearchResult />} />
-      </Route>
-    </Route>
-  </>
-);
 
 function App() {
   const dispatch = useDispatch();
@@ -86,7 +32,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          {renderScreen(screen)}
+          {renderRoute(screen)}
           <Route
             path="/login"
             element={
