@@ -26,45 +26,47 @@ function PlaylistDetail({ detail }) {
 
   return (
     <div className="h-screen overflow-y-auto">
-      <div className="h-96 w-full relative">
-        <div className="absolute w-full h-full">
+      <div className="relative h-96 w-full">
+        <div className="absolute h-full w-full">
           <img
             src={detail.cover}
             alt="background-cover"
-            className="absolute w-full h-full object-cover object-center z-0 filter blur-sm"
+            className="absolute z-0 h-full w-full object-cover object-center blur-sm filter"
           />
-          <div className="absolute inset-0 bg-overlay-playlist-dark"></div>
+          <div className="bg-overlay-playlist-dark absolute inset-0"></div>
         </div>
-        <div className="absolute text-white w-full h-full flex flex-col items-center justify-center backdrop-filter backdrop-blur-2xl">
-          <img
-            src={detail.cover}
-            alt="playlist Cover"
-            className="w-40 h-44 rounded-md "
-          />
-          <h1 className="mt-2 font-semibold text-2xl">{detail.name} </h1>
-          <div className="text-xs mt-3 w-4/5 flex flex-col items-center">
-            <p className=" text-center clamp-2">{detail.description} </p>
-            <div className="flex flex-row  text-xs mt-3">
+        <div className="absolute flex h-full w-full flex-col items-center justify-center text-white backdrop-blur-2xl backdrop-filter">
+          <div className="bg-primary-100 h-44 w-40 overflow-hidden rounded-md">
+            <img
+              src={detail.cover}
+              alt="playlist Cover"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <h1 className="mt-2 text-2xl font-semibold">{detail.name} </h1>
+          <div className="mt-3 flex w-4/5 flex-col items-center text-xs">
+            <p className=" clamp-2 text-center">{detail.description} </p>
+            <div className="mt-3 flex  flex-row text-xs">
               {detail.likes !== undefined && (
-                <div className="flex flex-row items-center mr-3">
-                  <MdFavorite className="text-lg mr-1" />
+                <div className="mr-3 flex flex-row items-center">
+                  <MdFavorite className="mr-1 text-lg" />
                   <span> {detail.likes} Likes</span>
                 </div>
               )}
 
               <div className="flex flex-row items-center">
-                <MdLibraryMusic className="text-lg mr-1" />
+                <MdLibraryMusic className="mr-1 text-lg" />
                 <span> {detail.songs.length} Songs</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full h-96 bg-playlist-container">
+      <div className="bg-playlist-container h-96 w-full">
         <div className="px-2 py-5 pb-56">
           <div>
             <button
-              className="flex flex-row items-center mb-10"
+              className="mb-10 flex flex-row items-center"
               onClick={() => {
                 dispatch(addNewSongs({ songs: detail.songs, indexSong: 0 }));
                 dispatch(setIsPlaying(true));
@@ -74,7 +76,7 @@ function PlaylistDetail({ detail }) {
                 viewBox="0 0 80 80"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-16 h-16"
+                className="h-16 w-16"
               >
                 <circle cx="40" cy="40" r="25" fill="white" />
                 <path
@@ -82,10 +84,10 @@ function PlaylistDetail({ detail }) {
                   fill="#2C62BF"
                 />
               </svg>
-              <span className="ml-3 text-white text-lg">Play All</span>
+              <span className="ml-3 text-lg text-white">Play All</span>
             </button>
           </div>
-          <div className="text-white px-1">
+          <div className="px-1 text-white">
             {detail.songs.map((song, index) => (
               <Song
                 key={song._id}

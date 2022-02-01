@@ -20,7 +20,7 @@ function HomeMobile() {
                     className="flex-mobile-size max-w-1/3 mb-5 px-[3px]"
                     key={playlist._id}
                   >
-                    <div className="relative block w-full overflow-hidden rounded-sm pt-[100%]">
+                    <div className="bg-primary-100 relative block w-full overflow-hidden rounded-sm pt-[100%]">
                       <Link to={`/playlist/${playlist._id}`}>
                         <img
                           src={playlist.cover}
