@@ -3,3 +3,7 @@ export const REPEAT = {
   once: "ONCE",
   list: "LIST",
 };
+export const SONG = {
+  next: 1,
+  prev: -1,
+};

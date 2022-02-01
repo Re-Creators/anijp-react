@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 import PlaylistQueue from "../PlaylistQueue";
 import PortalContainer from "../portal/PortalContainer";
+import TippyInfo from "../tippy/TippyInfo";
 
 function PlayerExtraControl({ changeVolume }) {
   const [showQueue, setShowQueue] = useState(false);
@@ -69,28 +70,30 @@ function PlayerExtraControl({ changeVolume }) {
   };
 
   return (
-    <div className="flex flex-row items-center lg:mr-10 mt-5">
+    <div className="mt-5 flex flex-row items-center lg:mr-10">
       <div className="flex flex-row items-center">
-        <button aria-label="mute" onClick={muteHandler}>
-          {renderVolumeIcon()}
-        </button>
+        <TippyInfo content={isMuted.current ? "Unmute" : "Mute"}>
+          <button onClick={muteHandler}>{renderVolumeIcon()}</button>
+        </TippyInfo>
         <div
-          className="relative bg-primary-300 w-20 h-1 mx-3 mb-1 cursor-pointer group"
+          className="bg-primary-300 group relative mx-3 mb-1 h-1 w-20 cursor-pointer"
           ref={volumeBar}
           onClick={volumeBarClick}
         >
-          <div className="absolute h-full w-1/2 left-0 bg-secondary" ref={bar}>
-            <span className="hidden absolute top-1/2 transform -translate-y-1/2 right-0 h-3 w-3 rounded-full bg-secondary group-hover:block"></span>
+          <div className="bg-secondary absolute left-0 h-full w-1/2" ref={bar}>
+            <span className="bg-secondary absolute top-1/2 right-0 hidden h-3 w-3 -translate-y-1/2 transform rounded-full group-hover:block"></span>
           </div>
         </div>
       </div>
       <div className="">
-        <button className="ml-3" onClick={() => setShowQueue(!showQueue)}>
-          <MdList
-            className="text-gray-300 transition duration-200 hover:text-white"
-            fontSize={24}
-          />
-        </button>
+        <TippyInfo content="Play Queue">
+          <button className="ml-3" onClick={() => setShowQueue(!showQueue)}>
+            <MdList
+              className="text-gray-300 transition duration-200 hover:text-white"
+              fontSize={24}
+            />
+          </button>
+        </TippyInfo>
         <PortalContainer
           isShow={showQueue}
           onClose={() => setShowQueue(false)}

@@ -7,19 +7,10 @@ import {
   MdOutlineRepeatOne,
   MdOutlineRepeat,
 } from "react-icons/md";
-import { getDurationString } from "../../utils";
+import { getDurationString, getRepeatContent } from "../../utils";
 import ProggressBar from "./ProggressBar";
-
-const REPEAT = {
-  off: "OFF",
-  once: "ONCE",
-  list: "LIST",
-};
-
-const SONG = {
-  next: 1,
-  prev: -1,
-};
+import { SONG, REPEAT } from "../../utils/types";
+import TippyInfo from "../tippy/TippyInfo";
 
 function PlayerController(props) {
   const { isShuffle, isPlaying, repeatMode, timeProgress, percent, duration } =
@@ -35,54 +26,64 @@ function PlayerController(props) {
   } = props;
 
   return (
-    <div className="w-2/5 flex flex-col items-center">
-      <div className="select-none text-white flex flex-row items-center gap-3">
-        <button
-          className={`text-gray-400 hover:text-white ${
-            isShuffle ? "text-link-active scale-125" : ""
-          }`}
-          onClick={shuffleClickHandler}
-        >
-          <MdShuffle fontSize={24} />
-        </button>
+    <div className="flex w-2/5 flex-col items-center">
+      <div className="flex select-none flex-row items-center gap-3 text-white">
+        <TippyInfo content={isShuffle ? "Disable Shuffle" : "Enable Shuffle"}>
+          <button
+            className={`text-gray-400 hover:text-white ${
+              isShuffle ? "text-link-active scale-125" : ""
+            }`}
+            onClick={shuffleClickHandler}
+          >
+            <MdShuffle fontSize={24} />
+          </button>
+        </TippyInfo>
 
-        <button
-          onClick={() => changeSongHandler(SONG.prev)}
-          className="text-gray-400 hover:text-white"
-        >
-          <MdSkipPrevious fontSize={32} />
-        </button>
+        <TippyInfo content="Prev">
+          <button
+            onClick={() => changeSongHandler(SONG.prev)}
+            className="text-gray-400 hover:text-white"
+          >
+            <MdSkipPrevious fontSize={32} />
+          </button>
+        </TippyInfo>
 
-        <button onClick={playHandler}>
-          {isPlaying ? (
-            <MdPauseCircleFilled fontSize={40} />
-          ) : (
-            <MdPlayCircleFilled fontSize={40} />
-          )}
-        </button>
+        <TippyInfo content={isPlaying ? "Pause" : "Play"}>
+          <button onClick={playHandler}>
+            {isPlaying ? (
+              <MdPauseCircleFilled fontSize={40} />
+            ) : (
+              <MdPlayCircleFilled fontSize={40} />
+            )}
+          </button>
+        </TippyInfo>
 
-        <button
-          onClick={() => changeSongHandler(SONG.next)}
-          className="text-gray-400 hover:text-white"
-        >
-          <MdSkipNext fontSize={32} />
-        </button>
+        <TippyInfo content="Next">
+          <button
+            onClick={() => changeSongHandler(SONG.next)}
+            className="text-gray-400 hover:text-white"
+          >
+            <MdSkipNext fontSize={32} />
+          </button>
+        </TippyInfo>
 
-        <button
-          className={`text-gray-400 hover:text-white ${
-            repeatMode !== REPEAT.off ? "text-link-active scale-125" : ""
-          }`}
-          onClick={repeatHandler}
-        >
-          {repeatMode === REPEAT.once ? (
-            <MdOutlineRepeatOne fontSize={23} />
-          ) : (
-            <MdOutlineRepeat fontSize={23} />
-          )}
-        </button>
+        <TippyInfo content={getRepeatContent(repeatMode)}>
+          <button
+            className={`text-gray-400 hover:text-white ${
+              repeatMode !== REPEAT.off ? "text-link-active scale-125" : ""
+            }`}
+            onClick={repeatHandler}
+          >
+            {repeatMode === REPEAT.once ? (
+              <MdOutlineRepeatOne fontSize={23} />
+            ) : (
+              <MdOutlineRepeat fontSize={23} />
+            )}
+          </button>
+        </TippyInfo>
       </div>
-      <div className="w-4/5 flex flex-row text-white items-center mt-3">
-        <span className="text-xs select-none">
+      <div className="mt-3 flex w-4/5 flex-row items-center text-white">
+        <span className="select-none text-xs">
           {getDurationString(timeProgress)}
         </span>
         <ProggressBar
@@ -95,7 +96,7 @@ function PlayerController(props) {
           pointColor="bg-secondary"
           showPoint={false}
         />
-        <span className="text-xs select-none">
+        <span className="select-none text-xs">
           {getDurationString(duration)}
         </span>
       </div>
