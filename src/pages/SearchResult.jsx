@@ -1,14 +1,26 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { searchPlaylist } from "../query/playlistQuery";
 import { client } from "../sanityClient";
-import { MdPlayCircleFilled } from "react-icons/md";
 import debounce from "lodash.debounce";
+import PlaylistCard from "../cards/PlaylistCard";
+import { useDispatch } from "react-redux";
+import {
+  addNewSongs,
+  setIsPlaying,
+} from "../features/music-player/musicPlayerSlice";
 
 function SearchResult() {
   const { keyword } = useParams();
+  const dispatch = useDispatch();
   const [results, setResults] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+
+  const playHandler = (e, songs) => {
+    e.preventDefault();
+    dispatch(addNewSongs({ songs, indexSong: 0 }));
+    dispatch(setIsPlaying(true));
+  };
 
   const doSearch = useMemo(
     () =>
@@ -40,28 +52,14 @@ function SearchResult() {
           </h1>
         )}
         {results.map((playlist) => (
-          <div
-            className="mb-5 w-1/3 px-[3px] md:mr-5 md:w-40 md:px-0 lg:w-48"
+          <PlaylistCard
             key={playlist._id}
-          >
-            <Link
-              to={`/playlist/${playlist._id}`}
-              href=""
-              className="group bg-primary-100 relative  block h-[130px] overflow-hidden overflow-y-hidden rounded-lg md:h-52 lg:h-60"
-            >
-              <img
-                src={playlist.cover}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-              <div className="bg-card-hover absolute bottom-0 h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0">
-                <MdPlayCircleFilled className="absolute right-3 bottom-3 text-4xl" />
-              </div>
-            </Link>
-            <span className="text-xs font-semibold md:text-sm lg:text-base">
-              {playlist.name}
-            </span>
-          </div>
+            name={playlist.name}
+            id={playlist._id}
+            coverImage={playlist.cover}
+            songs={playlist.songs}
+            playHandler={playHandler}
+          />
         ))}
       </div>
     </div>

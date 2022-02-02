@@ -19,6 +19,16 @@ function HomeSlider({ data }) {
     swipe: false,
     prevArrow: <Arrow type="left" />,
     nextArrow: <Arrow type="right" />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          centerMode: false,
+          centerPadding: "0px",
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -26,14 +36,14 @@ function HomeSlider({ data }) {
       <Slider {...settings}>
         {data.playlist.map((playlist) => (
           <div
-            className="bg-primary-100 relative cursor-pointer overflow-hidden rounded-md pb-[32%] lg:pb-[28%]"
+            className="bg-primary-100 relative cursor-pointer overflow-hidden rounded-md pb-[40%] md:pb-[30%]"
             key={playlist._id}
           >
             <Link to={`/playlist/${playlist._id}`}>
               <div className="absolute inset-0">
                 <img
                   src={playlist.banner}
-                  className="aspect-banner h-auto w-full"
+                  className="aspect-banner h-full w-full object-cover md:h-auto md:object-contain"
                   width={178}
                   height={178}
                   alt=""

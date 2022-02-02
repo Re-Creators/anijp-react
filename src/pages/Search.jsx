@@ -20,7 +20,7 @@ function Search() {
   };
 
   return (
-    <div className=" hide-scrollbar mt-5 h-screen overflow-y-auto px-4 pb-9 md:mt-5 md:px-10 md:pt-10">
+    <div className=" hide-scrollbar mt-5 h-screen overflow-y-auto px-4 pb-80 md:mt-5 md:px-10 md:pt-10">
       <h1 className="mb-2 text-2xl text-white  md:hidden">Search</h1>
       <div className="md:4/5 relative mx-auto lg:w-3/4 xl:w-1/2">
         <input
