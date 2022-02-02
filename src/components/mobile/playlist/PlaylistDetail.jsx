@@ -31,7 +31,7 @@ function PlaylistDetail({ detail }) {
           <img
             src={detail.cover}
             alt="background-cover"
-            className="absolute z-0 h-full w-full object-cover object-center blur-sm filter"
+            className="absolute z-[-1] h-full w-full object-cover object-center blur-sm filter"
           />
           <div className="bg-overlay-playlist-dark absolute inset-0"></div>
         </div>
