@@ -11,7 +11,6 @@ function NewPlaylistModal({ hideModal, fetchData }) {
   const { loading, setLoading } = useContext(portalContext);
   const user = useSelector(selectUser);
 
-  console.log(loading);
   const prevImageRef = useRef();
   const imageFileRef = useRef();
 
@@ -42,46 +41,46 @@ function NewPlaylistModal({ hideModal, fetchData }) {
   };
 
   return (
-    <div className="modal w-4/5 md:w-2/3 lg:w-1/2 xl:w-2/5 bg-primary p-5 md:p-8 rounded-lg">
+    <div className="modal bg-primary w-4/5 rounded-lg p-5 md:w-2/3 md:p-8 lg:w-1/2 xl:w-2/5">
       {loading && (
-        <div className="absolute z-[60] inset-0 bg-overlay-playlist-dark rounded-lg flex items-center justify-center">
+        <div className="bg-overlay-playlist-dark absolute inset-0 z-[60] flex items-center justify-center rounded-lg">
           <Spinner classSize="h-16 w-16" />
         </div>
       )}
 
-      <h1 className="text-white text-xl mb-3">New Playlist</h1>
+      <h1 className="mb-3 text-xl text-white">New Playlist</h1>
       <form onSubmit={submitHandler}>
-        <div className="flex flex-col md:flex-row w-full">
-          <div className="w-full h-40 md:w-1/2 mx-auto mb-3  md:mb-0 md:h-52 md:border-0 relative cursor-pointer group ">
+        <div className="flex w-full flex-col md:flex-row">
+          <div className="group relative mx-auto mb-3 h-40  w-full cursor-pointer md:mb-0 md:h-52 md:w-1/2 md:border-0 ">
             <img
               src="/images/new-playlist.png"
               alt=""
-              className=" md:block w-full h-full object-cover object-center rounded-lg"
+              className=" h-full w-full rounded-lg object-cover object-center md:block"
               ref={prevImageRef}
             />
-            <div className="md:hidden md:group-hover:flex absolute w-full h-full bg-overlay-gray top-0 rounded-lg">
+            <div className="bg-overlay-gray absolute top-0 h-full w-full rounded-lg md:hidden md:group-hover:flex">
               <label
                 htmlFor="cover"
-                className="h-full w-full text-white cursor-pointer flex flex-col items-center justify-center"
+                className="flex h-full w-full cursor-pointer flex-col items-center justify-center text-white"
               >
-                <MdCreate className="text-4xl mb-3" />
+                <MdCreate className="mb-3 text-4xl" />
                 <span>Choose Photo</span>
               </label>
               <input
                 type="file"
                 accept="image/*"
-                className="absolute opacity-0 h-0"
+                className="absolute h-0 opacity-0"
                 id="cover"
                 onChange={fileChangeHandler}
               />
             </div>
           </div>
-          <div className="w-full md:w-1/2 h-40 md:h-52 md:ml-5 text-sm flex flex-col">
+          <div className="flex h-40 w-full flex-col text-sm md:ml-5 md:h-52 md:w-1/2">
             <div className="mb-3">
               <input
                 type="text"
                 value={name}
-                className="w-full h-full text-white bg-primary-300 px-5 py-3 outline-none rounded-md"
+                className="bg-primary-300 h-full w-full rounded-md px-5 py-3 text-white outline-none"
                 placeholder="Add your title here"
                 onChange={(e) => setName(e.target.value)}
               />
@@ -89,7 +88,7 @@ function NewPlaylistModal({ hideModal, fetchData }) {
             <div className="">
               <textarea
                 value={description}
-                className="w-full px-5 py-3 bg-primary-300 outline-none rounded-md resize-none text-white h-24 md:h-auto"
+                className="bg-primary-300 h-24 w-full resize-none rounded-md px-5 py-3 text-white outline-none md:h-auto"
                 rows="6"
                 cols="50"
                 placeholder="Add an optional description"
@@ -99,7 +98,7 @@ function NewPlaylistModal({ hideModal, fetchData }) {
           </div>
         </div>
         <button
-          className="px-10 py-2 bg-secondary text-white rounded-md mt-3 float-right"
+          className="bg-secondary float-right mt-3 rounded-md px-10 py-2 text-white"
           type="submit"
         >
           Save

@@ -121,8 +121,7 @@ function Collection() {
               />
               <div className="bg-card-hover absolute bottom-0 hidden h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0 md:block">
                 <button
-                  onCl
-                  ick={(e) => {
+                  onClick={(e) => {
                     e.preventDefault();
                     playUserPlaylist(playlist);
                   }}
