@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Outlet, useNavigate } from "react-router-dom";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useHelmetTitle from "../hooks/useHelmetTitle";
 
 function Search() {
-  useDocumentTitle("Search | AniJP");
+  useHelmetTitle("Search | AniJP");
   const navigate = useNavigate();
 
   const [searchKeyword, setSearchKeyword] = useState("");

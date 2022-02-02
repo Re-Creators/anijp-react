@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import useCategoryPlaylist from "../../hooks/useCategoryPlaylist";
-import useDocumentTitle from "../../hooks/useDocumentTitle";
+import useHelmetTitle from "../../hooks/useHelmetTitle";
 
 function HomeMobile() {
-  useDocumentTitle("AniJP - Music For Life");
+  useHelmetTitle("AniJP - Music For Life");
   const { data, status } = useCategoryPlaylist();
   if (status === "loading") return null;
 

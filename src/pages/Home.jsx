@@ -7,15 +7,18 @@ import {
   setIsPlaying,
 } from "../features/music-player/musicPlayerSlice";
 import useCategoryPlaylist from "../hooks/useCategoryPlaylist";
-import useDocumentTitle from "../hooks/useDocumentTitle";
 import useCategoryBanner from "../hooks/useCategoryBanner";
+import { useEffect } from "react";
+import { setHelmetTitle } from "../features/helmet-title/helmetTitleSlice";
 
 function Home() {
-  useDocumentTitle("AniJP | Music For Life");
-
   const { data, isLoading } = useCategoryPlaylist();
   const { data: dataBanner, status } = useCategoryBanner();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setHelmetTitle("AniJP | Music For Life"));
+  }, [dispatch]);
 
   if (isLoading || status === "loading") return null;
   return (

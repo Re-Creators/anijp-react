@@ -16,3 +16,12 @@ export function getRepeatContent(repeatMode) {
   else if (repeatMode === REPEAT.list) return "Disable Repeat";
   return "Enable Repeat One";
 }
+
+export function getBaseTitle(pathname) {
+  if (pathname === "/") return "AniJP - Music For Life";
+  if (pathname === "/collection") return "My Collection | AniJP";
+  if (pathname === "/favorite") return "Favorite | AniJP";
+  if (pathname.includes("/search")) return "Search | AniJP";
+
+  return "";
+}

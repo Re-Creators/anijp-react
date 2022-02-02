@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PlaylistDetail from "../../components/mobile/playlist/PlaylistDetail";
-import useDocumentTitle from "../../hooks/useDocumentTitle";
+import useHelmetTitle from "../../hooks/useHelmetTitle";
 import usePlaylistDetail from "../../hooks/usePlaylistDetail";
 
 function PlaylistMobile() {
   const { id } = useParams();
   const { data, status } = usePlaylistDetail(id);
 
-  const { setTitle } = useDocumentTitle();
+  const { setTitle } = useHelmetTitle();
 
   useEffect(() => {
     if (data) {

@@ -1,8 +1,8 @@
 import MainLogin from "../components/login/MainLogin";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useHelmetTitle from "../hooks/useHelmetTitle";
 
 function Login() {
-  useDocumentTitle("Login | AniJP");
+  useHelmetTitle("Login | AniJP");
 
   return (
     <>

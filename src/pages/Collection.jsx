@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdAdd, MdPlayCircleFilled } from "react-icons/md";
 import { Link } from "react-router-dom";
 import NewPlaylistModal from "../components/modals/NewPlaylistModal";
@@ -16,10 +16,12 @@ import {
   selectUserPlaylist,
 } from "../features/user-playlist/userPlaylistSlice";
 import useLikedPlaylist from "../hooks/useLikedPlaylist";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useHelmetTitle from "../hooks/useHelmetTitle";
+import { setHelmetTitle } from "../features/helmet-title/helmetTitleSlice";
 
 function Collection() {
-  useDocumentTitle("My Collection | AniJP");
+  useHelmetTitle("My Collection | AniJP");
+
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const likedPlaylistIds = useSelector(selectLikedPlaylist);
@@ -40,6 +42,10 @@ function Collection() {
       dispatch(setIsPlaying(true));
     }
   };
+
+  useEffect(() => {
+    dispatch(setHelmetTitle("My Collection | AniJP"));
+  }, [dispatch]);
 
   return (
     <div className="hide-scrollbar mt-5 px-3 pb-96 text-white md:pl-10">
@@ -115,7 +121,8 @@ function Collection() {
               />
               <div className="bg-card-hover absolute bottom-0 hidden h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0 md:block">
                 <button
-                  onClick={(e) => {
+                  onCl
+                  ick={(e) => {
                     e.preventDefault();
                     playUserPlaylist(playlist);
                   }}

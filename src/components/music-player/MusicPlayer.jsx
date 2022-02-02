@@ -22,7 +22,6 @@ function MusicPlayer() {
   const audioRef = useRef();
   const readyToPlay = useRef(false);
   const trackIndex = useRef(0);
-
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.5);
   const [timeProgress, setTimeProgress] = useState(0);

@@ -20,7 +20,7 @@ import { toggleLoginModal } from "../features/modals/modalSlice";
 import { toast } from "react-toastify";
 import usePlaylistDetail from "../hooks/usePlaylistDetail";
 import useUpdatePlaylistLike from "../hooks/useUpdatePlaylistLike";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useHelmetTitle from "../hooks/useHelmetTitle";
 
 function Playlist() {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function Playlist() {
 
   const { data, status } = usePlaylistDetail(id);
   const { mutate } = useUpdatePlaylistLike();
-  const { setTitle } = useDocumentTitle();
+  const { setTitle } = useHelmetTitle(null, dispatch);
   const user = useSelector(selectUser);
   const likedPlaylist = useSelector(selectLikedPlaylist);
   const [isLiked, setIsLiked] = useState(false);

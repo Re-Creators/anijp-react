@@ -10,12 +10,12 @@ import { client } from "../sanityClient";
 import { useSelector } from "react-redux";
 import { selectLikedSongs } from "../features/user/userSlice";
 import { getFavoriteSongs } from "../query/songQuery";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useHelmetTitle from "../hooks/useHelmetTitle";
 
 function FavoriteSong() {
-  useDocumentTitle("Favorite Song | AniJP");
-  const dispatch = useDispatch();
+  useHelmetTitle("Favorite Song | AniJP");
 
+  const dispatch = useDispatch();
   const likedSongs = useSelector(selectLikedSongs);
   const [songs, setSongs] = useState([]);
   const [showMenu, setShowMenu] = useState(true);

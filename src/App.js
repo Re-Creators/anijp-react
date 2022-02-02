@@ -10,6 +10,7 @@ import AuthLayout from "./pages/AuthLayout";
 import useScreenCheck from "./hooks/useScreenCheck";
 import MobileRoute from "./router/MobileRoute";
 import DesktopRoute from "./router/DesktopRoute";
+import HelmetSetter from "./components/helmet/HelmetSetter";
 
 const renderRoute = (screen) => {
   if (screen === "DESKTOP") return DesktopRoute;
@@ -31,6 +32,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <HelmetSetter />
         <Routes>
           {renderRoute(screen)}
           <Route

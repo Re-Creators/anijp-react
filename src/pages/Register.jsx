@@ -8,10 +8,9 @@ import {
   selectisLoading,
 } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useHelmetTitle from "../hooks/useHelmetTitle";
 
 function Register() {
-  useDocumentTitle("Register | AniJP");
   const dispatch = useDispatch();
 
   const isLoading = useSelector(selectisLoading);
@@ -26,6 +25,7 @@ function Register() {
     dispatch(register({ username, email, password }));
   };
 
+  useHelmetTitle("Register | AniJP", dispatch);
   return (
     <div className="flex flex-row">
       <div className="relative flex min-h-screen w-full  items-center justify-center bg-white md:w-1/2">

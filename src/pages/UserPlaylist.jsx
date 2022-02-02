@@ -13,14 +13,14 @@ import { getUserPlaylist } from "../features/user-playlist/userPlaylistSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/user/userSlice";
 import { useUserPlaylist } from "../hooks/useUserPlaylist";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import useHelmetTitle from "../hooks/useHelmetTitle";
 
 function UserPlaylist() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { setTitle } = useDocumentTitle();
+  const { setTitle } = useHelmetTitle();
   const [showOption, setShowOption] = useState(false);
   const user = useSelector(selectUser);
 

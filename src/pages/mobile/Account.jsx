@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { selectUser } from "../../features/user/userSlice";
 import { authApp } from "../../firebase-config";
-import useDocumentTitle from "../../hooks/useDocumentTitle";
+import useHelmetTitle from "../../hooks/useHelmetTitle";
 
 function Account() {
   const user = useSelector(selectUser);
-  const { setTitle } = useDocumentTitle();
+  const { setTitle } = useHelmetTitle();
 
   useEffect(() => {
     setTitle(`${user.username} Profile | AniJP`);
