@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { selectHelmetTitle } from "../../features/helmet-title/helmetTitleSlice";
@@ -8,7 +8,6 @@ import {
 } from "../../features/music-player/musicPlayerSlice";
 
 function HelmetSetter() {
-  console.log("HELMET RENDER");
   const title = useSelector(selectHelmetTitle);
   const isPlaying = useSelector(selectIsPlaying);
   const activeSong = useSelector(selectActiveSong);
