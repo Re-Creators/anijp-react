@@ -11,6 +11,7 @@ import useScreenCheck from "./hooks/useScreenCheck";
 import MobileRoute from "./router/MobileRoute";
 import DesktopRoute from "./router/DesktopRoute";
 import HelmetSetter from "./components/helmet/HelmetSetter";
+import { useEffect } from "react";
 
 const renderRoute = (screen) => {
   if (screen === "DESKTOP") return DesktopRoute;
@@ -22,12 +23,14 @@ function App() {
   const dispatch = useDispatch();
   const screen = useScreenCheck();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      dispatch(setLoggedIn(true));
-      dispatch(getUserData(user.uid));
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setLoggedIn(true));
+        dispatch(getUserData(user.uid));
+      }
+    });
+  }, [dispatch]);
 
   return (
     <>

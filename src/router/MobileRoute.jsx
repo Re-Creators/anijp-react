@@ -1,4 +1,5 @@
 import { Route } from "react-router-dom";
+import RequireAuth from "../components/RequireAuth";
 import Collection from "../pages/Collection";
 import Account from "../pages/mobile/Account";
 import HomeMobile from "../pages/mobile/HomeMobile";
@@ -15,7 +16,14 @@ const MobileRoute = (
       <Route path="playlist/:id" element={<PlaylistMobile />} />
       <Route path="myplaylist/:id" element={<UserPlaylistMobile />} />
       <Route path="collection" element={<Collection />} />
-      <Route path="account" element={<Account />} />
+      <Route
+        path="account"
+        element={
+          <RequireAuth>
+            <Account />
+          </RequireAuth>
+        }
+      />
       <Route path="search" element={<Search />}>
         <Route path=":keyword" element={<SearchResult />} />
       </Route>

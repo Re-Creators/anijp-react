@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithRedirect,
+  getRedirectResult,
 } from "firebase/auth";
 import { getUserPlaylist } from "../user-playlist/userPlaylistSlice";
 
@@ -26,6 +27,25 @@ export const getUserData = createAsyncThunk(
   async (userId, { dispatch }) => {
     try {
       const userRef = doc(db, "users", userId);
+      const result = await getRedirectResult(auth);
+
+      if (result) {
+        const newUser = result.user;
+        const docSnap = await getDoc(userRef);
+
+        if (docSnap.exists()) {
+          return docSnap.data();
+        }
+
+        await setDoc(userRef, {
+          username: newUser.displayName,
+          email: newUser.email,
+          photo: newUser.photoURL,
+          likedPlaylist: [],
+          likedSong: [],
+        });
+      }
+
       const userSnap = await getDoc(userRef);
 
       dispatch(getUserPlaylist(userId));
@@ -100,6 +120,7 @@ export const loginWithGoogle = createAsyncThunk(
       const docSnap = await getDoc(newUserRef);
 
       if (docSnap.exists()) {
+        console.log("user " + docSnap.data());
         return docSnap.data();
       }
 
@@ -110,7 +131,7 @@ export const loginWithGoogle = createAsyncThunk(
         likedPlaylist: [],
         likedSong: [],
       });
-
+      console.log("new user " + newUser);
       return newUser;
     } catch (err) {
       return err;
