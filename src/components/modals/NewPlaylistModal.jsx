@@ -1,4 +1,4 @@
-import { useRef, useState, memo, useContext } from "react";
+import { useRef, useState, memo, useContext, useEffect } from "react";
 import { MdCreate } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/user/userSlice";
@@ -16,10 +16,14 @@ function NewPlaylistModal({ hideModal, fetchData }) {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [isNameEmpty, setIsNameEmpty] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (name === "" || description === "") return;
+    if (name === "") {
+      setIsNameEmpty(true);
+      return;
+    }
 
     setLoading(true);
     createNewPlaylist(imageFileRef.current, user.uid, name, description)
@@ -40,6 +44,11 @@ function NewPlaylistModal({ hideModal, fetchData }) {
     prevImageRef.current.src = URL.createObjectURL(imageFileRef.current);
   };
 
+  useEffect(() => {
+    if (name !== "") {
+      setIsNameEmpty(false);
+    }
+  }, [name]);
   return (
     <div className="modal bg-primary w-4/5 rounded-lg p-5 md:w-2/3 md:p-8 lg:w-1/2 xl:w-2/5">
       {loading && (
@@ -80,7 +89,9 @@ function NewPlaylistModal({ hideModal, fetchData }) {
               <input
                 type="text"
                 value={name}
-                className="bg-primary-300 h-full w-full rounded-md px-5 py-3 text-white outline-none"
+                className={`bg-primary-300 h-full w-full rounded-md border  px-5 py-3 text-white outline-none ${
+                  isNameEmpty ? "border-red-600" : "border-transparent"
+                }`}
                 placeholder="Add your title here"
                 onChange={(e) => setName(e.target.value)}
               />
