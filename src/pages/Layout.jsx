@@ -7,7 +7,12 @@ import LoginModalContainer from "../components/modals/LoginModalContainer";
 function Layout() {
   return (
     <div>
-      <ToastContainer autoClose={3000} theme="colored" position="top-right" />
+      <ToastContainer
+        autoClose={3000}
+        theme="colored"
+        position="top-right"
+        hideProgressBar={true}
+      />
       <LoginModalContainer />
       <div className="flex w-full flex-col md:flex-row md:justify-end">
         {/* Sidebar */}
