@@ -93,7 +93,10 @@ function UserPlaylist() {
               </div>
               <div
                 className="hover:bg-primary-300 flex cursor-pointer flex-row items-center rounded-sm px-3 py-2 pr-10"
-                onClick={deletePlaylist}
+                onClick={() => {
+                  setShowOption(false);
+                  deletePlaylist();
+                }}
               >
                 <MdDelete className="mr-2 text-lg" />
                 <span>Delete playlist</span>
