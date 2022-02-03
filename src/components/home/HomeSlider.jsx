@@ -6,7 +6,7 @@ import Arrow from "../slick/Arrow";
 import { MdPlayCircleFilled } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-function HomeSlider({ data }) {
+function HomeSlider({ data, onPlay }) {
   const settings = {
     className: "center",
     centerMode: true,
@@ -51,7 +51,7 @@ function HomeSlider({ data }) {
               </div>
 
               <div className="bg-overlay-playlist-dark absolute inset-0 flex items-center justify-center opacity-0 duration-300 hover:opacity-100">
-                <button>
+                <button onClick={(e) => onPlay(e, playlist.songs)}>
                   <MdPlayCircleFilled className="hover:text-link-active text-6xl text-white duration-300" />
                 </button>
               </div>

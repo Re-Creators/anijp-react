@@ -28,7 +28,7 @@ function Home() {
   if (isLoading || status === "loading") return null;
   return (
     <div className="hide-scrollbar mt-5 h-screen px-5 pb-96 md:px-10">
-      <HomeSlider data={dataBanner} />
+      <HomeSlider data={dataBanner} onPlay={playHandler} />
       <div className="mt-10">
         {data.map((category) => (
           <div className="" key={category._id}>
