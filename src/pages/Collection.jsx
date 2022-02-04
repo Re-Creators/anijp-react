@@ -69,40 +69,39 @@ function Collection() {
           </div>
         </div>
         {/* Liked Playlist */}
-        {data &&
-          data.map((playlist) => (
-            <div
-              className="mb-5 flex w-1/3 flex-col items-center px-[3px] md:mr-8 md:w-52  md:px-0"
-              key={playlist._id}
+        {data.map((playlist) => (
+          <div
+            className="mb-5 flex w-1/3 flex-col items-center px-[3px] md:mr-8 md:w-52  md:px-0"
+            key={playlist._id}
+          >
+            <Link
+              to={`/playlist/${playlist._id}`}
+              className="group bg-primary-100 relative mb-3 block  h-[130px] w-full overflow-hidden  rounded-lg md:h-52"
             >
-              <Link
-                to={`/playlist/${playlist._id}`}
-                className="group bg-primary-100 relative mb-3 block  h-[130px] w-full overflow-hidden  rounded-lg md:h-52"
-              >
-                <img
-                  src={playlist.cover}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
-                <div className="bg-card-hover absolute bottom-0 hidden h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0 md:block">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(
-                        addNewSongs({ songs: playlist.songs, indexSong: 0 })
-                      );
-                      dispatch(setIsPlaying(true));
-                    }}
-                  >
-                    <MdPlayCircleFilled className="absolute right-3 bottom-3 text-4xl" />
-                  </button>
-                </div>
-              </Link>
-              <div className="text-semibold w-full text-xs md:text-base">
-                <span className="line-clamp-2 capitalize">{playlist.name}</span>
+              <img
+                src={playlist.cover}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+              <div className="bg-card-hover absolute bottom-0 hidden h-32 w-full translate-y-48 transform transition duration-300 group-hover:translate-y-0 md:block">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(
+                      addNewSongs({ songs: playlist.songs, indexSong: 0 })
+                    );
+                    dispatch(setIsPlaying(true));
+                  }}
+                >
+                  <MdPlayCircleFilled className="absolute right-3 bottom-3 text-4xl" />
+                </button>
               </div>
+            </Link>
+            <div className="text-semibold w-full text-xs md:text-base">
+              <span className="line-clamp-2 capitalize">{playlist.name}</span>
             </div>
-          ))}
+          </div>
+        ))}
 
         {/* Users Playlist  */}
         {userPlaylist.map((playlist) => (

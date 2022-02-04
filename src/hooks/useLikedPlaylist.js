@@ -11,7 +11,8 @@ const fetchLikedPlaylist = async (likedPlaylistIds) => {
 
 export default function useLikedPlaylist(likedPlaylistIds, user) {
   return useQuery("likedPlaylist", () => fetchLikedPlaylist(likedPlaylistIds), {
-    staleTime: Infinity,
+    initialData: [],
     enabled: !!user,
+    refetchOnWindowFocus: false,
   });
 }

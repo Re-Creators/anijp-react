@@ -10,20 +10,22 @@ import { selectUserPlaylist } from "../features/user-playlist/userPlaylistSlice"
 import { toggleLoginModal } from "../features/modals/modalSlice";
 
 function Sidebar() {
+  console.log("rerender sidebar");
   const dispatch = useDispatch();
   const likedPlaylistIds = useSelector(selectLikedPlaylist);
   const user = useSelector(selectUser);
   const userPlaylist = useSelector(selectUserPlaylist);
+
   const [likedPlaylist, setLikedPlaylist] = useState([]);
 
   useEffect(() => {
-    if (likedPlaylistIds.length > 0 && user) {
+    if (user) {
       const query = getLikedPlaylist;
       client.fetch(query, { listId: likedPlaylistIds }).then((data) => {
         setLikedPlaylist(data);
       });
     }
-  }, [likedPlaylistIds, user]);
+  }, [user, likedPlaylistIds]);
 
   return (
     <nav className="md:w-sidebar-md bg-primary fixed left-0 z-20 hidden h-screen px-5 text-white shadow-2xl md:block lg:w-1/4 xl:w-[18%]">
