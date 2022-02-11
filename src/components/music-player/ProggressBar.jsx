@@ -90,7 +90,7 @@ function ProggressBar({
         <div className={`absolute left-0 h-full ${barColor}`} ref={progress}>
           <span
             className={`${
-              showPoint ? "" : "hidden"
+              showPoint || startMove.current ? "" : "hidden"
             } absolute top-1/2 -right-3 h-3 w-3 -translate-y-1/2 transform rounded-full ${pointColor} group-hover:block`}
           ></span>
         </div>
