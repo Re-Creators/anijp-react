@@ -40,7 +40,7 @@ function Register() {
               <span>Username</span>
               <input
                 type="text"
-                className="border-primary mt-1 w-full border-2  px-3 py-3 text-sm"
+                className="mt-1 w-full border-2 border-primary  px-3 py-3 text-sm"
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -51,7 +51,7 @@ function Register() {
               <span>Email</span>
               <input
                 type="email"
-                className="border-primary mt-1 w-full border-2  px-3 py-3 text-sm"
+                className="mt-1 w-full border-2 border-primary  px-3 py-3 text-sm"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -67,7 +67,7 @@ function Register() {
               <span>Password</span>
               <input
                 type="password"
-                className="border-primary mt-1 w-full border-2 px-3 py-3 text-sm"
+                className="mt-1 w-full border-2 border-primary px-3 py-3 text-sm"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -76,7 +76,7 @@ function Register() {
             </div>
             <button
               type="sumbit"
-              className="bg-secondary mt-5 w-full rounded-lg py-3 text-white"
+              className="mt-5 w-full rounded-lg bg-secondary py-3 text-white"
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : " Sign Up"}
