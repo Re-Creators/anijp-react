@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import RequireAuth from "../components/RequireAuth";
+import RequireAuth from "../components/require-auth/RequireAuth";
 import Collection from "../pages/Collection";
 import Account from "../pages/mobile/Account";
 import HomeMobile from "../pages/mobile/HomeMobile";

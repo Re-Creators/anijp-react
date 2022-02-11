@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectUser } from "../features/user/userSlice";
-import { authApp } from "../firebase-config";
+import { selectUser } from "../../features/user/userSlice";
+import { authApp } from "../../firebase-config";
 import { signOut } from "firebase/auth";
-import PortalContainer from "./portal/PortalContainer";
-import EditProfileModal from "./modals/EditProfileModal";
+import PortalContainer from "../portal/PortalContainer";
+import EditProfileModal from "../modals/EditProfileModal";
 
 function Topbar() {
   const user = useSelector(selectUser);
@@ -23,7 +23,7 @@ function Topbar() {
   };
 
   return (
-    <header className="w-[765px] md:w-full z-10 bg-primary py-3 px-10 fixed top-0 left-0 flex flex-row justify-end shadow-md">
+    <header className="fixed top-0 left-0 z-10 flex w-[765px] flex-row justify-end bg-primary py-3 px-10 shadow-md md:w-full">
       <PortalContainer
         isShow={showModal}
         zIndex={50}
@@ -32,21 +32,21 @@ function Topbar() {
         <EditProfileModal onClose={() => setShowModal(false)} />
       </PortalContainer>
       {user ? (
-        <div className="flex flex-row items-center relative">
-          <span className="text-white text-sm mr-3 capitalize">
+        <div className="relative flex flex-row items-center">
+          <span className="mr-3 text-sm capitalize text-white">
             {user.username}
           </span>
           <img
             src={user.photo}
             alt="user-placeholder"
-            className="w-8 h-8 rounded-full cursor-pointer"
+            className="h-8 w-8 cursor-pointer rounded-full"
             onClick={() => setShowMenu(!showMenu)}
           />
 
           {showMenu && (
-            <div className="min-w-[150px] absolute bg-primary-300 px-1 py-1 text-white top-12 right-0 rounded-lg flex flex-col">
+            <div className="absolute top-12 right-0 flex min-w-[150px] flex-col rounded-lg bg-primary-300 px-1 py-1 text-white">
               <button
-                className="px-3 py-2 hover:bg-primary rounded-md"
+                className="rounded-md px-3 py-2 hover:bg-primary"
                 onClick={() => {
                   setShowMenu(false);
                   setShowModal(true);
@@ -56,7 +56,7 @@ function Topbar() {
               </button>
               <button
                 onClick={logout}
-                className="px-3 py-2 hover:bg-primary rounded-md"
+                className="rounded-md px-3 py-2 hover:bg-primary"
               >
                 Logout
               </button>
@@ -64,11 +64,11 @@ function Topbar() {
           )}
         </div>
       ) : (
-        <div className="flex flex-row text-white items-center">
+        <div className="flex flex-row items-center text-white">
           <Link to="/register" className="mr-5">
             REGISTER
           </Link>
-          <Link to="/login" className="px-10 py-2 rounded-full bg-secondary">
+          <Link to="/login" className="rounded-full bg-secondary px-10 py-2">
             LOGIN
           </Link>
         </div>

@@ -13,8 +13,8 @@ import {
   changeActiveSong,
   clearSongs,
   removeOneSong,
-} from "../features/music-player/musicPlayerSlice";
-import BarAnimation from "./UI/BarAnimation";
+} from "../../features/music-player/musicPlayerSlice";
+import BarAnimation from "../UI/BarAnimation";
 
 function PlaylistQueue({ onClose }) {
   const dispatch = useDispatch();
@@ -35,41 +35,41 @@ function PlaylistQueue({ onClose }) {
   };
 
   return (
-    <div className="absolute z-40 md:z-30 inset-x-0 bottom-[50px] h-[450px]  bg-primary-400 py-2 md:pb-48">
+    <div className="absolute inset-x-0 bottom-[50px] z-40 h-[450px] bg-primary-400  py-2 md:z-30 md:pb-48">
       <button className="absolute right-5 top-3" onClick={onClose}>
-        <MdKeyboardArrowDown className="text-gray-400 hover:text-white text-5xl" />
+        <MdKeyboardArrowDown className="text-5xl text-gray-400 hover:text-white" />
       </button>
 
       {!songs.length && (
-        <span className="absolute left-1/2 top-1/4 transform -translate-x-1/2 text-white text-2xl">
+        <span className="absolute left-1/2 top-1/4 -translate-x-1/2 transform text-2xl text-white">
           No playlist added
         </span>
       )}
 
-      <div className="w-4/5 mx-auto mt-14 h-full ">
-        <div className="text-white flex flex-row justify-between">
+      <div className="mx-auto mt-14 h-full w-4/5 ">
+        <div className="flex flex-row justify-between text-white">
           <h1 className="text-xl font-semibold">
             Playlist ({songs.length} - Song & Albums)
           </h1>
           <button
-            className="flex item-center bg-secondary px-3 py-2 rounded-md"
+            className="item-center flex rounded-md bg-secondary px-3 py-2"
             onClick={() => dispatch(clearSongs())}
           >
             <MdDelete className="mr-2 text-xl" />
             <span>Clear List</span>
           </button>
         </div>
-        <div className="mt-5 h-full hide-scrollbar">
+        <div className="hide-scrollbar mt-5 h-full">
           {songs.map((song, index) => (
             <div
               className={`${activeBackground(
                 song._id
-              )} flex flex-row items-center text-white py-3 px-5 transition duration-200 hover:bg-list-hover rounded-sm cursor-pointer group mb-1`}
+              )} group mb-1 flex cursor-pointer flex-row items-center rounded-sm py-3 px-5 text-white transition duration-200 hover:bg-list-hover`}
               key={song._id}
             >
-              <div className="flex justify-center items-center w-10">
+              <div className="flex w-10 items-center justify-center">
                 {(activeSong?._id !== song._id || !isPlaying) && (
-                  <div className="block group-hover:hidden text-sm mr-3">
+                  <div className="mr-3 block text-sm group-hover:hidden">
                     {index + 1}
                   </div>
                 )}
@@ -81,9 +81,9 @@ function PlaylistQueue({ onClose }) {
                   onClick={() => onPlay(song)}
                 >
                   {isPlaying && activeSong?._id === song._id ? (
-                    <MdPauseCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
+                    <MdPauseCircleFilled className="mr-3 md:text-3xl lg:text-3xl" />
                   ) : (
-                    <MdPlayCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
+                    <MdPlayCircleFilled className="mr-3 md:text-3xl lg:text-3xl" />
                   )}
                 </button>
               </div>
@@ -95,7 +95,7 @@ function PlaylistQueue({ onClose }) {
                 className="ml-auto"
                 onClick={() => dispatch(removeOneSong({ songId: song._id }))}
               >
-                <MdDelete className="text-gray-400 hover:text-white text-2xl" />
+                <MdDelete className="text-2xl text-gray-400 hover:text-white" />
               </button>
             </div>
           ))}

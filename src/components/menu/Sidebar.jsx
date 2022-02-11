@@ -3,14 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
 import { MdLibraryMusic, MdFavorite } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { selectLikedPlaylist, selectUser } from "../features/user/userSlice";
-import { getLikedPlaylist } from "../query/playlistQuery";
-import { client } from "../sanityClient";
-import { selectUserPlaylist } from "../features/user-playlist/userPlaylistSlice";
-import { toggleLoginModal } from "../features/modals/modalSlice";
+import { selectLikedPlaylist, selectUser } from "../../features/user/userSlice";
+import { getLikedPlaylist } from "../../query/playlistQuery";
+import { client } from "../../sanityClient";
+import { selectUserPlaylist } from "../../features/user-playlist/userPlaylistSlice";
+import { toggleLoginModal } from "../../features/modals/modalSlice";
 
 function Sidebar() {
-  console.log("rerender sidebar");
   const dispatch = useDispatch();
   const likedPlaylistIds = useSelector(selectLikedPlaylist);
   const user = useSelector(selectUser);
@@ -28,7 +27,7 @@ function Sidebar() {
   }, [user, likedPlaylistIds]);
 
   return (
-    <nav className="md:w-sidebar-md bg-primary fixed left-0 z-20 hidden h-screen px-5 text-white shadow-2xl md:block lg:w-1/4 xl:w-[18%]">
+    <nav className="fixed left-0 z-20 hidden h-screen bg-primary px-5 text-white shadow-2xl md:block md:w-sidebar-md lg:w-1/4 xl:w-[18%]">
       <Link to="/">
         <img
           src="/logo_anijp.svg"
@@ -67,7 +66,7 @@ function Sidebar() {
           </li>
         </ul>
       </div>
-      <div className="divider border-primary-300 mt-10 border-t"></div>
+      <div className="divider mt-10 border-t border-primary-300"></div>
       <div className="mt-5">
         <ul className="hide-scrollbar mt-1 h-[20rem] ">
           <Link
@@ -83,7 +82,7 @@ function Sidebar() {
             <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-red-500">
               <MdFavorite className="text-xl" />
             </div>
-            <span className="line-clamp-2 ml-3 w-32 text-sm text-gray-300 hover:text-white">
+            <span className="ml-3 w-32 text-sm text-gray-300 line-clamp-2 hover:text-white">
               Favorite Songs
             </span>
           </Link>

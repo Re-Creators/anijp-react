@@ -5,7 +5,7 @@ import {
   MdVolumeOff,
   MdVolumeUp,
 } from "react-icons/md";
-import PlaylistQueue from "../PlaylistQueue";
+import PlaylistQueue from "../playlist-queue/PlaylistQueue";
 import PortalContainer from "../portal/PortalContainer";
 import TippyInfo from "../tippy/TippyInfo";
 
@@ -76,12 +76,12 @@ function PlayerExtraControl({ changeVolume }) {
           <button onClick={muteHandler}>{renderVolumeIcon()}</button>
         </TippyInfo>
         <div
-          className="bg-primary-300 group relative mx-3 mb-1 h-1 w-20 cursor-pointer"
+          className="group relative mx-3 mb-1 h-1 w-20 cursor-pointer bg-primary-300"
           ref={volumeBar}
           onClick={volumeBarClick}
         >
-          <div className="bg-secondary absolute left-0 h-full w-1/2" ref={bar}>
-            <span className="bg-secondary absolute top-1/2 right-0 hidden h-3 w-3 -translate-y-1/2 transform rounded-full group-hover:block"></span>
+          <div className="absolute left-0 h-full w-1/2 bg-secondary" ref={bar}>
+            <span className="absolute top-1/2 right-0 hidden h-3 w-3 -translate-y-1/2 transform rounded-full bg-secondary group-hover:block"></span>
           </div>
         </div>
       </div>
