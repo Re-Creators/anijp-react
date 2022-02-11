@@ -43,20 +43,20 @@ function MainLogin({
     <div className={parentClassNames}>
       <div className={formContainerClassNames}>
         <div className={formClasssNames}>
-          <h1 className="text-center mb-10 text-4xl">Sign In</h1>
+          <h1 className="mb-10 text-center text-4xl">Sign In</h1>
           <div
-            className="w-full flex flex-row items-center mb-5 py-4 px-3 rounded-md border-2 cursor-pointer hover:bg-gray-200"
+            className="mb-5 flex w-full cursor-pointer flex-row items-center rounded-md border-2 py-4 px-3 hover:bg-gray-200"
             onClick={() => dispatch(loginWithGoogle(device))}
           >
-            <img src="/icons/google.svg" alt="" className="h-5 mr-3" />
+            <img src="/icons/google.svg" alt="" className="mr-3 h-5" />
             <span>Sign in with Google</span>
           </div>
-          <div className="flex flex-row items-center mb-5">
-            <div className="border-t-2 flex-grow"></div>
+          <div className="mb-5 flex flex-row items-center">
+            <div className="flex-grow border-t-2"></div>
             <span className="mx-2 text-sm text-gray-400">
               or Sign in with email
             </span>
-            <div className="border-t-2 flex-grow"></div>
+            <div className="flex-grow border-t-2"></div>
           </div>
           <form className="flex flex-col" onSubmit={loginHandler}>
             <div className="flex flex-col">
@@ -64,37 +64,37 @@ function MainLogin({
               <input
                 type="email"
                 value={email}
-                className="w-full px-3 py-3 border-2  border-primary mt-1 text-sm"
+                className="mt-1 w-full border-2 border-primary  px-3 py-3 text-sm"
                 placeholder="Enter your email"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
 
               {error?.email && (
-                <span className="mt-3 text-xs text-red-500 italic">
+                <span className="mt-3 text-xs italic text-red-500">
                   {error.email}
                 </span>
               )}
             </div>
-            <div className="flex flex-col mt-5">
+            <div className="mt-5 flex flex-col">
               <span>Password</span>
               <input
                 type="password"
                 value={password}
-                className="w-full px-3 py-3 border-2 border-primary mt-1 text-sm"
+                className="mt-1 w-full border-2 border-primary px-3 py-3 text-sm"
                 placeholder="Enter your password"
                 required
                 onChange={(e) => setPassword(e.target.value)}
               />
 
               {error?.password && (
-                <span className="mt-3 text-xs text-red-500 italic">
+                <span className="mt-3 text-xs italic text-red-500">
                   {error.password}
                 </span>
               )}
             </div>
             <button
-              className="w-full py-3 bg-secondary text-white mt-5 rounded-lg"
+              className="mt-5 w-full rounded-lg bg-secondary py-3 text-white"
               type="submit"
               disabled={isLoading}
             >
@@ -111,9 +111,9 @@ function MainLogin({
       </div>
 
       <div className={sidePanelClassNames}>
-        <div className="flex flex-col w-full items-center my-auto">
+        <div className="my-auto flex w-full flex-col items-center">
           <img src="/logo_anijp.svg" alt="" className="w-32" />
-          <h1 className="text-white md:text-4xl lg:text-5xl font-bold">
+          <h1 className="font-bold text-white md:text-4xl lg:text-5xl">
             Music For Life
           </h1>
         </div>

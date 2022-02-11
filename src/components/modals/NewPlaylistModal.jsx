@@ -50,9 +50,9 @@ function NewPlaylistModal({ hideModal, fetchData }) {
     }
   }, [name]);
   return (
-    <div className="modal bg-primary w-4/5 rounded-lg p-5 md:w-2/3 md:p-8 lg:w-1/2 xl:w-2/5">
+    <div className="modal w-4/5 rounded-lg bg-primary p-5 md:w-2/3 md:p-8 lg:w-1/2 xl:w-2/5">
       {loading && (
-        <div className="bg-overlay-playlist-dark absolute inset-0 z-[60] flex items-center justify-center rounded-lg">
+        <div className="absolute inset-0 z-[60] flex items-center justify-center rounded-lg bg-overlay-playlist-dark">
           <Spinner classSize="h-16 w-16" />
         </div>
       )}
@@ -67,7 +67,7 @@ function NewPlaylistModal({ hideModal, fetchData }) {
               className=" h-full w-full rounded-lg object-cover object-center md:block"
               ref={prevImageRef}
             />
-            <div className="bg-overlay-gray absolute top-0 h-full w-full rounded-lg md:hidden md:group-hover:flex">
+            <div className="absolute top-0 h-full w-full rounded-lg bg-overlay-gray md:hidden md:group-hover:flex">
               <label
                 htmlFor="cover"
                 className="flex h-full w-full cursor-pointer flex-col items-center justify-center text-white"
@@ -89,7 +89,7 @@ function NewPlaylistModal({ hideModal, fetchData }) {
               <input
                 type="text"
                 value={name}
-                className={`bg-primary-300 h-full w-full rounded-md border  px-5 py-3 text-white outline-none ${
+                className={`h-full w-full rounded-md border bg-primary-300  px-5 py-3 text-white outline-none ${
                   isNameEmpty ? "border-red-600" : "border-transparent"
                 }`}
                 placeholder="Add your title here"
@@ -99,7 +99,7 @@ function NewPlaylistModal({ hideModal, fetchData }) {
             <div className="">
               <textarea
                 value={description}
-                className="bg-primary-300 h-24 w-full resize-none rounded-md px-5 py-3 text-white outline-none md:h-auto"
+                className="h-24 w-full resize-none rounded-md bg-primary-300 px-5 py-3 text-white outline-none md:h-auto"
                 rows="6"
                 cols="50"
                 placeholder="Add an optional description"
@@ -109,7 +109,7 @@ function NewPlaylistModal({ hideModal, fetchData }) {
           </div>
         </div>
         <button
-          className="bg-secondary float-right mt-3 rounded-md px-10 py-2 text-white"
+          className="float-right mt-3 rounded-md bg-secondary px-10 py-2 text-white"
           type="submit"
         >
           Save

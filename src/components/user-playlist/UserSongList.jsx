@@ -31,13 +31,13 @@ function UserSongList({ songs, onPlayAll, onSetPlaying, onDeleteSong }) {
     <div className="flex flex-col">
       {/* Song list Header */}
       {songs.length <= 0 ? (
-        <div className="text-center text-xl mt-5">
+        <div className="mt-5 text-center text-xl">
           <h1>Empty songs in this playlist</h1>
         </div>
       ) : (
         <>
           <div>
-            <div className="grid grid-cols-myplaylist gap-8 text-gray-400 px-5">
+            <div className="grid grid-cols-myplaylist gap-8 px-5 text-gray-400">
               <div className="place-self-center">
                 <span>#</span>
               </div>
@@ -45,18 +45,18 @@ function UserSongList({ songs, onPlayAll, onSetPlaying, onDeleteSong }) {
               <div>Duration</div>
               <div></div>
             </div>
-            <div className="divider border-t-2 border-primary-300 mt-5 mx-5"></div>
+            <div className="divider mx-5 mt-5 border-t-2 border-primary-300"></div>
           </div>
 
           <div className="flex flex-col">
             {songs.map((song, index) => (
               <div
-                className="grid grid-cols-myplaylist items-center gap-8 py-3 px-5 transition duration-200 hover:bg-list-hover rounded-sm group"
+                className="group grid grid-cols-myplaylist items-center gap-8 rounded-sm py-3 px-5 transition duration-200 hover:bg-list-hover"
                 key={song._id}
               >
                 <div className="w-10">
                   {(activeSong?._id !== song._id || !isPlaying) && (
-                    <div className="block group-hover:hidden text-sm ml-3">
+                    <div className="ml-3 block text-sm group-hover:hidden">
                       {index + 1}
                     </div>
                   )}
@@ -69,13 +69,13 @@ function UserSongList({ songs, onPlayAll, onSetPlaying, onDeleteSong }) {
                     onClick={() => playSong(index, song._id)}
                   >
                     {isPlaying && activeSong._id === song._id ? (
-                      <MdPauseCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
+                      <MdPauseCircleFilled className="mr-3 md:text-3xl lg:text-3xl" />
                     ) : (
-                      <MdPlayCircleFilled className="md:text-3xl lg:text-3xl mr-3" />
+                      <MdPlayCircleFilled className="mr-3 md:text-3xl lg:text-3xl" />
                     )}
                   </button>
                 </div>
-                <div className="text-sm my-1">
+                <div className="my-1 text-sm">
                   <h1 className="font-semibold">{song.title}</h1>
                   <span className="text-xs text-description">
                     {song.artist}
@@ -84,13 +84,13 @@ function UserSongList({ songs, onPlayAll, onSetPlaying, onDeleteSong }) {
                 <div className="ml-2">{song.duration}</div>
                 <div className="flex flex-row">
                   <button onClick={() => dispatch(addOneSong(song))}>
-                    <MdPlaylistAdd className="text-2xl mr-3" />
+                    <MdPlaylistAdd className="mr-3 text-2xl" />
                   </button>
                   <button onClick={() => onDeleteSong(index)}>
-                    <MdDelete className="text-2xl mr-3" />
+                    <MdDelete className="mr-3 text-2xl" />
                   </button>
                   <button>
-                    <MdShare className="text-2xl mr-3" />
+                    <MdShare className="mr-3 text-2xl" />
                   </button>
                 </div>
               </div>
