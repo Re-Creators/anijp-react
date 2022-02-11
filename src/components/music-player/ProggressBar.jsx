@@ -52,11 +52,15 @@ function ProggressBar({
         const rect = progressBar.current.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
 
-        if (e.clientX > rect.left && e.clientX < rect.right) {
-          const newTime = (mouseX / rect.width) * duration;
-          onChangeTime(newTime);
+        let newTime = (mouseX / rect.width) * duration;
+
+        if (e.clientX < rect.left) {
+          newTime = 0;
+        } else if (e.clientX > rect.right) {
+          newTime = duration;
         }
 
+        onChangeTime(newTime);
         startMove.current = false;
       }
     },
@@ -74,20 +78,20 @@ function ProggressBar({
   }, [onEndMove, onMove]);
 
   return (
-    <div className="w-4/5 mx-3">
+    <div className="mx-3 w-4/5">
       <div
-        className={`relative ${progressBarColor} w-full h-1 cursor-pointer group`}
+        className={`relative ${progressBarColor} group h-1 w-full cursor-pointer`}
         onClick={progressBarClick}
         onMouseDown={() => {
           startMove.current = true;
         }}
         ref={progressBar}
       >
-        <div className={`absolute h-full left-0 ${barColor}`} ref={progress}>
+        <div className={`absolute left-0 h-full ${barColor}`} ref={progress}>
           <span
             className={`${
               showPoint ? "" : "hidden"
-            } absolute top-1/2 transform -translate-y-1/2 -right-3 h-3 w-3 rounded-full ${pointColor} group-hover:block`}
+            } absolute top-1/2 -right-3 h-3 w-3 -translate-y-1/2 transform rounded-full ${pointColor} group-hover:block`}
           ></span>
         </div>
       </div>
