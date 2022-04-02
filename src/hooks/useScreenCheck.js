@@ -5,7 +5,10 @@ export default function useScreenCheck() {
 
   useEffect(() => {
     let hasTouchScreen = false;
-    if ("maxTouchPoints" in navigator) {
+
+    if (window.innerWidth < 640) {
+      hasTouchScreen = true;
+    } else if ("maxTouchPoints" in navigator) {
       hasTouchScreen = navigator.maxTouchPoints > 0 && window.innerWidth < 640;
     } else if ("msMaxTouchPoints" in navigator) {
       hasTouchScreen =
