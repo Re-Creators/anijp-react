@@ -25,3 +25,18 @@ export function getBaseTitle(pathname) {
 
   return "";
 }
+
+export function getErrorMessage(code) {
+  switch (code) {
+    case "auth/email-already-in-use":
+      return { email: "Email already used." };
+    case "auth/invalid-email":
+      return { email: "Enter a valid email" };
+    case "auth/wrong-password":
+      return { password: "Password doesn't match with our records" };
+    case "auth/user-not-found":
+      return { email: "User not found" };
+    default:
+      return null;
+  }
+}

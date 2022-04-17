@@ -5,12 +5,12 @@ import { useDispatch } from "react-redux";
 import {
   login,
   loginWithGoogle,
-  selectError,
   selectisLoading,
 } from "../../features/user/userSlice";
 import { useSelector } from "react-redux";
 import Spinner from "../UI/Spinner";
 import useScreenCheck from "../../hooks/useScreenCheck";
+import { getErrorMessage } from "../../utils";
 
 function MainLogin({
   parentClassNames,
@@ -23,7 +23,7 @@ function MainLogin({
   const navigate = useNavigate();
 
   const isLoading = useSelector(selectisLoading);
-  const error = useSelector(selectError);
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,7 +34,7 @@ function MainLogin({
         await dispatch(login({ email, password })).unwrap();
         navigate("/");
       } catch (err) {
-        console.error(err);
+        setError(getErrorMessage(err));
       }
     }
   };
@@ -64,7 +64,7 @@ function MainLogin({
               <input
                 type="email"
                 value={email}
-                className="mt-1 w-full border-2 border-primary  px-3 py-3 text-sm"
+                className="border-primary mt-1 w-full border-2  px-3 py-3 text-sm"
                 placeholder="Enter your email"
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -81,7 +81,7 @@ function MainLogin({
               <input
                 type="password"
                 value={password}
-                className="mt-1 w-full border-2 border-primary px-3 py-3 text-sm"
+                className="border-primary mt-1 w-full border-2 px-3 py-3 text-sm"
                 placeholder="Enter your password"
                 required
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,7 +94,7 @@ function MainLogin({
               )}
             </div>
             <button
-              className="mt-5 w-full rounded-lg bg-secondary py-3 text-white"
+              className="bg-secondary mt-5 w-full rounded-lg py-3 text-white"
               type="submit"
               disabled={isLoading}
             >

@@ -179,6 +179,9 @@ const userSlice = createSlice({
     updateLikedPlaylist: (state, { payload }) => {
       state.likedPlaylist = payload;
     },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: {
     [getUserData.pending]: (state) => {
@@ -213,17 +216,7 @@ const userSlice = createSlice({
     [login.fulfilled]: (state, _) => {
       state.isLoading = false;
     },
-    [login.rejected]: (state, { payload }) => {
-      if (payload === "auth/invalid-email") {
-        state.error = { password: null, email: "Enter a valid email" };
-      } else if (payload === "auth/wrong-password") {
-        state.error = {
-          email: null,
-          password: "Password doesn't match with our records",
-        };
-      } else if (payload === "auth/user-not-found") {
-        state.error = { password: null, email: "User not found" };
-      }
+    [login.rejected]: (state) => {
       state.isLoading = false;
     },
     [register.pending]: (state) => {
@@ -241,8 +234,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { setLoggedIn, updateLikedSongs, updateLikedPlaylist } =
-  userSlice.actions;
+export const {
+  setLoggedIn,
+  updateLikedSongs,
+  updateLikedPlaylist,
+  clearError,
+} = userSlice.actions;
 
 export const selectUser = (state) => state.user.user;
 export const selectisLoading = (state) => state.user.isLoading;

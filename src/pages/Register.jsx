@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../components/UI/Spinner";
 import { useSelector } from "react-redux";
-import {
-  register,
-  selectError,
-  selectisLoading,
-} from "../features/user/userSlice";
+import { register, selectisLoading } from "../features/user/userSlice";
 import { useDispatch } from "react-redux";
 import useHelmetTitle from "../hooks/useHelmetTitle";
+import { getErrorMessage } from "../utils";
 
 function Register() {
   const dispatch = useDispatch();
 
   const isLoading = useSelector(selectisLoading);
-  const error = useSelector(selectError);
+  const [error, setError] = useState(null);
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -22,7 +19,13 @@ function Register() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(register({ username, email, password }));
+    try {
+      if (email !== "" && password !== "") {
+        await dispatch(register({ username, email, password })).unwrap();
+      }
+    } catch (err) {
+      setError(getErrorMessage(err));
+    }
   };
 
   useHelmetTitle("Register | AniJP", dispatch);
@@ -40,10 +43,10 @@ function Register() {
               <span>Username</span>
               <input
                 type="text"
-                className="mt-1 w-full border-2 border-primary  px-3 py-3 text-sm"
+                className="border-primary mt-1 w-full border-2  px-3 py-3 text-sm"
                 placeholder="Enter your username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value.trim())}
                 required
               />
             </div>
@@ -51,7 +54,7 @@ function Register() {
               <span>Email</span>
               <input
                 type="email"
-                className="mt-1 w-full border-2 border-primary  px-3 py-3 text-sm"
+                className="border-primary mt-1 w-full border-2  px-3 py-3 text-sm"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -67,16 +70,16 @@ function Register() {
               <span>Password</span>
               <input
                 type="password"
-                className="mt-1 w-full border-2 border-primary px-3 py-3 text-sm"
+                className="border-primary mt-1 w-full border-2 px-3 py-3 text-sm"
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value.trim())}
                 required
               />
             </div>
             <button
               type="sumbit"
-              className="mt-5 w-full rounded-lg bg-secondary py-3 text-white"
+              className="bg-secondary mt-5 w-full rounded-lg py-3 text-white"
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : " Sign Up"}
